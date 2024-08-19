@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Trabajo Terminal Web App
 
-## Getting Started
+## Desarrollo
 
-First, run the development server:
+1. Descarga las herramientas necesarias para el desarrollo de esta aplicación:
+
+   - [Node.js](https://nodejs.org/en).
+   - Un editor de código de tu preferencias que soporte Prettier y las configuraciones añadidas en el archivo `.editorconfig`. Se recomienda [Visual Studio Code](https://code.visualstudio.com/).
+
+2. Clona esta repositorio, para trabajar localmente.
+
+   - Si utilizas GitHub CLI:
+
+```bash
+gh repo clone emmanuel-valentin/tt_frontend
+```
+
+- Si utilizas Git:
+
+```bash
+git clone https://github.com/emmanuel-valentin/tt_frontend.git # HTTPS
+
+git clone git@github.com:emmanuel-valentin/tt_frontend.git # SSH
+```
+
+3. Instala las dependencias del proyecto a través de npm. **En este punto, es necesario que Node.js esté instalado en su sistema**.
+
+```bash
+npm install
+
+npm i # Alternativamente
+```
+
+4. Una vez que las dependencias han sido instaladas, dentro del archivo `package.json` se encuentran una serie de scripts que son de utilidad para generar el build de produción, previsualizar dicho build de producción y levantar el servidor de desarrollo, entre otros.
+
+   A continuación, se muestra cómo se lenta el servidor de desarrollo.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
