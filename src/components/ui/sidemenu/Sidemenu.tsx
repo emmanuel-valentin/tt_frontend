@@ -5,9 +5,6 @@ import clsx from 'clsx';
 import { MenuItem } from './MenuItem';
 import { useUIStore } from '@/store';
 import {
-  AiFillCaretLeft,
-  AiFillCaretRight,
-  AiOutlineArrowRight,
   AiOutlineContacts,
   AiOutlineHome,
   AiOutlineProfile,
