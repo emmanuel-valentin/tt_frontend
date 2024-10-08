@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+import { bodyFont, headingFont, monoFont } from '@/config';
 
 import './globals.css';
-import { bodyFont, headingFont, monoFont } from '@/config';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${bodyFont.variable} ${headingFont.variable} ${monoFont.variable} font-sans`}
       >
