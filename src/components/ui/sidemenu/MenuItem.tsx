@@ -18,9 +18,10 @@ export function MenuItem({ icon, path, title }: Props) {
     <Link
       href={path}
       className={clsx(
-        'flex gap-2 items-center hover:bg-gray-100 cursor-pointer px-4 py-4 transition-colors duration-200 rounded-md',
+        'flex gap-2 items-center cursor-pointer px-4 py-4 transition-colors duration-200 rounded-md',
         {
           'bg-blue-100 text-blue-600 hover:bg-blue-100': pathname === path,
+          'hover:bg-gray-100 text-black/80': pathname !== path,
         },
       )}
     >
