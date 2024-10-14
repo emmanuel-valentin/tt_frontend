@@ -31,12 +31,12 @@ export function TopBar() {
         >
           <AiOutlineMenu
             className={clsx('h-8 w-8 lg:h-10 lg:w-10 cursor-pointer', {
-              hidden: !isSideMenuOpen,
+              hidden: isSideMenuOpen,
             })}
           />
           <AiOutlineClose
             className={clsx('h-8 w-8 lg:h-10 lg:w-10 cursor-pointer', {
-              hidden: isSideMenuOpen,
+              hidden: !isSideMenuOpen,
             })}
           />
         </button>

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 interface State {
   isSideMenuOpen: boolean;
@@ -8,9 +9,17 @@ interface Action {
   toggleSideMenu: () => void;
 }
 
-export const useUIStore = create<State & Action>((set) => ({
-  isSideMenuOpen: false,
+type UIStore = State & Action;
 
-  toggleSideMenu: () =>
-    set((state) => ({ isSideMenuOpen: !state.isSideMenuOpen })),
-}));
+export const useUIStore = create<UIStore>()(
+  devtools((set) => ({
+    isSideMenuOpen: false,
+
+    toggleSideMenu: () =>
+      set(
+        (state) => ({ isSideMenuOpen: !state.isSideMenuOpen }),
+        undefined,
+        'ui-store/toggleSideMenu',
+      ),
+  })),
+);

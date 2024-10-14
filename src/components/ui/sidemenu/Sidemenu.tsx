@@ -61,7 +61,9 @@ export function SideMenu() {
       <nav
         className={clsx(
           'flex flex-col md:hidden gap-2 w-full md:w-72 h-full px-2 pt-2 border-l fixed bg-white transition-transform duration-300',
-          { 'translate-x-full': isSideMenuOpen },
+          {
+            'translate-x-full': !isSideMenuOpen,
+          },
         )}
       >
         {routes.map((route) => (
