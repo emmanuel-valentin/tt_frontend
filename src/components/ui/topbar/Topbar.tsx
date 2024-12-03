@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 
 import { useUIStore } from '@/store';
+import { UserAvatar } from '../user-avatar/UserAvatar';
 
 export function TopBar() {
   const toggleSideMenu = useUIStore((state) => state.toggleSideMenu);
@@ -19,9 +20,9 @@ export function TopBar() {
         {/* User avatar */}
         <Link
           href="/dashboard/profile"
-          className="hidden md:block"
+          className="hidden md:block mx-4"
         >
-          <div className="bg-gray-200 h-8 w-8 lg:h-10 lg:w-10 rounded-full cursor-pointer hover:bg-gray-100 transition-colors duration-200" />
+          <UserAvatar size={36} />
         </Link>
 
         {/* Toggle side menu */}
