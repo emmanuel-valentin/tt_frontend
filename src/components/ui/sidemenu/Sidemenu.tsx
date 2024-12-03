@@ -3,50 +3,20 @@
 import clsx from 'clsx';
 
 import { MenuItem } from './MenuItem';
+import { routes } from '@/lib';
 import { useUIStore } from '@/store';
-import {
-  AiOutlineContacts,
-  AiOutlineHome,
-  AiOutlineProfile,
-  AiOutlineTeam,
-  AiOutlineUser,
-} from 'react-icons/ai';
-
-const routes = [
-  {
-    path: '/dashboard',
-    name: 'Inicio',
-    icon: <AiOutlineHome className="w-6 h-6" />,
-  },
-  {
-    path: '/dashboard/activities',
-    name: 'Actividades',
-    icon: <AiOutlineProfile className="w-6 h-6" />,
-  },
-  {
-    path: '/dashboard/patients',
-    name: 'Pacientes',
-    icon: <AiOutlineTeam className="w-6 h-6" />,
-  },
-  {
-    path: '/dashboard/physiotherapists',
-    name: 'Fisioterapeutas',
-    icon: <AiOutlineContacts className="w-6 h-6" />,
-  },
-  {
-    path: '/dashboard/profile',
-    name: 'Mi perfil',
-    icon: <AiOutlineUser className="w-6 h-6" />,
-  },
-];
 
 export function SideMenu() {
   const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
+  const resetSideMenu = useUIStore((state) => state.resetSideMenu);
 
   return (
     <div>
       {/* Desktop nav */}
-      <nav className="hidden md:flex md:flex-col gap-2 min-w-full md:w-auto border-r h-full px-2 pt-2 mr-20">
+      <nav
+        className="hidden md:flex md:flex-col gap-2 min-w-full md:w-auto border-r h-full px-2 pt-2 mr-20"
+        onClick={resetSideMenu}
+      >
         {routes.map((route) => (
           <MenuItem
             icon={route.icon}
@@ -65,6 +35,7 @@ export function SideMenu() {
             'translate-x-full': !isSideMenuOpen,
           },
         )}
+        onClick={resetSideMenu}
       >
         {routes.map((route) => (
           <MenuItem
