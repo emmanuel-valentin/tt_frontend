@@ -7,6 +7,7 @@ interface State {
 
 interface Action {
   toggleSideMenu: () => void;
+  resetSideMenu: () => void;
 }
 
 type UIStore = State & Action;
@@ -20,6 +21,13 @@ export const useUIStore = create<UIStore>()(
         (state) => ({ isSideMenuOpen: !state.isSideMenuOpen }),
         undefined,
         'ui-store/toggleSideMenu',
+      ),
+
+    resetSideMenu: () =>
+      set(
+        () => ({ isSideMenuOpen: false }),
+        undefined,
+        'ui-store/resetSideMenu',
       ),
   })),
 );
