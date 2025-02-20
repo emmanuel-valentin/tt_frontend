@@ -50,7 +50,7 @@ export function Step2Form() {
           >
             <Stethoscope className="w-20 h-20" />
             <p className="text-xl peer-data-[state=checked]:text-primary mb-6">
-              Paciente
+              Soy un fisioterapeuta
             </p>
             <p className="text-sm max-w-prose text-gray-700">
               Como paciente, tendrás que vincularte a un fisioterapeuta para que
