@@ -9,7 +9,7 @@ export default function DashboardLayout() {
       <Topbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="mx-auto p-4 lg:px-20 lg:py-6 w-full bg-muted/60 overflow-y-scroll">
+        <main className="mx-auto p-4 w-full bg-muted/60 overflow-y-scroll">
           <Outlet />
         </main>
       </div>
