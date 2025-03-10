@@ -8,6 +8,7 @@ import {
 import type { LinksFunction } from '@remix-run/node';
 
 import styles from './tailwind.css?url';
+import { Toaster } from './components/ui/sonner';
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -36,6 +37,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+
+        <Toaster richColors />
       </body>
     </html>
   );
