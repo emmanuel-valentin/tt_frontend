@@ -5,7 +5,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react';
-import type { LinksFunction } from '@remix-run/node';
+import type { LinksFunction, MetaFunction } from '@remix-run/node';
 
 import styles from './tailwind.css?url';
 import { Toaster } from './components/ui/sonner';
@@ -23,6 +23,13 @@ export const links: LinksFunction = () => [
   },
   { rel: 'stylesheet', href: styles },
 ];
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Fisiogo' },
+    { name: 'description', content: 'Tu app de rehabilitación' },
+  ];
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
