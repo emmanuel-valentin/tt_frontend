@@ -44,7 +44,7 @@ export default function DashboardPatientsPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Mis pacientes</CardTitle>
+        <CardTitle pageTitle>Mis pacientes</CardTitle>
         <div className="flex items-center gap-2">
           <p className="text-gray-700">
             Código de vinculación:{' '}

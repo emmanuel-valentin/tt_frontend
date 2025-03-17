@@ -12,7 +12,7 @@ export default function DashboardHomePage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Inicio</CardTitle>
+        <CardTitle pageTitle>Inicio</CardTitle>
         <CardDescription>
           Aquí encontrarás un resumen de la actividad reciente
         </CardDescription>

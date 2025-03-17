@@ -5,7 +5,7 @@ export default function DashboardActivitiesPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Actividades asignadas</CardTitle>
+        <CardTitle pageTitle>Actividades asignadas</CardTitle>
       </CardHeader>
 
       <CardContent className="space-y-4">

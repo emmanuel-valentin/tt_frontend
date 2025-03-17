@@ -9,7 +9,7 @@ export default function DashboardMyProfilePage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Mi perfil</CardTitle>
+        <CardTitle pageTitle>Mi perfil</CardTitle>
       </CardHeader>
 
       <CardContent>
