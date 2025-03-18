@@ -1,7 +1,7 @@
-import { Outlet } from '@remix-run/react';
+import { Outlet } from "@remix-run/react";
 
-import { Sidebar } from '~/components/dashboard/sidebar/sidebar';
-import { Topbar } from '~/components/dashboard/topbar/topbar';
+import { Sidebar } from "~/components/dashboard/sidebar/sidebar";
+import { Topbar } from "~/components/dashboard/topbar/topbar";
 
 export default function DashboardLayout() {
   return (

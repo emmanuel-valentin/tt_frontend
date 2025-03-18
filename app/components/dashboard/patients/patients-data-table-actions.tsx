@@ -1,16 +1,16 @@
-import { useNavigate } from '@remix-run/react';
+import { useNavigate } from "@remix-run/react";
 
-import { Check, Eye, MoreVertical, Trash } from 'lucide-react';
-import { Button } from '~/components/ui/button';
+import { Check, Eye, MoreVertical, Trash } from "lucide-react";
+import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from '~/components/ui/dropdown-menu';
+} from "~/components/ui/dropdown-menu";
 
-import { type EnrollmentStatus } from '~/interfaces/user/patient.interface';
+import { type EnrollmentStatus } from "~/interfaces/user/patient.interface";
 
 interface Props {
   userId: string;
@@ -38,14 +38,14 @@ export function PatientsDataTableActions({ userId, estatus }: Props) {
           Ver perfil
         </DropdownMenuItem>
 
-        {estatus === 'aceptado' && (
+        {estatus === "aceptado" && (
           <DropdownMenuItem>
             <Check className="h-4 w-4" />
             Aceptar solicitud
           </DropdownMenuItem>
         )}
 
-        {estatus === 'pendiente' && (
+        {estatus === "pendiente" && (
           <DropdownMenuItem className="text-red-500">
             <Trash className="h-4 w-4" />
             Desvincular paciente

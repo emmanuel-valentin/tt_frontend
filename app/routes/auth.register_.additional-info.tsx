@@ -1,4 +1,4 @@
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData } from "@remix-run/react";
 
 import {
   CardHeader,
@@ -6,15 +6,15 @@ import {
   CardContent,
   CardDescription,
   Card,
-} from '~/components/ui/card';
+} from "~/components/ui/card";
 
-import { Step3Form } from '~/components/auth/register/step-3-form';
+import { Step3Form } from "~/components/auth/register/step-3-form";
 
-type Role = 'patient' | 'physiotherapist';
+type Role = "patient" | "physiotherapist";
 
 export function loader() {
   return {
-    role: 'patient' as Role,
+    role: "patient" as Role,
   };
 }
 

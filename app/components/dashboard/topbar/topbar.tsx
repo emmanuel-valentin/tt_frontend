@@ -1,10 +1,10 @@
-import { Link } from '@remix-run/react';
+import { Link } from "@remix-run/react";
 
-import { Menu } from 'lucide-react';
+import { Menu } from "lucide-react";
 
-import { Button } from '~/components/ui/button';
-import { useUIStore } from '~/store/ui.store';
-import { AvatarMenu } from './avatar-menu';
+import { Button } from "~/components/ui/button";
+import { useUIStore } from "~/store/ui.store";
+import { AvatarMenu } from "./avatar-menu";
 
 export function Topbar() {
   const toggleSideMenu = useUIStore((state) => state.toggleSideMenu);

@@ -1,10 +1,10 @@
-import { NavLink } from '@remix-run/react';
-import { LucideProps } from 'lucide-react';
+import { NavLink } from "@remix-run/react";
+import { LucideProps } from "lucide-react";
 
-import { useUIStore } from '~/store/ui.store';
+import { useUIStore } from "~/store/ui.store";
 
 type Icon = React.ForwardRefExoticComponent<
-  Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>
+  Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
 >;
 
 interface Props {

@@ -1,5 +1,5 @@
-import { redirect } from '@remix-run/react';
+import { redirect } from "@remix-run/react";
 
 export function loader() {
-  throw redirect('/auth/login');
+  throw redirect("/auth/login");
 }

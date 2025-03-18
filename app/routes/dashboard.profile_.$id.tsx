@@ -1,8 +1,8 @@
-import { UserDetails } from '~/components/dashboard/profile/user-details';
-import { UserAvatar } from '~/components/shared/avatar/user-avatar';
-import { Badge } from '~/components/ui/badge';
-import { Card, CardContent, CardHeader } from '~/components/ui/card';
-import { Separator } from '~/components/ui/separator';
+import { UserDetails } from "~/components/dashboard/profile/user-details";
+import { UserAvatar } from "~/components/shared/avatar/user-avatar";
+import { Badge } from "~/components/ui/badge";
+import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import { Separator } from "~/components/ui/separator";
 
 export default function DashboardProfileDetailsPage() {
   return (
@@ -12,9 +12,9 @@ export default function DashboardProfileDetailsPage() {
           <UserAvatar className="w-16 h-16" />
           <div className="text-center md:text-start">
             <p className="text-xl tracking-tight line-clamp-1">
-              {'Emmanuel Guadalupe Valentin Valentin'}
+              {"Emmanuel Guadalupe Valentin Valentin"}
             </p>
-            <Badge capitalize>{'paciente'}</Badge>
+            <Badge capitalize>{"paciente"}</Badge>
           </div>
         </div>
       </CardHeader>

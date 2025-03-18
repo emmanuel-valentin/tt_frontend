@@ -1,15 +1,15 @@
-import { ArrowUpRight } from 'lucide-react';
-import { Button } from '~/components/ui/button';
+import { ArrowUpRight } from "lucide-react";
+import { Button } from "~/components/ui/button";
 
 export function UserDetails() {
   const user = {
-    nombre: 'John',
-    apellido_pat: 'Smith',
-    apellido_mat: 'Doe',
-    fecha_nacimiento: '1990-01-01',
-    correo: 'a@example.com',
-    telefono: '55 XXXX XXXX',
-    cedula: '12345678',
+    nombre: "John",
+    apellido_pat: "Smith",
+    apellido_mat: "Doe",
+    fecha_nacimiento: "1990-01-01",
+    correo: "a@example.com",
+    telefono: "55 XXXX XXXX",
+    cedula: "12345678",
   };
 
   return (
@@ -23,42 +23,42 @@ export function UserDetails() {
 
         <div className="grid gap-2">
           <p>
-            <span className="font-semibold">Apellido Paterno:</span>{' '}
+            <span className="font-semibold">Apellido Paterno:</span>{" "}
             {user.apellido_pat}
           </p>
         </div>
 
         <div className="grid gap-2">
           <p>
-            <span className="font-semibold">Apellido Materno:</span>{' '}
+            <span className="font-semibold">Apellido Materno:</span>{" "}
             {user.apellido_mat}
           </p>
         </div>
 
         <div className="grid gap-2">
           <p>
-            <span className="font-semibold">Fecha de nacimiento:</span>{' '}
+            <span className="font-semibold">Fecha de nacimiento:</span>{" "}
             {user.fecha_nacimiento}
           </p>
         </div>
 
         <div className="grid gap-2">
           <p>
-            <span className="font-semibold">Correo electrónico:</span>{' '}
+            <span className="font-semibold">Correo electrónico:</span>{" "}
             {user.correo}
           </p>
         </div>
 
         <div className="grid gap-2">
           <p>
-            <span className="font-semibold">Teléfono celular:</span>{' '}
+            <span className="font-semibold">Teléfono celular:</span>{" "}
             {user.telefono}
           </p>
         </div>
 
         <div className="grid gap-2">
           <p>
-            <span className="font-semibold">Cédula profesional:</span>{' '}
+            <span className="font-semibold">Cédula profesional:</span>{" "}
             {user.cedula}
           </p>
 

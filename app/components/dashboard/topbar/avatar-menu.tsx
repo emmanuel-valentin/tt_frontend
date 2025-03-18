@@ -1,4 +1,4 @@
-import { useNavigate } from '@remix-run/react';
+import { useNavigate } from "@remix-run/react";
 
 import {
   DropdownMenu,
@@ -6,10 +6,10 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '~/components/ui/dropdown-menu';
-import { UserAvatar } from '~/components/shared/avatar/user-avatar';
+} from "~/components/ui/dropdown-menu";
+import { UserAvatar } from "~/components/shared/avatar/user-avatar";
 
-import { LogOut, User } from 'lucide-react';
+import { LogOut, User } from "lucide-react";
 
 export function AvatarMenu() {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export function AvatarMenu() {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem
           className="cursor-pointer"
-          onClick={() => navigate('/dashboard/profile')}
+          onClick={() => navigate("/dashboard/profile")}
         >
           <User />
           Profile
@@ -31,7 +31,7 @@ export function AvatarMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"
-          onClick={() => navigate('/auth')}
+          onClick={() => navigate("/auth")}
         >
           <LogOut />
           Cerrar Sesión

@@ -1,12 +1,12 @@
-import { ActivityCard } from '~/components/dashboard/activity/activity-card';
-import { PatientRequestCard } from '~/components/dashboard/user/patient-request-card';
+import { ActivityCard } from "~/components/dashboard/activity/activity-card";
+import { PatientRequestCard } from "~/components/dashboard/user/patient-request-card";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '~/components/ui/card';
+} from "~/components/ui/card";
 
 export default function DashboardHomePage() {
   return (

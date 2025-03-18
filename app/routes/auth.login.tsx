@@ -1,17 +1,17 @@
-import { ClientActionFunctionArgs, redirect } from '@remix-run/react';
-import { LoginForm } from '~/components/auth/login/login-form';
+import { ClientActionFunctionArgs, redirect } from "@remix-run/react";
+import { LoginForm } from "~/components/auth/login/login-form";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '~/components/ui/card';
+} from "~/components/ui/card";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
   console.log(Object.fromEntries(formData));
-  return redirect('/dashboard');
+  return redirect("/dashboard");
 }
 
 export default function LoginPage() {

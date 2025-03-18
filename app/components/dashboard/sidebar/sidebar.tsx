@@ -1,14 +1,14 @@
-import { SidebarItem } from './sidebar-item';
+import { SidebarItem } from "./sidebar-item";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../../ui/tooltip';
+} from "../../ui/tooltip";
 
-import { cn } from '~/lib/utils';
-import { DASHBOARDROUTES as routes } from '~/constants/routes';
-import { useUIStore } from '~/store/ui.store';
+import { cn } from "~/lib/utils";
+import { DASHBOARDROUTES as routes } from "~/constants/routes";
+import { useUIStore } from "~/store/ui.store";
 
 export function Sidebar() {
   const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
@@ -38,9 +38,9 @@ export function Sidebar() {
       {/* Mobile nav */}
       <nav
         className={cn(
-          'flex flex-col md:hidden gap-2 w-full h-full px-2 pt-2 border-l fixed bg-white transition-transform duration-200 z-50',
+          "flex flex-col md:hidden gap-2 w-full h-full px-2 pt-2 border-l fixed bg-white transition-transform duration-200 z-50",
           {
-            '-translate-x-full': !isSideMenuOpen,
+            "-translate-x-full": !isSideMenuOpen,
           }
         )}
       >

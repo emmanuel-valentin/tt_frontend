@@ -1,19 +1,19 @@
-import { Table } from '@tanstack/react-table';
+import { Table } from "@tanstack/react-table";
 import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { Button } from '~/components/ui/button';
+import { Button } from "~/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select';
+} from "../ui/select";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -46,7 +46,7 @@ export function DataTablePagination<TData>({
           </Select>
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Página {table.getState().pagination.pageIndex + 1} de{' '}
+          Página {table.getState().pagination.pageIndex + 1} de{" "}
           {table.getPageCount()}
         </div>
         <div className="flex items-center space-x-2">

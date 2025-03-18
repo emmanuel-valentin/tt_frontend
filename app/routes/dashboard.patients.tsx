@@ -1,27 +1,30 @@
-import { Copy } from 'lucide-react';
-import { toast } from 'sonner';
-import { columns } from '~/components/dashboard/patients/columns';
-import { DataTable } from '~/components/data-table/data-table';
-import { Button } from '~/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import { Patient } from '~/interfaces/user/patient.interface';
+import { toast } from "sonner";
+
+import { columns } from "~/components/dashboard/patients/columns";
+import { DataTable } from "~/components/data-table/data-table";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+
+import { Copy } from "lucide-react";
+
+import { type Patient } from "~/interfaces/user/patient.interface";
 
 const patients: Patient[] = [
   {
-    id: '1',
-    fotoUrl: 'https://randomuser.me/api/portraits',
-    nombre: 'John',
-    apellidoPaterno: 'Doe',
-    apellidoMaterno: 'Smith',
-    estatus: 'aceptado',
+    id: "1",
+    fotoUrl: "https://randomuser.me/api/portraits",
+    nombre: "John",
+    apellidoPaterno: "Doe",
+    apellidoMaterno: "Smith",
+    estatus: "aceptado",
   },
   {
-    id: '2',
-    fotoUrl: 'https://randomuser.me/api/portraits',
-    nombre: 'Andrea',
-    apellidoPaterno: 'Aguilar',
-    apellidoMaterno: 'Musk',
-    estatus: 'pendiente',
+    id: "2",
+    fotoUrl: "https://randomuser.me/api/portraits",
+    nombre: "Andrea",
+    apellidoPaterno: "Aguilar",
+    apellidoMaterno: "Musk",
+    estatus: "pendiente",
   },
 ];
 
@@ -32,13 +35,13 @@ export default function DashboardPatientsPage() {
     // Validate if the clipboard is available
     if (!navigator.clipboard) {
       toast.error(
-        'Tu navegador no soporta la funcionalidad de copiar al portapapeles'
+        "Tu navegador no soporta la funcionalidad de copiar al portapapeles"
       );
       return;
     }
 
     navigator.clipboard.writeText(value);
-    toast.success('Código de vinculación copiado al portapapeles');
+    toast.success("Código de vinculación copiado al portapapeles");
   };
 
   return (
@@ -47,7 +50,7 @@ export default function DashboardPatientsPage() {
         <CardTitle pageTitle>Mis pacientes</CardTitle>
         <div className="flex items-center gap-2">
           <p className="text-gray-700">
-            Código de vinculación:{' '}
+            Código de vinculación:{" "}
             <span className="text-primary">{codigoVinculacion}</span>
           </p>
 

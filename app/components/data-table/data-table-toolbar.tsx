@@ -1,6 +1,6 @@
-import { Table } from '@tanstack/react-table';
-import { Input } from '../ui/input';
-import { DataTableViewOptions } from './data-table-view-options';
+import { Table } from "@tanstack/react-table";
+import { Input } from "../ui/input";
+import { DataTableViewOptions } from "./data-table-view-options";
 
 interface Props<TData> {
   table: Table<TData>;

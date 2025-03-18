@@ -4,9 +4,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '~/components/ui/card';
+} from "~/components/ui/card";
 
-import { Step1Form } from '~/components/auth/register/step-1-form';
+import { Step1Form } from "~/components/auth/register/step-1-form";
 
 export default function RegisterBasicInfoPage() {
   return (

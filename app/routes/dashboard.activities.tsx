@@ -1,5 +1,5 @@
-import { ActivityCard } from '~/components/dashboard/activity/activity-card';
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { ActivityCard } from "~/components/dashboard/activity/activity-card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
 export default function DashboardActivitiesPage() {
   return (
