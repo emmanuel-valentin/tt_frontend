@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
 import { Copy } from "lucide-react";
 
-import { type Patient } from "~/interfaces/user/patient.interface";
+import { type Patient } from "~/types/user/patient.type";
 
 const patients: Patient[] = [
   {

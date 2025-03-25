@@ -1,13 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Badge } from "~/components/ui/badge";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
+import { Physiotherapist } from "~/types/user/physiotherapist.type";
 import { UserAvatar } from "~/components/shared/avatar/user-avatar";
 
-import { Patient } from "~/types/user/patient.type";
-import { PatientsDataTableActions } from "./patients-data-table-actions";
-
-export const columns: ColumnDef<Patient>[] = [
+export const columns: ColumnDef<Physiotherapist>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -42,24 +39,17 @@ export const columns: ColumnDef<Patient>[] = [
     ),
   },
   {
-    accessorKey: "estatus",
+    accessorKey: "cedula",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Estatus" />
-    ),
-    cell: ({ row }) => (
-      <Badge
-        variant={row.original.estatus === "aceptado" ? "default" : "secondary"}
-        capitalize
-      >
-        {row.original.estatus}
-      </Badge>
+      <DataTableColumnHeader column={column} title="Cédula" />
     ),
   },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const { id, estatus } = row.original;
-      return <PatientsDataTableActions userId={id} estatus={estatus} />;
-    },
-  },
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     return (
+  //       <PhysiotherapistsDataTableActions physiotherapist={row.original} />
+  //     );
+  //   },
+  // },
 ];

@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 
-import { type EnrollmentStatus } from "~/interfaces/user/patient.interface";
+import { type EnrollmentStatus } from "~/types/user/patient.type";
 
 interface Props {
   userId: string;
