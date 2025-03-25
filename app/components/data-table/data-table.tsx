@@ -21,6 +21,7 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { DataTableEmptyView } from "./data-table-empty-view";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -96,7 +97,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  <DataTableEmptyView searchTerm={globalFilter} />
                 </TableCell>
               </TableRow>
             )}
