@@ -49,16 +49,10 @@ export default function DashboardPatientsPage() {
       <CardHeader>
         <CardTitle pageTitle>Mis pacientes</CardTitle>
         <div className="flex items-center gap-2">
-          <p className="text-gray-700">
-            Código de vinculación:{" "}
-            <span className="text-primary">{codigoVinculacion}</span>
-          </p>
+          <p className="text-gray-700">Código de vinculación:</p>
 
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => onCopy(codigoVinculacion)}
-          >
+          <Button variant="outline" onClick={() => onCopy(codigoVinculacion)}>
+            <span className="text-primary">{codigoVinculacion}</span>
             <Copy className="h-5 w-5" />
           </Button>
         </div>
