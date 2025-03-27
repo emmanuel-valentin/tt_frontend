@@ -1,6 +1,13 @@
+import { AddPhysiotherapistDialog } from "~/components/dashboard/physiotherapists/add-physiotherapist-dialog";
 import { columns } from "~/components/dashboard/physiotherapists/columns";
 import { DataTable } from "~/components/data-table/data-table";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { Physiotherapist } from "~/types/user/physiotherapist.type";
 
 const physiotherapists: Physiotherapist[] = [
@@ -17,8 +24,11 @@ const physiotherapists: Physiotherapist[] = [
 export default function DashboardPhysiotherapistsPage() {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-col md:flex-row md:items-center justify-between">
         <CardTitle pageTitle>Mis fisioterapeutas</CardTitle>
+        <CardDescription>
+          <AddPhysiotherapistDialog />
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
