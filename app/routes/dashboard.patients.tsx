@@ -29,16 +29,16 @@ const patients: Patient[] = [
 ];
 
 export default function DashboardPatientsPage() {
-  const codigoVinculacion = crypto.randomUUID().toString();
+  const codigoVinculacion = "123456";
 
-  const onCopy = (value: string) => {
+  const onCopy = async (value: string) => {
     if (!navigator.clipboard) {
       return toast.error(
         "Tu navegador no soporta la funcionalidad de copiar al portapapeles"
       );
     }
 
-    navigator.clipboard.writeText(value);
+    await navigator.clipboard.writeText(value);
     toast.success("Código de vinculación copiado al portapapeles");
   };
 
