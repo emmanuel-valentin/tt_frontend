@@ -1,4 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
+import { cn } from "~/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 
 interface Props {
   className?: string;
@@ -7,7 +8,7 @@ interface Props {
 
 export function UserAvatar({ className, src }: Props) {
   return (
-    <Avatar className={className ?? 'h-11 w-11'}>
+    <Avatar className={cn("w-10 h-10", className)}>
       <AvatarImage src={src ?? undefined} />
       <AvatarFallback>
         <img src="/user-avatar.svg" alt="Foto de perfil por defecto" />
