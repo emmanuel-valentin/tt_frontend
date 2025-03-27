@@ -103,8 +103,8 @@ export function UpdateProfileForm() {
       </div>
 
       <Button className="w-full md:w-auto" type="submit">
-        <Save />
         Actualizar información
+        <Save />
       </Button>
     </Form>
   );
