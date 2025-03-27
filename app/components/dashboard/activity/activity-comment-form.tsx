@@ -2,34 +2,33 @@ import { Form } from "@remix-run/react";
 
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
-import { Textarea } from "~/components/ui/textarea";
 
 import { Send } from "lucide-react";
+import { Input } from "~/components/ui/input";
 
 export function ActivityCommentForm() {
   return (
     <div className="mt-6">
-      <Form className="space-y-4">
+      <Form className="flex gap-1">
         <div className="grid w-full gap-1.5">
-          <Label htmlFor="comment">Agregar un comentario</Label>
-          <Textarea
+          <Label className="sr-only" htmlFor="comment">
+            Agregar un comentario
+          </Label>
+          <Input
             id="comment"
             name="comment"
-            placeholder="Escribe tu comentario aquí..."
-            className="min-h-[100px]"
+            placeholder="Escribe un comentario..."
           />
         </div>
-        <div className="flex justify-end">
-          <Button
-            className="w-full sm:w-auto"
-            name="intent"
-            type="submit"
-            value="comment"
-          >
-            Publicar comentario
-            <Send className="h-4 w-4" />
-          </Button>
-        </div>
+        <Button
+          name="intent"
+          type="submit"
+          value="comment"
+          size="icon"
+          className="w-20"
+        >
+          <Send />
+        </Button>
       </Form>
     </div>
   );
