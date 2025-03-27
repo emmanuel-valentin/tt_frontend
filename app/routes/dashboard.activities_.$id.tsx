@@ -36,7 +36,7 @@ export default function DashboardActivityDetailPage() {
             <span>Vence el {"10/02/2023"}</span>
           </div>
           <Badge variant="secondary">{"ENTREGADA"}</Badge>
-          <div className="flex-1 flex justify-end">
+          <div className="flex-1 flex justify-end w-full">
             <ActivityVideoSubmission
               onUploadVideo={handleUploadVideo}
               onRecordVideo={handleRecordVideo}
@@ -45,31 +45,42 @@ export default function DashboardActivityDetailPage() {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex flex-col gap-4">
-        <div>
-          <h3 className="text-xl tracking-tight">Descripción</h3>
-          <Separator className="mb-4" />
-          <p className="text-balance text-gray-700">
-            {
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae accusantium, dolorem distinctio similique deleniti quas debitis dolor eaque! Quidem blanditiis totam libero minima reiciendis tempore eos sunt vel quibusdam ipsam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae accusantium, dolorem distinctio similique deleniti quas debitis dolor eaque! Quidem blanditiis totam libero minima reiciendis tempore eos sunt vel quibusdam ipsam"
-            }
-          </p>
-        </div>
+      <CardContent>
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex flex-col gap-4 lg:w-2/3">
+            <div>
+              <h3 className="text-xl tracking-tight">Descripción</h3>
+              <Separator className="mb-4" />
+              <p className="text-balance text-gray-700">
+                {
+                  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae accusantium, dolorem distinctio similique deleniti quas debitis dolor eaque! Quidem blanditiis totam libero minima reiciendis tempore eos sunt vel quibusdam ipsam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae accusantium, dolorem distinctio similique deleniti quas debitis dolor eaque! Quidem blanditiis totam libero minima reiciendis tempore eos sunt vel quibusdam ipsam"
+                }
+              </p>
+            </div>
 
-        <div>
-          <h3 className="text-xl tracking-tight">Video demostrativo</h3>
-          <Separator className="mb-4" />
-          <VideoPlayer
-            className="max-w-screen-md mx-auto"
-            src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-          />
-        </div>
+            <div>
+              <h3 className="text-xl tracking-tight">Video demostrativo</h3>
+              <Separator className="mb-4" />
+              <VideoPlayer
+                className="md:w-[80%]"
+                src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+              />
+            </div>
+          </div>
 
-        <div>
-          <h3 className="text-xl tracking-tight">Comentarios</h3>
-          <Separator className="mb-4" />
-          <ActivityComment />
-          <ActivityCommentForm />
+          <div className="flex flex-col gap-4 lg:w-1/3">
+            <div>
+              <h3 className="text-xl tracking-tight">Comentarios</h3>
+              <Separator className="mb-4" />
+              <div className="flex flex-col gap-4">
+                <ActivityComment />
+                <ActivityComment />
+                <ActivityComment />
+                <ActivityComment />
+              </div>
+              <ActivityCommentForm />
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>
