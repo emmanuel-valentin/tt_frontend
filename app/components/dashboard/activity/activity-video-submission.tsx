@@ -19,7 +19,7 @@ export function ActivityVideoSubmission({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="gap-2">
+        <Button className="gap-2 w-full md:w-auto">
           Entregar video
           <ChevronDown className="h-4 w-4" />
         </Button>
