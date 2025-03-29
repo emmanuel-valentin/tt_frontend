@@ -1,8 +1,8 @@
-import { Form, Link } from '@remix-run/react';
+import { Form, Link } from "@remix-run/react";
 
-import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
-import { Label } from '~/components/ui/label';
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 
 export function LoginForm() {
   return (
@@ -18,7 +18,7 @@ export function LoginForm() {
         />
       </div>
       <div className="grid gap-2">
-        <Label htmlFor="password">Correo electrónico</Label>
+        <Label htmlFor="password">Contraseña</Label>
         <Input id="password" name="password" type="password" required />
       </div>
       <p className="text-end text-sm">
@@ -28,7 +28,7 @@ export function LoginForm() {
       </p>
       <Button type="submit">Iniciar sesión</Button>
       <p className="text-end text-sm">
-        ¿No tienes una cuenta?{' '}
+        ¿No tienes una cuenta?{" "}
         <Link className="hover:underline text-primary" to="/auth/register">
           Regístrate
         </Link>
