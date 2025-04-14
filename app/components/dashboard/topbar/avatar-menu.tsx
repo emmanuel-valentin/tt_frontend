@@ -31,7 +31,7 @@ export function AvatarMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"
-          onClick={() => navigate("/auth")}
+          onClick={() => navigate("/auth/logout", { replace: true })}
         >
           <LogOut />
           Cerrar Sesión
