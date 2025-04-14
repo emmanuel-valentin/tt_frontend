@@ -1,19 +1,31 @@
-import { Form, Link } from '@remix-run/react';
+import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 
-import { Button } from '~/components/ui/button';
-import { Label } from '~/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
+import {
+  clientAction,
+  clientLoader,
+} from "~/routes/auth.register_.select-role";
 
-import { Stethoscope, User2 } from 'lucide-react';
+import { Button } from "~/components/ui/button";
+import { ErrorAlert } from "~/components/shared/alert/error-alert";
+import { Label } from "~/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+
+import { Stethoscope, User2 } from "lucide-react";
 
 export function Step2Form() {
+  const actionData = useActionData<typeof clientAction>();
+  const loaderData = useLoaderData<typeof clientLoader>();
+  const errors = actionData?.errors;
+
   return (
     <Form className="flex flex-col gap-6" method="post">
+      {errors?.role && <ErrorAlert message={errors.role[0]} title="Error" />}
+
       <RadioGroup
         className="flex flex-col gap-4"
-        defaultValue="patient"
-        name="rol"
-        required
+        defaultValue={loaderData?.role}
+        name="role"
+        // required
       >
         <div>
           <RadioGroupItem

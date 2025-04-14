@@ -1,4 +1,20 @@
-import { Outlet } from "@remix-run/react";
+import { ClientLoaderFunctionArgs, Outlet, redirect } from "@remix-run/react";
+
+export function clientLoader({ request }: ClientLoaderFunctionArgs) {
+  const nextPath = request.url.split("/").pop();
+  const accessToken = localStorage.getItem("access_token");
+  const refreshToken = localStorage.getItem("refresh_token");
+
+  if (nextPath === "logout") {
+    return null;
+  }
+
+  if (!accessToken || !refreshToken) {
+    return null;
+  }
+
+  return redirect("/dashboard");
+}
 
 export default function AuthLayout() {
   return (

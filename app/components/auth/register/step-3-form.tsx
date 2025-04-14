@@ -1,30 +1,31 @@
-import { useState } from 'react';
-import { Form, Link } from '@remix-run/react';
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 
-import { PlusCircle } from 'lucide-react';
+import { LoaderCircle, PlusCircle } from "lucide-react";
 
-import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
-import { Label } from '~/components/ui/label';
-import { UserAvatar } from '~/components/shared/avatar/user-avatar';
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { UserAvatar } from "~/components/shared/avatar/user-avatar";
+import {
+  clientAction,
+  clientLoader,
+} from "~/routes/auth.register_.additional-info";
+import { useAvatarPreview } from "~/hooks/use-avatar-preview";
 
-interface Props {
-  role: 'patient' | 'physiotherapist';
-}
+export function Step3Form() {
+  const loaderData = useLoaderData<typeof clientLoader>();
+  const actionData = useActionData<typeof clientAction>();
+  const navigation = useNavigation();
+  const { avatarPreview, handleAvatarChange } = useAvatarPreview();
 
-export function Step3Form({ role }: Props) {
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setAvatarPreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
+  const isSubmitting = navigation.state === "submitting";
+  const errors = actionData?.validationErrors;
 
   return (
     <Form className="flex flex-col gap-6" method="post">
@@ -59,13 +60,20 @@ export function Step3Form({ role }: Props) {
           placeholder="55 XXXX XXXX"
           required
           type="tel"
+          defaultValue={loaderData.telefono}
         />
+        {errors?.telefono && (
+          <p className="text-red-500 text-sm">{errors.telefono[0]}</p>
+        )}
       </div>
 
-      {role === 'physiotherapist' && (
+      {loaderData.role === "physiotherapist" && (
         <div className="grid gap-2">
           <Label htmlFor="cedula">Cédula profesional</Label>
           <Input id="cedula" name="cedula" required type="text" />
+          {errors?.cedula && (
+            <p className="text-red-500 text-sm">{errors.cedula[0]}</p>
+          )}
         </div>
       )}
 
@@ -76,8 +84,12 @@ export function Step3Form({ role }: Props) {
           </Link>
         </Button>
 
-        <Button className="flex-1" type="submit">
-          Finalizar
+        <Button className="flex-1" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <LoaderCircle className="animate-spin w-4 h-4" />
+          ) : (
+            "Finalizar registro"
+          )}
         </Button>
       </div>
     </Form>
