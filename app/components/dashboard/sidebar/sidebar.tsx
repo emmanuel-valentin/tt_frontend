@@ -9,16 +9,22 @@ import {
 import { cn } from "~/lib/utils";
 import { DASHBOARDROUTES as routes } from "~/constants/routes";
 import { useUIStore } from "~/store/ui.store";
+import { useAuthStore } from "~/store/auth.store";
 
 export function Sidebar() {
   const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
+  const role = useAuthStore((state) => state.userData!.rol);
+
+  const filteredRoutes = routes.filter((route) =>
+    route.allowedRoles.includes(role)
+  );
 
   return (
     <>
       {/* Desktop nav */}
       <nav className="hidden md:flex md:flex-col gap-2 border-r p-2 lg:w-80">
         <TooltipProvider>
-          {routes.map((route) => (
+          {filteredRoutes.map((route) => (
             <Tooltip key={route.path}>
               <TooltipTrigger>
                 <SidebarItem

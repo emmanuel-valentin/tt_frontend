@@ -1,24 +1,38 @@
-import { Activity, Home, Stethoscope, Users } from 'lucide-react';
+import { Activity, Home, LucideProps, Stethoscope, Users } from "lucide-react";
+import type { Role } from "~/types/user/user.type";
 
-export const DASHBOARDROUTES = [
+interface Route {
+  path: string;
+  label: string;
+  icon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+  >;
+  allowedRoles: Role[];
+}
+
+export const DASHBOARDROUTES: Route[] = [
   {
-    path: '/dashboard',
-    label: 'Inicio',
+    path: "/dashboard",
+    label: "Inicio",
     icon: Home,
+    allowedRoles: ["patient", "physiotherapist"],
   },
   {
-    path: '/dashboard/activities',
-    label: 'Actividades',
+    path: "/dashboard/activities",
+    label: "Actividades",
     icon: Activity,
+    allowedRoles: ["patient", "physiotherapist"],
   },
   {
-    path: '/dashboard/patients',
-    label: 'Pacientes',
+    path: "/dashboard/patients",
+    label: "Mis Pacientes",
     icon: Users,
+    allowedRoles: ["physiotherapist"],
   },
   {
-    path: '/dashboard/physiotherapists',
-    label: 'Fisioterapeutas',
+    path: "/dashboard/physiotherapists",
+    label: "Mis Fisioterapeutas",
     icon: Stethoscope,
+    allowedRoles: ["patient"],
   },
 ];

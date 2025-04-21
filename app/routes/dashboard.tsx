@@ -2,8 +2,12 @@ import { Outlet, redirect } from "@remix-run/react";
 
 import { Sidebar } from "~/components/dashboard/sidebar/sidebar";
 import { Topbar } from "~/components/dashboard/topbar/topbar";
+import { Loader } from "~/components/shared/loader/loader";
+
 import { getAuthTokens } from "~/lib/utils";
 import { refreshAccessToken } from "~/services/auth/auth.service";
+import { getUserData } from "~/services/user/user.service";
+import { setUserData } from "~/store/auth.store";
 
 export async function clientLoader() {
   const { accessToken, refreshToken } = getAuthTokens();
@@ -12,17 +16,35 @@ export async function clientLoader() {
     return redirect("/auth/login");
   }
 
-  const { serviceData, serviceError } = await refreshAccessToken(refreshToken);
+  const responses = await Promise.all([
+    refreshAccessToken(refreshToken),
+    getUserData(),
+  ]);
 
-  if (serviceData?.access_token) {
-    localStorage.setItem("access_token", serviceData.access_token);
-  } else if (serviceError) {
+  const [refreshResponse, userResponse] = responses;
+  if (refreshResponse.serviceError || userResponse.serviceError) {
     return redirect("/auth/login");
   }
 
-  // TODO: Get user profile and store it to a global state.
+  const token = refreshResponse.serviceData!;
+  const userData = userResponse.serviceData!;
+
+  if (!token || !userData) {
+    return redirect("/auth/login");
+  }
+
+  localStorage.setItem("access_token", token.access_token!);
+  setUserData(userData);
 
   return null;
+}
+
+export function HydrateFallback() {
+  return (
+    <div className="flex flex-col min-h-screen items-center justify-center bg-muted/40">
+      <Loader size="lg" text="Cargando el panel..." />
+    </div>
+  );
 }
 
 export default function DashboardLayout() {

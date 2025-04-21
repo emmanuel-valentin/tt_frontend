@@ -10,3 +10,13 @@ export function getAuthTokens() {
   const refreshToken = localStorage.getItem("refresh_token");
   return { accessToken, refreshToken };
 }
+
+export function setAuthTokens(accessToken: string, refreshToken: string) {
+  localStorage.setItem("access_token", accessToken);
+  localStorage.setItem("refresh_token", refreshToken);
+}
+
+export function removeAuthTokens() {
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+}

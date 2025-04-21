@@ -1,30 +1,23 @@
-import { redirect, useLoaderData } from "@remix-run/react";
-import { getAuthTokens } from "~/lib/utils";
+import { redirect } from "@remix-run/react";
+import { getAuthTokens, removeAuthTokens } from "~/lib/utils";
 import { logout } from "~/services/auth/auth.service";
+import { clearUserData } from "~/store/auth.store";
 
 export async function clientLoader() {
   const { refreshToken } = getAuthTokens();
 
   if (!refreshToken) {
-    localStorage.removeItem("access_token");
+    removeAuthTokens();
     return redirect("/auth");
   }
 
   const logoutResult = await logout(refreshToken);
-
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
+  removeAuthTokens();
+  clearUserData();
 
   if (logoutResult?.serviceError) {
     console.error("Logout error:", logoutResult.serviceError);
   }
 
   return redirect("/auth");
-}
-
-export default function LogoutPage() {
-  const { error, status } = useLoaderData<typeof clientLoader>();
-  if (status !== 200) {
-    throw new Error(error);
-  }
 }

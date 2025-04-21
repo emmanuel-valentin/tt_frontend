@@ -1,5 +1,7 @@
 import axios from "axios";
+
 import { apiUrl } from "~/config/env.config";
+import { getAuthTokens } from "~/lib/utils";
 
 export const fisiogoApi = axios.create({
   baseURL: apiUrl,
@@ -7,9 +9,9 @@ export const fisiogoApi = axios.create({
 });
 
 fisiogoApi.interceptors.request.use((config) => {
-  // TODO: Read the token from Remix session cookies or the local storage.
-  // Later, we'll define how to store the token obtained from the back-end
-  // when a user auhthenticate. But, whatever we store it, we need to
-  // modify the request and include the Authorization header setting the token as value.
+  const { accessToken } = getAuthTokens();
+  if (accessToken) {
+    config.headers.set("Authorization", `Bearer ${accessToken}`);
+  }
   return config;
 });
