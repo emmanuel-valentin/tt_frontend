@@ -16,33 +16,28 @@ import {
 
 import { login } from "~/services/auth/auth.service";
 import { loginSchema } from "~/schemas/auth/login.schema";
+import { setAuthTokens } from "~/lib/utils";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
-  const { data, error, success } = loginSchema.safeParse(
-    Object.fromEntries(formData)
-  );
+  const parsedData = loginSchema.safeParse(Object.fromEntries(formData));
 
-  if (!success) {
+  if (!parsedData.success) {
     return {
-      validationErrors: error.flatten().fieldErrors,
+      validationErrors: parsedData.error.flatten().fieldErrors,
     };
   }
 
-  const { serviceData: actionData, serviceError } = await login({
-    ...data,
-  });
+  const response = await login(parsedData.data);
 
-  if (serviceError) {
+  if (response.serviceError) {
     return {
-      serviceError,
+      serviceError: response.serviceError,
     };
   }
 
-  const { access_token, refresh_token } = actionData!;
-  localStorage.setItem("access_token", access_token);
-  localStorage.setItem("refresh_token", refresh_token);
-
+  const data = response.serviceData!;
+  setAuthTokens(data.access_token, data.refresh_token);
   return redirect("/dashboard");
 }
 

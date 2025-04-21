@@ -21,9 +21,8 @@ export async function login(credentials: LoginCredentials) {
       throw new Error("Empty response");
     }
 
-    const { access_token, refresh_token } = data.data;
     return {
-      serviceData: { access_token, refresh_token },
+      serviceData: data.data,
     };
   } catch (error) {
     return {

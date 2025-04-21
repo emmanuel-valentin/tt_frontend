@@ -1,7 +1,7 @@
-import { User } from "./user.type";
+import { UserData } from "./user.type";
 
 export type Patient = {
   estatus: EnrollmentStatus;
-} & User;
+} & UserData;
 
 export type EnrollmentStatus = "pendiente" | "aceptado";
