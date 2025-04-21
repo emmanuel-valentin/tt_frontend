@@ -1,4 +1,8 @@
-import { ClientActionFunctionArgs, redirect } from "@remix-run/react";
+import {
+  ClientActionFunctionArgs,
+  redirect,
+  useActionData,
+} from "@remix-run/react";
 
 import {
   CardHeader,
@@ -9,6 +13,8 @@ import {
 } from "~/components/ui/card";
 
 import { Step3Form } from "~/components/auth/register/step-3-form";
+
+import { ErrorAlert } from "~/components/shared/alert/error-alert";
 import {
   loadFormData,
   setFormData,
@@ -74,11 +80,17 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function RegisterSelectRolePage() {
+  const actionData = useActionData<typeof clientAction>();
+  const serviceError = actionData?.serviceError;
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Por último...</CardTitle>
         <CardDescription>Solo necesitamos unas cosas más</CardDescription>
+        {serviceError && (
+          <ErrorAlert title="Error al registrarse" message={serviceError} />
+        )}
       </CardHeader>
       <CardContent>
         <Step3Form />
