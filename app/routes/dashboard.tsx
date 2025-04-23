@@ -23,7 +23,7 @@ export async function clientLoader() {
 
   const [refreshResponse, userResponse] = responses;
   if (refreshResponse.serviceError || userResponse.serviceError) {
-    throw new Error("Error al obtener los datos del usuario");
+    return redirect("/auth/login");
   }
 
   const token = refreshResponse.serviceData!;
