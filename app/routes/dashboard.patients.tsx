@@ -6,30 +6,33 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
 import { Copy } from "lucide-react";
+import { getAllPatientLinks } from "~/services/user/physiotherapist/physiotherapist.service";
+import { mapLinksToPatientColumns } from "~/mappers/patient-columns.mapper";
+import { useLoaderData } from "@remix-run/react";
+import { useAuthStore } from "~/store/auth.store";
 
-import { type Patient } from "~/types/user/patient.type";
+export async function clientLoader() {
+  const { serviceData, serviceError } = await getAllPatientLinks();
 
-const patients: Patient[] = [
-  {
-    id: "1",
-    fotoUrl: "https://randomuser.me/api/portraits",
-    nombre: "John",
-    apellidoPaterno: "Doe",
-    apellidoMaterno: "Smith",
-    estatus: "aceptado",
-  },
-  {
-    id: "2",
-    fotoUrl: "https://randomuser.me/api/portraits",
-    nombre: "Andrea",
-    apellidoPaterno: "Aguilar",
-    apellidoMaterno: "Musk",
-    estatus: "pendiente",
-  },
-];
+  if (serviceError) {
+    throw new Error(serviceError);
+  }
+  if (!serviceData) {
+    throw new Error("No data found");
+  }
+
+  const patients = mapLinksToPatientColumns(serviceData);
+
+  return {
+    patients,
+  };
+}
 
 export default function DashboardPatientsPage() {
-  const codigoVinculacion = "123456";
+  const { patients } = useLoaderData<typeof clientLoader>();
+  const codigoVinculacion = useAuthStore(
+    (state) => state.userData?.codigo_token
+  );
 
   const onCopy = async (value: string) => {
     if (!navigator.clipboard) {
@@ -52,7 +55,7 @@ export default function DashboardPatientsPage() {
             <span className="text-primary">{codigoVinculacion}</span>
           </p>
 
-          <Button variant="outline" onClick={() => onCopy(codigoVinculacion)}>
+          <Button variant="outline" onClick={() => onCopy(codigoVinculacion!)}>
             <Copy className="h-5 w-5" />
           </Button>
         </div>

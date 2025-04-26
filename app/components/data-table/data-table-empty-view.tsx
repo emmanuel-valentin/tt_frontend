@@ -1,26 +1,26 @@
-import { CloudDrizzle } from "lucide-react";
+import { EmptyState } from "~/components/shared/views/empty-state";
+import { Search, FileX } from "lucide-react";
 
 interface Props {
   searchTerm: string;
 }
 
 export function DataTableEmptyView({ searchTerm }: Props) {
-  const searchTremTrimmed = searchTerm.trim();
-  return (
-    <div className="w-full flex flex-col gap-2 py-10 items-center justify-center">
-      <CloudDrizzle size={64} className="text-gray-400" />
+  const searchTermTrimmed = searchTerm.trim();
 
-      <div className="max-w-[30ch] text-center">
-        {searchTremTrimmed ? (
-          <p className="text-gray-400 font-medium break-words overflow-hidden">
-            No hay información disponible para &quot;{searchTremTrimmed}&quot;
-          </p>
-        ) : (
-          <p className="text-gray-400 font-medium break-words overflow-hidden">
-            No hay registros disponibles
-          </p>
-        )}
-      </div>
-    </div>
+  return searchTermTrimmed ? (
+    <EmptyState
+      icon={Search}
+      title="Sin resultados"
+      description={`No hay información disponible para "${searchTermTrimmed}"`}
+      className="py-8"
+    />
+  ) : (
+    <EmptyState
+      icon={FileX}
+      title="Sin registros"
+      description="No hay registros disponibles"
+      className="py-8"
+    />
   );
 }

@@ -15,8 +15,6 @@ export async function getUserData() {
       throw new Error("Empty response");
     }
 
-    console.log("User data", data);
-
     return {
       serviceData: data.data,
     };
