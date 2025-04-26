@@ -9,6 +9,8 @@ import type { LinksFunction, MetaFunction } from "@remix-run/node";
 
 import { Loader } from "./components/shared/loader/loader";
 import { Toaster } from "./components/ui/sonner";
+import { ErrorBoundary as CustomErrorBoundary } from "./components/shared/error-boundary/error-boundary";
+import { NetworkStatusAlert } from "./components/shared/alert/network-status-alert";
 
 import styles from "./tailwind.css?url";
 
@@ -41,6 +43,23 @@ export function HydrateFallback() {
   );
 }
 
+export function ErrorBoundary() {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body className="bg-muted/40 flex min-h-screen items-center justify-center p-4">
+        <CustomErrorBoundary />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -56,6 +75,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Scripts />
 
         <Toaster richColors />
+        <NetworkStatusAlert />
       </body>
     </html>
   );

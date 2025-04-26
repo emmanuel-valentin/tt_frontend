@@ -1,12 +1,10 @@
-import { Activity, Home, LucideProps, Stethoscope, Users } from "lucide-react";
+import { Activity, Home, LucideIcon, Stethoscope, Users } from "lucide-react";
 import type { Role } from "~/types/user/user.type";
 
 interface Route {
   path: string;
   label: string;
-  icon: React.ForwardRefExoticComponent<
-    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
-  >;
+  icon: LucideIcon;
   allowedRoles: Role[];
 }
 

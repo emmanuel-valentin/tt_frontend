@@ -51,13 +51,15 @@ export function AddPhysiotherapistDialog() {
 
 function AddPhysiotherapistForm({ className }: React.ComponentProps<"form">) {
   return (
-    <Form className={cn("grid items-start gap-4", className)}>
+    <Form className={cn("grid items-start gap-4", className)} method="POST">
       <div className="grid gap-2">
-        <Label>Código de vinculación</Label>
-        <Input type="text" required />
+        <Label htmlFor="codigoVinculacion">Código de vinculación</Label>
+        <Input name="codigoVinculacion" type="text" required />
       </div>
 
-      <Button type="submit">Enviar solicitud</Button>
+      <ResponsiveDialogClose asChild>
+        <Button type="submit">Enviar solicitud</Button>
+      </ResponsiveDialogClose>
     </Form>
   );
 }

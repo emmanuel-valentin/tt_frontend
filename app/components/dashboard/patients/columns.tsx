@@ -4,10 +4,11 @@ import { Badge } from "~/components/ui/badge";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
 import { UserAvatar } from "~/components/shared/avatar/user-avatar";
 
-import { Patient } from "~/types/user/patient.type";
 import { PatientsDataTableActions } from "./patients-data-table-actions";
+import { PatientColumns } from "~/types/user/patient.type";
+import { EnrollmentStatus } from "~/types/user/user.type";
 
-export const columns: ColumnDef<Patient>[] = [
+export const columns: ColumnDef<PatientColumns>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -48,18 +49,28 @@ export const columns: ColumnDef<Patient>[] = [
     ),
     cell: ({ row }) => (
       <Badge
-        variant={row.original.estatus === "aceptado" ? "default" : "secondary"}
+        variant={
+          row.original.vinculacion_estado === "VINCULADO"
+            ? "default"
+            : "secondary"
+        }
         capitalize
       >
-        {row.original.estatus}
+        {row.original.vinculacion_estado.toLowerCase()}
       </Badge>
     ),
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const { id, estatus } = row.original;
-      return <PatientsDataTableActions userId={id} estatus={estatus} />;
+      const { id, vinculacion_estado, vinculacion_id } = row.original;
+      return (
+        <PatientsDataTableActions
+          userId={id}
+          estatus={vinculacion_estado as EnrollmentStatus}
+          vinculacionId={vinculacion_id}
+        />
+      );
     },
   },
 ];
