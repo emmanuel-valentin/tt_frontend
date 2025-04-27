@@ -38,7 +38,7 @@ export default function DashboardProfileDetailsPage() {
     <Card>
       <CardHeader className="flex flex-col md:flex-row items-center md:items-start gap-4">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
-          <UserAvatar className="w-16 h-16" />
+          <UserAvatar src={userData?.persona.foto_url} className="w-16 h-16" />
           <div className="text-center md:text-start">
             <p className="text-xl tracking-tight line-clamp-1">
               {userData?.usuario.first_name} {userData?.usuario.last_name}
