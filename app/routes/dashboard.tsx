@@ -10,30 +10,35 @@ import { getUserData } from "~/services/user/user.service";
 import { setUserData } from "~/store/auth.store";
 
 export async function clientLoader() {
-  const { accessToken, refreshToken } = getAuthTokens();
+  const { refreshToken } = getAuthTokens(); // Only need refresh token initially
 
-  if (!accessToken || !refreshToken) {
+  if (!refreshToken) {
     return redirect("/auth/login");
   }
 
-  const responses = await Promise.all([
-    refreshAccessToken(refreshToken),
-    getUserData(),
-  ]);
+  const refreshResponse = await refreshAccessToken(refreshToken);
 
-  const [refreshResponse, userResponse] = responses;
-  if (refreshResponse.serviceError || userResponse.serviceError) {
+  if (
+    refreshResponse.serviceError ||
+    !refreshResponse.serviceData?.access_token
+  ) {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     return redirect("/auth/login");
   }
 
-  const token = refreshResponse.serviceData!;
-  const userData = userResponse.serviceData!;
+  const newAccessToken = refreshResponse.serviceData.access_token;
+  localStorage.setItem("access_token", newAccessToken);
 
-  if (!token || !userData) {
+  const userResponse = await getUserData();
+
+  if (userResponse.serviceError || !userResponse.serviceData) {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     return redirect("/auth/login");
   }
 
-  localStorage.setItem("access_token", token.access_token!);
+  const userData = userResponse.serviceData;
   setUserData(userData);
 
   return null;

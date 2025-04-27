@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
+import {
+  isRouteErrorResponse,
+  useNavigate,
+  useRouteError,
+} from "@remix-run/react";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -10,11 +14,49 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { CircleAlert, CircleX, WifiOff } from "lucide-react";
+import {
+  CircleAlert,
+  CircleX,
+  FileQuestion,
+  TriangleAlert,
+  WifiOff,
+} from "lucide-react";
+
+// Helper component for consistent card structure
+const ErrorCard = ({
+  icon: Icon,
+  title,
+  description,
+  children,
+  footer,
+}: {
+  icon: React.ElementType;
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+  footer: React.ReactNode;
+}) => (
+  <div className="flex items-center justify-center h-full p-4">
+    <Card className="w-full max-w-md shadow-lg text-center">
+      <CardHeader className="items-center">
+        <Icon className="size-12 mb-4 text-destructive" />{" "}
+        {/* Increased icon size */}
+        <CardTitle className="text-2xl">{title}</CardTitle>
+        {description && <CardDescription>{description}</CardDescription>}
+      </CardHeader>
+      <CardContent>{children}</CardContent>
+      <CardFooter className="flex flex-col items-center gap-3 pb-6">
+        {footer}
+      </CardFooter>
+    </Card>
+  </div>
+);
 
 export function ErrorBoundary() {
-  const error = useRouteError();
   const [isOffline, setIsOffline] = useState(false);
+
+  const navigate = useNavigate();
+  const error = useRouteError();
 
   const isDevelopment = useMemo(() => {
     return process.env.NODE_ENV === "development";
@@ -50,115 +92,140 @@ export function ErrorBoundary() {
   // Si se detecta que no hay conexión a internet, mostrar un mensaje específico
   if (isOffline) {
     return (
-      <Card className="container mx-auto shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-xl text-destructive flex items-center gap-2">
-            <WifiOff className="size-6" />
-            Error de conexión
-          </CardTitle>
-          <CardDescription>Sin conexión a internet</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <ErrorCard
+        icon={WifiOff}
+        title="Error de conexión"
+        description="Sin conexión a internet"
+        footer={
+          <>
+            <Button
+              onClick={() => window.location.reload()}
+              className="w-full max-w-[200px]"
+            >
+              Reintentar
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => navigate(-1)}
+              className="w-full max-w-[200px]"
+            >
+              Volver al inicio
+            </Button>
+          </>
+        }
+      >
+        <p className="text-muted-foreground">
+          No se detectó conexión a internet. Por favor, verifica tu conexión y
+          vuelve a intentarlo.
+        </p>
+      </ErrorCard>
+    );
+  }
+
+  // Handle Route Error Responses (including 404)
+  if (isRouteErrorResponse(error)) {
+    // Specific handling for 404 Not Found errors
+    if (error.status === 404) {
+      return (
+        <ErrorCard
+          icon={FileQuestion} // Use appropriate icon
+          title="Página no encontrada (404)"
+          description="La página que buscas no existe o ha sido movida."
+          footer={
+            <Button
+              variant="secondary"
+              onClick={() => navigate("/")}
+              className="w-full max-w-[200px]"
+            >
+              Volver al inicio
+            </Button>
+          }
+        >
           <p className="text-muted-foreground">
-            No se detectó conexión a internet. Por favor, verifica tu conexión y
-            vuelve a intentarlo.
+            Parece que has seguido un enlace roto o has introducido una URL que
+            no existe en este sitio.
           </p>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-2 pb-6">
-          <Button
-            onClick={() => window.location.reload()}
-            className="w-full max-w-[200px]"
-          >
-            Reintentar
-          </Button>
+        </ErrorCard>
+      );
+    }
+
+    // Generic handling for other route errors
+    return (
+      <ErrorCard
+        icon={CircleAlert} // Use appropriate icon
+        title={`Error ${error.status}`}
+        description={error.statusText}
+        footer={
           <Button
             variant="secondary"
-            onClick={() => (window.location.href = "/")}
+            onClick={() => navigate("/")}
             className="w-full max-w-[200px]"
           >
             Volver al inicio
           </Button>
-        </CardFooter>
-      </Card>
+        }
+      >
+        <p className="text-muted-foreground">
+          {error.data || "Ha ocurrido un error en la ruta."}
+        </p>
+      </ErrorCard>
     );
   }
 
+  // Handle generic JavaScript Errors
+  if (error instanceof Error) {
+    return (
+      <ErrorCard
+        icon={TriangleAlert} // Use TriangleAlert icon from lucide
+        title="Error inesperado"
+        footer={
+          <Button
+            variant="secondary"
+            onClick={() => navigate("/")}
+            className="w-full max-w-[200px]"
+          >
+            Volver al inicio
+          </Button>
+        }
+      >
+        <div className="space-y-4">
+          <p className="text-sm font-medium">{error.message}</p>
+          {/* Solo mostrar detalles en desarrollo */}
+          {isDevelopment && error.stack && (
+            <div className="rounded border bg-muted/50 p-4 text-left">
+              {" "}
+              {/* Keep stack trace left-aligned */}
+              <p className="text-xs text-muted-foreground mb-2">
+                Detalles del error:
+              </p>
+              <pre className="text-xs overflow-auto max-h-[200px]">
+                {error.stack}
+              </pre>
+            </div>
+          )}
+        </div>
+      </ErrorCard>
+    );
+  }
+
+  // Fallback for unknown errors
   return (
-    <Card className="container mx-auto shadow-lg">
-      {isRouteErrorResponse(error) ? (
-        <>
-          <CardHeader>
-            <CardTitle className="text-xl text-destructive flex items-center gap-2">
-              <CircleAlert className="size-6" />
-              Error {error.status}
-            </CardTitle>
-            <CardDescription>{error.statusText}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">{error.data}</p>
-          </CardContent>
-        </>
-      ) : error instanceof Error ? (
-        <>
-          <CardHeader>
-            <CardTitle className="text-xl text-destructive flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                <line x1="12" y1="9" x2="12" y2="13" />
-                <line x1="12" y1="17" x2="12.01" y2="17" />
-              </svg>
-              Error inesperado
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-sm font-medium">{error.message}</p>
-            {/* Solo mostrar detalles en desarrollo */}
-            {isDevelopment && error.stack && (
-              <div className="rounded border bg-muted/50 p-4">
-                <p className="text-xs text-muted-foreground mb-2">
-                  Detalles del error:
-                </p>
-                <pre className="text-xs overflow-auto max-h-[200px]">
-                  {error.stack}
-                </pre>
-              </div>
-            )}
-          </CardContent>
-        </>
-      ) : (
-        <>
-          <CardHeader>
-            <CardTitle className="text-xl text-destructive flex items-center gap-2">
-              <CircleX className="size-6" />
-              Error desconocido
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              Se ha producido un error inesperado.
-            </p>
-          </CardContent>
-        </>
-      )}
-      <CardFooter className="flex justify-center pb-6">
+    <ErrorCard
+      icon={CircleX} // Use appropriate icon
+      title="Error desconocido"
+      footer={
         <Button
           variant="secondary"
-          onClick={() => (window.location.href = "/")}
+          onClick={() => navigate("/")}
           className="w-full max-w-[200px]"
         >
           Volver al inicio
         </Button>
-      </CardFooter>
-    </Card>
+      }
+    >
+      <p className="text-muted-foreground">
+        Se ha producido un error inesperado.
+      </p>
+    </ErrorCard>
   );
 }

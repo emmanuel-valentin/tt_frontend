@@ -13,7 +13,7 @@ export interface Persona {
   id: string;
   fecha_nacimiento: string;
   telefono: string;
-  foto_url: string;
+  foto_url: string | null;
 }
 
 export interface Usuario {
@@ -22,6 +22,14 @@ export interface Usuario {
   first_name: string;
   last_name: string;
   email: string;
+}
+
+export interface UpdateUserPayload {
+  id: string;
+  cedula?: string;
+  codigo_token?: string;
+  persona: Omit<Persona, "id">;
+  usuario: Omit<Usuario, "id">;
 }
 
 export type Role = "patient" | "physiotherapist";
