@@ -12,11 +12,13 @@ import { VideoPlayer } from "~/components/shared/video/video-player";
 import { ActivityComment } from "~/components/dashboard/activity/activity-comment";
 import { ActivityCommentForm } from "~/components/dashboard/activity/activity-comment-form";
 import { ActivityVideoSubmission } from "~/components/dashboard/activity/activity-video-submission";
+import { ActivityAssignedUserBadge } from "~/components/dashboard/activity/activity-assigned-user-badge";
 import { EmptyState } from "~/components/shared/views/empty-state";
 
 import { CalendarDays, MessageSquare } from "lucide-react";
 import {
   ClientLoaderFunctionArgs,
+  Link,
   data,
   useLoaderData,
 } from "@remix-run/react";
@@ -59,11 +61,14 @@ export default function DashboardActivityDetailPage() {
         <CardDescription className="flex flex-col md:flex-row gap-2 items-start md:items-center text-primary">
           <div className="inline-flex gap-1">
             <CalendarDays className="h-4 w-4" />{" "}
-            <span>Vence el {formatDate(activityData!.fechaAsignada)}</span>
+            <span>Vence el {formatDate(activityData!.fechaLimite)}</span>
           </div>
           <Badge variant="outline" capitalize>
             {activityData?.estado.toLocaleLowerCase()}
           </Badge>
+          {activityData && (
+            <ActivityAssignedUserBadge activity={activityData} />
+          )}
           <div className="flex-1 flex justify-end w-full">
             <ActivityVideoSubmission
               onUploadVideo={handleUploadVideo}
