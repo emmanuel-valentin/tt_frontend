@@ -1,4 +1,5 @@
 import { fisiogoApi } from "~/api/fisiogoApi";
+import { NewActivityPayload } from "~/schemas/activity/activity.schema";
 import {
   ActivitiesResponse,
   ActivityResponse,
@@ -56,6 +57,31 @@ export async function getActivityById(id: string) {
     const { data, status } = await fisiogoApi.get<ActivityResponse>(
       `/activities/assignment/${id}`
     );
+    if (status !== 200) {
+      throw new Error(data.error?.message);
+    }
+
+    if (!data) {
+      throw new Error("Empty response");
+    }
+
+    return {
+      serviceData: data.data,
+    };
+  } catch (error) {
+    return {
+      serviceError: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+export async function newActivity(newActivity: NewActivityPayload) {
+  try {
+    const { data, status } = await fisiogoApi.post<ActivityResponse>(
+      "/activities/assign",
+      newActivity
+    );
+
     if (status !== 200) {
       throw new Error(data.error?.message);
     }

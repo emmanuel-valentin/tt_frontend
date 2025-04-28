@@ -49,6 +49,29 @@ export async function getPendingPatientLinks() {
   }
 }
 
+export async function getAcceptedPatients() {
+  try {
+    const { data, status } = await fisiogoApi.get<LinkResponse>(
+      "/users/physiotherapist/patients"
+    );
+    if (status !== 200) {
+      throw new Error(data.error?.message);
+    }
+
+    if (!data) {
+      throw new Error("Empty response");
+    }
+
+    return {
+      serviceData: data.data,
+    };
+  } catch (error) {
+    return {
+      serviceError: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
 export async function acceptPatientLink(vinculacionId: string) {
   try {
     const { data, status } = await fisiogoApi.post<EmptyResponse>(
