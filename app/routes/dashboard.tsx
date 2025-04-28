@@ -2,6 +2,7 @@ import { Outlet, redirect } from "@remix-run/react";
 
 import { Sidebar } from "~/components/dashboard/sidebar/sidebar";
 import { Topbar } from "~/components/dashboard/topbar/topbar";
+import { Footer } from "~/components/shared/footer/footer";
 import { Loader } from "~/components/shared/loader/loader";
 
 import { getAuthTokens } from "~/lib/utils";
@@ -58,8 +59,11 @@ export default function DashboardLayout() {
       <Topbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="mx-auto p-4 w-full bg-muted/60 overflow-y-auto">
-          <Outlet />
+        <main className="flex flex-col w-full bg-muted/60 overflow-y-auto">
+          <div className="flex-1 p-4">
+            <Outlet />
+          </div>
+          <Footer />
         </main>
       </div>
     </div>
