@@ -1,12 +1,19 @@
-import { Link } from "@remix-run/react";
 import { useState } from "react";
+
+import { Link } from "@remix-run/react";
 
 import { UserAvatar } from "~/components/shared/avatar/user-avatar";
 import { Button } from "~/components/ui/button";
+import { Fisioterapeuta, HumanFeedback } from "~/types/activity/activity.type";
 
 const COMMENT_LENGTH_THRESHOLD = 100;
 
-export function ActivityComment() {
+interface Props {
+  feedback: HumanFeedback;
+  fisioterapeuta: Fisioterapeuta;
+}
+
+export function ActivityComment({ feedback, fisioterapeuta }: Props) {
   const [expanded, setExpanded] = useState(false);
 
   const commentText =
@@ -23,13 +30,16 @@ export function ActivityComment() {
       <UserAvatar className="h-8 w-8 md:h-12 md:w-12" />
       <div className="px-4 rounded-xl bg-blue-50">
         <div>
-          <Button className="p-0 m-0" variant="link" asChild>
-            <Link to={`/dashboard/profile/${1}`}>{"Emmanuel Valentin"}</Link>
+          <Button className="p-0 m-0" variant="link">
+            <Link to={`/dashboard/profile/${fisioterapeuta.persona_id}`}>
+              {fisioterapeuta.nombre} {fisioterapeuta.apellidoPat}{" "}
+              {fisioterapeuta.apellidoMat}
+            </Link>
           </Button>
         </div>
         <div className="pb-2">
           <p className={`text-gray-700 ${!expanded ? "line-clamp-3" : ""}`}>
-            {commentText}
+            {feedback.feedback}
           </p>
           {mightBeTruncated && (
             <Button

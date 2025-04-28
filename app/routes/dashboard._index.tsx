@@ -11,18 +11,28 @@ import {
 } from "~/components/ui/card";
 import { Activity, Users } from "lucide-react";
 import { getPendingPatientLinks } from "~/services/user/physiotherapist/physiotherapist.service";
+import { getActivities } from "~/services/activity/activity.service";
 import { useAuthStore } from "~/store/auth.store";
 import { cn } from "~/lib/utils";
 
 export async function clientLoader() {
-  const responses = await Promise.all([getPendingPatientLinks()]);
+  const responses = await Promise.all([
+    getPendingPatientLinks(),
+    getActivities(),
+  ]);
 
-  const [pendingPatientLinks] = responses;
+  const [pendingPatientLinks, activities] = responses;
+
   if (pendingPatientLinks.serviceError) {
     throw new Error(pendingPatientLinks.serviceError);
   }
+
+  if (activities.serviceError) {
+    throw new Error(activities.serviceError);
+  }
+
   return {
-    activities: [],
+    activities: activities.serviceData,
     pendingPatientLinks: pendingPatientLinks.serviceData,
   };
 }
@@ -49,7 +59,9 @@ export default function DashboardHomePage() {
           >
             <h3 className="text-lg">Resumen de actividades</h3>
             {activities && activities.length > 0 ? (
-              activities.map((activity, index) => <ActivityCard key={index} />)
+              activities.map((activity) => (
+                <ActivityCard key={activity.id} activity={activity} />
+              ))
             ) : (
               <EmptyState
                 icon={Activity}

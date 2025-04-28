@@ -20,3 +20,15 @@ export function removeAuthTokens() {
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
 }
+
+export function formatDate(date: string | Date) {
+  if (typeof date === "string") {
+    date = new Date(date);
+  }
+
+  return date.toLocaleDateString("es-ES", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+}

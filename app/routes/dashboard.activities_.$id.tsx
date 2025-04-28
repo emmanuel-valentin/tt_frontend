@@ -12,10 +12,36 @@ import { VideoPlayer } from "~/components/shared/video/video-player";
 import { ActivityComment } from "~/components/dashboard/activity/activity-comment";
 import { ActivityCommentForm } from "~/components/dashboard/activity/activity-comment-form";
 import { ActivityVideoSubmission } from "~/components/dashboard/activity/activity-video-submission";
+import { EmptyState } from "~/components/shared/views/empty-state";
 
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, MessageSquare } from "lucide-react";
+import {
+  ClientLoaderFunctionArgs,
+  data,
+  useLoaderData,
+} from "@remix-run/react";
+import { getActivityById } from "~/services/activity/activity.service";
+import { formatDate } from "~/lib/utils";
+
+export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
+  const activityId = params.id as string;
+  const { serviceData, serviceError } = await getActivityById(activityId);
+
+  if (serviceError) {
+    throw data(serviceError, {
+      status: 404,
+    });
+  }
+
+  return {
+    data: serviceData,
+  };
+}
 
 export default function DashboardActivityDetailPage() {
+  const loaderData = useLoaderData<typeof clientLoader>();
+  const { data: activityData } = loaderData;
+
   const handleUploadVideo = async () => {
     // TODO: Select a video from user storage and upload it to submit the assignment
     console.log("Upload video clicked");
@@ -29,13 +55,15 @@ export default function DashboardActivityDetailPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle pageTitle>{"Activity title"}</CardTitle>
+        <CardTitle pageTitle>{activityData?.nombre}</CardTitle>
         <CardDescription className="flex flex-col md:flex-row gap-2 items-start md:items-center text-primary">
           <div className="inline-flex gap-1">
             <CalendarDays className="h-4 w-4" />{" "}
-            <span>Vence el {"10/02/2023"}</span>
+            <span>Vence el {formatDate(activityData!.fechaAsignada)}</span>
           </div>
-          <Badge variant="secondary">{"ENTREGADA"}</Badge>
+          <Badge variant="outline" capitalize>
+            {activityData?.estado.toLocaleLowerCase()}
+          </Badge>
           <div className="flex-1 flex justify-end w-full">
             <ActivityVideoSubmission
               onUploadVideo={handleUploadVideo}
@@ -52,9 +80,8 @@ export default function DashboardActivityDetailPage() {
               <h3 className="text-xl tracking-tight">Descripción</h3>
               <Separator className="mb-4" />
               <p className="text-balance text-gray-700">
-                {
-                  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae accusantium, dolorem distinctio similique deleniti quas debitis dolor eaque! Quidem blanditiis totam libero minima reiciendis tempore eos sunt vel quibusdam ipsam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae accusantium, dolorem distinctio similique deleniti quas debitis dolor eaque! Quidem blanditiis totam libero minima reiciendis tempore eos sunt vel quibusdam ipsam"
-                }
+                {activityData?.descripcion ||
+                  "No hay descripción disponible para esta actividad."}
               </p>
             </div>
 
@@ -73,10 +100,22 @@ export default function DashboardActivityDetailPage() {
               <h3 className="text-xl tracking-tight">Comentarios</h3>
               <Separator className="mb-4" />
               <div className="flex flex-col gap-4">
-                <ActivityComment />
-                <ActivityComment />
-                <ActivityComment />
-                <ActivityComment />
+                {activityData?.feedback && activityData.feedback.length > 0 ? (
+                  activityData.feedback.map((comment) => (
+                    <ActivityComment
+                      key={comment.id}
+                      feedback={comment}
+                      fisioterapeuta={activityData.fisioterapeuta}
+                    />
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={MessageSquare}
+                    title="Aún no hay comentarios"
+                    description="Esta actividad aún no tiene retroalimentación por parte de tu terapeuta."
+                    className="bg-card/50 rounded-lg border border-muted py-6"
+                  />
+                )}
               </div>
               <ActivityCommentForm />
             </div>
