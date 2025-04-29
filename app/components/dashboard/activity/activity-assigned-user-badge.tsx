@@ -3,6 +3,7 @@ import { Link } from "@remix-run/react";
 import { UserAvatar } from "~/components/shared/avatar/user-avatar";
 import { Activity } from "~/types/activity/activity.type";
 import { useAuthStore } from "~/store/auth.store";
+import { Role } from "~/types/user/user.type";
 
 interface Props {
   activity: Activity;
@@ -11,7 +12,7 @@ interface Props {
 export function ActivityAssignedUserBadge({ activity }: Props) {
   const userRole = useAuthStore((state) => state.userData?.rol);
 
-  const isPhysiotherapist = userRole === "physiotherapist";
+  const isPhysiotherapist = userRole === Role.PHYSIOTHERAPIST;
 
   const personToShow = isPhysiotherapist
     ? activity.paciente

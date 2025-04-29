@@ -8,18 +8,23 @@ import {
   CardHeader,
 } from "~/components/ui/card";
 import { UserAvatar } from "~/components/shared/avatar/user-avatar";
+import { ActivityActions } from "./activity-actions";
 
 import { ChevronRight } from "lucide-react";
 import { Activity } from "~/types/activity/activity.type";
+import { useAuthStore } from "~/store/auth.store";
+import { Role } from "~/types/user/user.type";
 
 interface Props {
   activity: Activity;
 }
 
 export function ActivityCard({ activity }: Props) {
+  const role = useAuthStore((state) => state.userData?.rol);
+
   return (
     <Card>
-      <CardHeader className="items-start">
+      <CardHeader className="items-start flex flex-row justify-between">
         <Button asChild className="px-0" variant="link">
           <Link
             className="flex gap-1 items-center"
@@ -32,6 +37,10 @@ export function ActivityCard({ activity }: Props) {
             </span>
           </Link>
         </Button>
+
+        {role === Role.PHYSIOTHERAPIST && (
+          <ActivityActions activity={activity} />
+        )}
       </CardHeader>
 
       {/* Title and description */}

@@ -5,8 +5,9 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 
 import { Loader2, Save } from "lucide-react";
-import { UserData } from "~/types/user/user.type";
+import { Role, UserData } from "~/types/user/user.type";
 import { clientAction } from "~/routes/dashboard.profile";
+import { formatDateForInput } from "~/lib/utils";
 
 interface Props {
   userData?: UserData;
@@ -93,7 +94,9 @@ export function UpdateProfileForm({ userData }: Props) {
             placeholder="Selecciona una fecha"
             required
             type="date"
-            defaultValue={userData?.persona.fecha_nacimiento}
+            defaultValue={formatDateForInput(
+              userData?.persona.fecha_nacimiento
+            )}
           />
           {errors?.fecha_nacimiento && (
             <p className="text-red-500 text-sm">{errors.fecha_nacimiento[0]}</p>
@@ -130,7 +133,7 @@ export function UpdateProfileForm({ userData }: Props) {
           )}
         </div>
 
-        {userData?.rol === "physiotherapist" && (
+        {userData?.rol === Role.PHYSIOTHERAPIST && (
           <div className="grid gap-2">
             <Label htmlFor="cedula">Cédula profesional</Label>
             <Input

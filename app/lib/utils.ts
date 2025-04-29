@@ -32,3 +32,21 @@ export function formatDate(date: string | Date) {
     day: "2-digit",
   });
 }
+
+export function formatDateForInput(
+  date: string | Date | undefined | null
+): string | undefined {
+  if (!date) return undefined;
+
+  try {
+    const dateObj = typeof date === "string" ? new Date(date) : date;
+
+    // Check if the date is valid
+    if (isNaN(dateObj.getTime())) return undefined;
+
+    return dateObj.toISOString().split("T")[0];
+  } catch (error) {
+    console.error("Error formatting date for input:", error);
+    return undefined;
+  }
+}

@@ -18,12 +18,14 @@ import { EmptyState } from "~/components/shared/views/empty-state";
 import { CalendarDays, MessageSquare } from "lucide-react";
 import {
   ClientLoaderFunctionArgs,
-  Link,
   data,
   useLoaderData,
 } from "@remix-run/react";
 import { getActivityById } from "~/services/activity/activity.service";
 import { formatDate } from "~/lib/utils";
+import { useAuthStore } from "~/store/auth.store";
+import { ActivityActions } from "~/components/dashboard/activity/activity-actions";
+import { Role } from "~/types/user/user.type";
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   const activityId = params.id as string;
@@ -42,6 +44,8 @@ export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
 
 export default function DashboardActivityDetailPage() {
   const loaderData = useLoaderData<typeof clientLoader>();
+  const role = useAuthStore((state) => state.userData?.rol);
+
   const { data: activityData } = loaderData;
 
   const handleUploadVideo = async () => {
@@ -59,6 +63,7 @@ export default function DashboardActivityDetailPage() {
       <CardHeader>
         <CardTitle pageTitle>{activityData?.nombre}</CardTitle>
         <CardDescription className="flex flex-col md:flex-row gap-2 items-start md:items-center text-primary">
+          {/* Vencimiento y estado */}
           <div className="inline-flex gap-1">
             <CalendarDays className="h-4 w-4" />{" "}
             <span>Vence el {formatDate(activityData!.fechaLimite)}</span>
@@ -66,14 +71,19 @@ export default function DashboardActivityDetailPage() {
           <Badge variant="outline" capitalize>
             {activityData?.estado.toLocaleLowerCase()}
           </Badge>
-          {activityData && (
-            <ActivityAssignedUserBadge activity={activityData} />
-          )}
+
+          {/* Paciente o fisioterapeuta a cargo de la actividad */}
+          <ActivityAssignedUserBadge activity={activityData!} />
+
           <div className="flex-1 flex justify-end w-full">
-            <ActivityVideoSubmission
-              onUploadVideo={handleUploadVideo}
-              onRecordVideo={handleRecordVideo}
-            />
+            {role === Role.PATIENT ? (
+              <ActivityVideoSubmission
+                onRecordVideo={handleRecordVideo}
+                onUploadVideo={handleUploadVideo}
+              />
+            ) : (
+              <ActivityActions activity={activityData!} />
+            )}
           </div>
         </CardDescription>
       </CardHeader>

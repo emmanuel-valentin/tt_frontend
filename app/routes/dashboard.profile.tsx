@@ -10,6 +10,7 @@ import { useAuthStore, setUserData } from "~/store/auth.store";
 import { updateUserProfile } from "~/services/user/user.service";
 import { updateProfileSchema } from "~/schemas/user/update-profile.schema";
 import { mapProfileFormToUpdatePayload } from "~/mappers/profile-update.mapper";
+import { Role } from "~/types/user/user.type";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();
@@ -38,7 +39,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 export default function DashboardMyProfilePage() {
   const userData = useAuthStore((state) => state.userData);
   const roleLabel =
-    userData?.rol === "physiotherapist" ? "fisioterapeuta" : "paciente";
+    userData?.rol === Role.PHYSIOTHERAPIST ? "fisioterapeuta" : "paciente";
 
   return (
     <Card>

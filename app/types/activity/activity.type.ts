@@ -16,7 +16,7 @@ export type HumanFeedback = {
 export type ExercisesResponse = ApiResponse<Exercise[]>;
 
 export interface Activity {
-  id: number;
+  id: string;
   nombre: string;
   descripcion: string;
   fechaAsignada: Date;

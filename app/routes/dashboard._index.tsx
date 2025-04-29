@@ -14,6 +14,7 @@ import { getPendingPatientLinks } from "~/services/user/physiotherapist/physioth
 import { getActivities } from "~/services/activity/activity.service";
 import { useAuthStore } from "~/store/auth.store";
 import { cn } from "~/lib/utils";
+import { Role } from "~/types/user/user.type";
 
 export async function clientLoader() {
   const responses = await Promise.all([
@@ -54,7 +55,7 @@ export default function DashboardHomePage() {
         <section className="grid grid-cols-12 gap-6">
           <article
             className={cn("col-span-12 lg:col-span-12 space-y-6", {
-              "lg:col-span-7": role === "physiotherapist",
+              "lg:col-span-7": role === Role.PHYSIOTHERAPIST,
             })}
           >
             <h3 className="text-lg">Resumen de actividades</h3>
@@ -72,7 +73,7 @@ export default function DashboardHomePage() {
             )}
           </article>
 
-          {role === "physiotherapist" && (
+          {role === Role.PHYSIOTHERAPIST && (
             <article className="col-span-12 lg:col-span-5 space-y-6">
               <h3 className="text-lg">Solicitudes de vinculación</h3>
               {pendingPatientLinks && pendingPatientLinks.length > 0 ? (
