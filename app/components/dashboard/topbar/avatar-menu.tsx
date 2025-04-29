@@ -10,15 +10,16 @@ import {
 import { UserAvatar } from "~/components/shared/avatar/user-avatar";
 
 import { LogOut, User } from "lucide-react";
+import { useAuthStore } from "~/store/auth.store";
 
 export function AvatarMenu() {
   const navigate = useNavigate();
+  const fotoUrl = useAuthStore((state) => state.userData?.persona.foto_url);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        {/* TODO: Get the user avatar from the current session */}
-        <UserAvatar className="w-10 h-10" />
+        <UserAvatar className="w-10 h-10" src={fotoUrl} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem
@@ -26,7 +27,7 @@ export function AvatarMenu() {
           onClick={() => navigate("/dashboard/profile")}
         >
           <User />
-          Profile
+          Perfil
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
