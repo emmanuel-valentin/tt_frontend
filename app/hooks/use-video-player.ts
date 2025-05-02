@@ -15,16 +15,31 @@ export function useVideoPlayer(
     const video = videoRef.current;
     if (!video) return;
 
-    const setVideoDuration = () => {
-      setDuration(video.duration);
+    const updateDuration = () => {
+      // Only update if duration is a valid, finite number
+      if (video.duration && isFinite(video.duration)) {
+        setDuration(video.duration);
+      } else {
+        // Reset or set to 0 if duration is not valid yet
+        // This prevents displaying Infinity or NaN
+        setDuration(0);
+      }
     };
 
     // Initialize video properties when metadata is loaded
-    video.addEventListener("loadedmetadata", setVideoDuration);
+    video.addEventListener("loadedmetadata", updateDuration);
+    // Update duration if it changes (e.g., for streams or blobs)
+    video.addEventListener("durationchange", updateDuration);
+
+    // Initial check in case the events fired before listeners were attached
+    updateDuration();
 
     return () => {
-      video.removeEventListener("loadedmetadata", setVideoDuration);
+      video.removeEventListener("loadedmetadata", updateDuration);
+      video.removeEventListener("durationchange", updateDuration);
     };
+    // Re-run effect if the video element itself changes (though less common with refs)
+    // Or if the src changes implicitly causing metadata reload
   }, [videoRef]);
 
   const togglePlay = () => {
@@ -90,14 +105,16 @@ export function useVideoPlayer(
     video.currentTime = video.currentTime - seconds;
   };
 
-  // Added formatTime function
   const formatTime = (time: number) => {
+    // Prevent NaN display if time is not a valid number
+    if (isNaN(time) || !isFinite(time)) {
+      return "0:00";
+    }
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  // Added toggleFullscreen function
   const toggleFullscreen = () => {
     if (!containerRef?.current) return;
 

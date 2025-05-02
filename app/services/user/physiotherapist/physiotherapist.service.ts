@@ -1,4 +1,5 @@
 import { fisiogoApi } from "~/api/fisiogoApi";
+import { SendFeedbackPayload } from "~/schemas/user/seed-feedback.schema";
 
 import type { EmptyResponse } from "~/types/shared/empy-response.type";
 import type { LinkResponse } from "~/types/user/user.type";
@@ -122,3 +123,26 @@ export async function rejectPatientLink(vinculacionId: string) {
 
 // TODO: Create another function to delete the link instead of rejecting it
 export const deletePatientLink = rejectPatientLink;
+
+export async function sendActivityFeedback(
+  feedbackPayload: SendFeedbackPayload
+) {
+  try {
+    const { data, status } = await fisiogoApi.post<EmptyResponse>(
+      "/users/physiotherapist/feedback",
+      feedbackPayload
+    );
+
+    if (status !== 200) {
+      throw new Error(data.error?.message);
+    }
+
+    return {
+      serviceData: data.data,
+    };
+  } catch (error) {
+    return {
+      serviceError: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}

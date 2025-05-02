@@ -8,4 +8,4 @@ if (!success) {
   );
 }
 
-export const { VITE_API_URL: apiUrl, VITE_COOKIE_SECRET: cookieSecret } = data;
+export const { VITE_API_URL: apiUrl } = data;

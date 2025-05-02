@@ -1,31 +1,21 @@
-import { Badge } from "~/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
-import { Separator } from "~/components/ui/separator";
-import { VideoPlayer } from "~/components/shared/video/video-player";
-
-import { ActivityComment } from "~/components/dashboard/activity/activity-comment";
-import { ActivityCommentForm } from "~/components/dashboard/activity/activity-comment-form";
-import { ActivityVideoSubmission } from "~/components/dashboard/activity/activity-video-submission";
-import { ActivityAssignedUserBadge } from "~/components/dashboard/activity/activity-assigned-user-badge";
-import { EmptyState } from "~/components/shared/views/empty-state";
-
-import { CalendarDays, MessageSquare } from "lucide-react";
 import {
   ClientLoaderFunctionArgs,
   data,
   useLoaderData,
 } from "@remix-run/react";
 import { getActivityById } from "~/services/activity/activity.service";
-import { formatDate } from "~/lib/utils";
 import { useAuthStore } from "~/store/auth.store";
-import { ActivityActions } from "~/components/dashboard/activity/activity-actions";
-import { Role } from "~/types/user/user.type";
+import { VideoRecorderDialog } from "~/components/dashboard/activity/video-recorder-dialog";
+import { sendFeednackSchema } from "~/schemas/user/seed-feedback.schema";
+import { sendActivityFeedback } from "~/services/user/physiotherapist/physiotherapist.service";
+import { submitActivity } from "~/services/user/patient/patient.service";
+import { submitActivitySchema } from "~/schemas/activity/activity.schema";
+
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+
+import { ActivityDetailHeader } from "~/components/dashboard/activity/activity-detail-header";
+import { ActivityDetailContent } from "~/components/dashboard/activity/activity-detail-content";
+import { useActivityVideo } from "~/hooks/use-activity-video";
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   const activityId = params.id as string;
@@ -42,101 +32,104 @@ export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   };
 }
 
+export async function clientAction({ request }: ClientLoaderFunctionArgs) {
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  if (intent === "comment") {
+    const parsed = sendFeednackSchema.safeParse(Object.fromEntries(formData));
+    if (!parsed.success) {
+      return {
+        validationErrors: parsed.error.flatten(),
+      };
+    }
+    const { serviceError } = await sendActivityFeedback(parsed.data);
+    if (serviceError) {
+      return {
+        serviceError,
+      };
+    }
+  }
+
+  if (intent === "submit-video" || !intent) {
+    const parsed = submitActivitySchema.safeParse(Object.fromEntries(formData));
+
+    if (!parsed.success) {
+      return {
+        serviceError: parsed.error.flatten().fieldErrors,
+      };
+    }
+
+    const { serviceData, serviceError } = await submitActivity(parsed.data);
+    if (serviceError) {
+      return {
+        serviceError,
+      };
+    }
+
+    return {
+      serviceData,
+    };
+  }
+
+  return {
+    serviceError: "Acción no permitida",
+  };
+}
+
 export default function DashboardActivityDetailPage() {
   const loaderData = useLoaderData<typeof clientLoader>();
   const role = useAuthStore((state) => state.userData?.rol);
 
+  const {
+    fileInputRef,
+    submittedVideo,
+    activeTab,
+    isRecordDialogOpen,
+    setActiveTab,
+    setIsRecordDialogOpen,
+    handleUploadVideo,
+    handleFileSelected,
+    handleRecordVideo,
+    handleVideoSubmit,
+  } = useActivityVideo();
+
   const { data: activityData } = loaderData;
 
-  const handleUploadVideo = async () => {
-    // TODO: Select a video from user storage and upload it to submit the assignment
-    console.log("Upload video clicked");
-  };
-
-  const handleRecordVideo = async () => {
-    // TODO: Open a modal to record a video and then upload it to submit the assignment
-    console.log("Record video clicked");
-  };
+  if (!activityData) {
+    return <div>No se pudo cargar la actividad</div>;
+  }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle pageTitle>{activityData?.nombre}</CardTitle>
-        <CardDescription className="flex flex-col md:flex-row gap-2 items-start md:items-center text-primary">
-          {/* Vencimiento y estado */}
-          <div className="inline-flex gap-1">
-            <CalendarDays className="h-4 w-4" />{" "}
-            <span>Vence el {formatDate(activityData!.fechaLimite)}</span>
-          </div>
-          <Badge variant="outline" capitalize>
-            {activityData?.estado.toLocaleLowerCase()}
-          </Badge>
-
-          {/* Paciente o fisioterapeuta a cargo de la actividad */}
-          <ActivityAssignedUserBadge activity={activityData!} />
-
-          <div className="flex-1 flex justify-end w-full">
-            {role === Role.PATIENT ? (
-              <ActivityVideoSubmission
-                onRecordVideo={handleRecordVideo}
-                onUploadVideo={handleUploadVideo}
-              />
-            ) : (
-              <ActivityActions activity={activityData!} />
-            )}
-          </div>
-        </CardDescription>
+        <CardTitle pageTitle>{activityData.nombre}</CardTitle>
+        <ActivityDetailHeader
+          activity={activityData}
+          role={role!}
+          fileInputRef={fileInputRef}
+          submittedVideo={submittedVideo}
+          handleRecordVideo={handleRecordVideo}
+          handleUploadVideo={handleUploadVideo}
+          handleFileSelected={handleFileSelected}
+        />
       </CardHeader>
 
       <CardContent>
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="flex flex-col gap-4 lg:w-2/3">
-            <div>
-              <h3 className="text-xl tracking-tight">Descripción</h3>
-              <Separator className="mb-4" />
-              <p className="text-balance text-gray-700">
-                {activityData?.descripcion ||
-                  "No hay descripción disponible para esta actividad."}
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-xl tracking-tight">Video demostrativo</h3>
-              <Separator className="mb-4" />
-              <VideoPlayer
-                className="md:w-[80%]"
-                src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4 lg:w-1/3">
-            <div>
-              <h3 className="text-xl tracking-tight">Comentarios</h3>
-              <Separator className="mb-4" />
-              <div className="flex flex-col gap-4">
-                {activityData?.feedback && activityData.feedback.length > 0 ? (
-                  activityData.feedback.map((comment) => (
-                    <ActivityComment
-                      key={comment.id}
-                      feedback={comment}
-                      fisioterapeuta={activityData.fisioterapeuta}
-                    />
-                  ))
-                ) : (
-                  <EmptyState
-                    icon={MessageSquare}
-                    title="Aún no hay comentarios"
-                    description="Esta actividad aún no tiene retroalimentación por parte de tu terapeuta."
-                    className="bg-card/50 rounded-lg border border-muted py-6"
-                  />
-                )}
-              </div>
-              <ActivityCommentForm />
-            </div>
-          </div>
-        </div>
+        <ActivityDetailContent
+          activity={activityData}
+          role={role!}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          submittedVideo={submittedVideo}
+        />
       </CardContent>
+
+      <VideoRecorderDialog
+        open={isRecordDialogOpen}
+        onOpenChange={setIsRecordDialogOpen}
+        onVideoSubmit={handleVideoSubmit}
+      />
     </Card>
   );
 }

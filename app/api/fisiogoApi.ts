@@ -4,7 +4,7 @@ import { apiUrl } from "~/config/env.config";
 import { getAuthTokens } from "~/lib/utils";
 
 export const fisiogoApi = axios.create({
-  baseURL: apiUrl,
+  baseURL: `${apiUrl}/api`,
   validateStatus: () => true,
 });
 

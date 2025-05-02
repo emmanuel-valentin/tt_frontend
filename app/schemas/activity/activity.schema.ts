@@ -18,6 +18,26 @@ export const editActivitySchema = z.object({
     .date(),
 });
 
+export const submitActivitySchema = z.object({
+  ejercicioAsignadoID: z.string({ required_error: "El id es requerido" }),
+  video: z
+    .instanceof(File, { message: "Se requiere un archivo de video" })
+    .refine((file) => file.size <= 100 * 1024 * 1024, {
+      message: "El tamaño del archivo no puede exceder 100MB",
+    })
+    .refine(
+      (file) => {
+        return file.type.startsWith("video/");
+      },
+      {
+        message:
+          "Formato de archivo no soportado. Por favor sube un video MP4, WebM o QuickTime.",
+      }
+    ),
+});
+
 export type NewActivityPayload = z.infer<typeof newActivitySchema>;
 
 export type EditActivityPayload = z.infer<typeof editActivitySchema>;
+
+export type SubmitActivityPayload = z.infer<typeof submitActivitySchema>;

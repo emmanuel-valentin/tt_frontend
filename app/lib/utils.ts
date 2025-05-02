@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { apiUrl } from "~/config/env.config";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -49,4 +50,8 @@ export function formatDateForInput(
     console.error("Error formatting date for input:", error);
     return undefined;
   }
+}
+
+export function getVideoAPI(path: string) {
+  return `${apiUrl}/${path}`;
 }
