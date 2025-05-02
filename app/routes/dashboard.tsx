@@ -4,6 +4,7 @@ import { Sidebar } from "~/components/dashboard/sidebar/sidebar";
 import { Topbar } from "~/components/dashboard/topbar/topbar";
 import { Footer } from "~/components/shared/footer/footer";
 import { Loader } from "~/components/shared/loader/loader";
+import { ScrollArea } from "~/components/ui/scroll-area";
 
 import { getAuthTokens } from "~/lib/utils";
 import { refreshAccessToken } from "~/services/auth/auth.service";
@@ -55,16 +56,18 @@ export function HydrateFallback() {
 
 export default function DashboardLayout() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-screen">
       <Topbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex flex-col w-full bg-muted/60 overflow-y-auto">
-          <div className="flex-1 p-4">
-            <Outlet />
-          </div>
-          <Footer />
-        </main>
+        <ScrollArea className="w-full h-full">
+          <main className="flex flex-col w-full min-h-[calc(100vh-64px)] bg-muted/60">
+            <div className="flex-grow p-4">
+              <Outlet />
+            </div>
+            <Footer />
+          </main>
+        </ScrollArea>
       </div>
     </div>
   );
