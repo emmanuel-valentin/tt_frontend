@@ -13,7 +13,7 @@ interface CommentsSectionProps {
 
 export function CommentsSection({ activity, role }: CommentsSectionProps) {
   return (
-    <div className="flex flex-col gap-4 lg:w-1/3">
+    <div className="flex flex-col gap-4">
       <div>
         <h3 className="text-xl tracking-tight">Comentarios</h3>
         <Separator className="mb-4" />

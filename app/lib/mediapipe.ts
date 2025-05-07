@@ -61,11 +61,16 @@ export class PoseDetectionUtil {
   videoRunning: boolean = false;
   lastVideoTime: number = -1;
   animationFrameId: number | null = null;
+  onLandmarks: ((landmarks: NormalizedLandmark[]) => void) | null = null;
 
   /**
    * Initialize the pose detection utility
    */
-  async initialize(video: HTMLVideoElement, canvasElement: HTMLCanvasElement) {
+  async initialize(
+    video: HTMLVideoElement,
+    canvasElement: HTMLCanvasElement,
+    onLandmarks?: (landmarks: NormalizedLandmark[]) => void
+  ) {
     this.video = video;
     this.canvasElement = canvasElement;
     this.canvasCtx = canvasElement.getContext("2d");
@@ -75,6 +80,7 @@ export class PoseDetectionUtil {
     }
 
     this.poseLandmarker = await createPoseLandmarker();
+    this.onLandmarks = onLandmarks ?? null;
     return !!this.poseLandmarker;
   }
 
@@ -267,6 +273,7 @@ export class PoseDetectionUtil {
         );
 
         if (results.landmarks && results.landmarks.length > 0) {
+          if (this.onLandmarks) this.onLandmarks(results.landmarks[0]);
           // Process each pose's landmarks
           for (let i = 0; i < results.landmarks.length; i++) {
             // Create adjusted landmarks for display

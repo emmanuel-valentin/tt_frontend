@@ -31,7 +31,7 @@ export function VideoSection({
       value={activeTab}
       onValueChange={setActiveTab}
     >
-      <TabsList className="grid grid-cols-2">
+      <TabsList className="grid grid-cols-2 max-w-lg mx-auto">
         <TabsTrigger value="demo">Video Demostrativo</TabsTrigger>
         <TabsTrigger value="submission">
           {role === Role.PHYSIOTHERAPIST ? "Vídeo del paciente" : "Tu vídeo"}
@@ -41,13 +41,15 @@ export function VideoSection({
       <TabsContent value="demo">
         <h3 className="text-xl tracking-tight sr-only">Video demostrativo</h3>
         <Separator className="mb-4 sr-only" />
-        <VideoPlayer
-          className="md:w-[80%] mt-4"
-          src={
-            activity?.urlVideo ||
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-          }
-        />
+        <div className="w-full flex flex-col items-center">
+          <VideoPlayer
+            className="md:w-[80%] mt-4"
+            src={
+              activity?.urlVideo ||
+              "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            }
+          />
+        </div>
       </TabsContent>
 
       <TabsContent value="submission">

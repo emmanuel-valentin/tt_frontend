@@ -5,15 +5,27 @@ import { Button } from "~/components/ui/button";
 import { usePoseDetection } from "~/hooks/use-pose-detection";
 import { getVideoAPI } from "~/lib/utils";
 
+import type { ExerciseType } from "~/lib/exercise-analyzer";
+import { useExerciseAnalysis } from "~/hooks/use-exercise-analyzer";
+
+import { FeedbackIndicators } from "./exercise-feedback/feedback-indicators";
+import { FeedbackHistoryManager } from "./exercise-feedback/feedback-history-manager";
+
 interface VideoWithPoseDetectionProps {
   videoSrc: string;
   className?: string;
+  exerciseType?: ExerciseType;
 }
 
 export function VideoWithPoseDetection({
   videoSrc,
   className,
+  exerciseType = "bicep-curl",
 }: VideoWithPoseDetectionProps) {
+  const { feedback, processLandmarks, getAngleLabel } = useExerciseAnalysis({
+    exerciseType,
+  });
+
   const {
     videoRef,
     canvasRef,
@@ -21,58 +33,110 @@ export function VideoWithPoseDetection({
     isLoading,
     poseDetectionEnabled,
     setPoseDetectionEnabled,
-  } = usePoseDetection();
+  } = usePoseDetection({
+    onLandmarksDetected: processLandmarks,
+  });
 
   return (
     <div className={`relative w-full flex flex-col items-center ${className}`}>
-      {/* Video container with constrained width and height */}
-      <div
-        className="relative w-full max-w-2xl mx-auto"
-        style={{ maxHeight: "60vh" }}
-      >
-        {/* Loading overlay */}
-        {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
-            <div className="text-white text-center">
-              <LoaderCircle className="animate-spin h-10 w-10 mx-auto mb-2" />
-              <p>Inicializando detección de pose...</p>
-            </div>
+      {/* Indicadores de feedback en tiempo real */}
+      <FeedbackIndicators
+        feedback={feedback}
+        exerciseType={exerciseType}
+        getAngleLabel={getAngleLabel}
+      />
+
+      {/* Contenedor del video con detección de pose */}
+      <VideoPlayer
+        videoRef={videoRef}
+        canvasRef={canvasRef}
+        videoSrc={videoSrc}
+        isInitialized={isInitialized}
+        isLoading={isLoading}
+        poseDetectionEnabled={poseDetectionEnabled}
+      />
+
+      {/* Controles y visualización del historial */}
+      <div className="w-full mt-2 flex flex-col items-center gap-2">
+        <div className="flex flex-row gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isLoading}
+            onClick={() => setPoseDetectionEnabled((prev) => !prev)}
+          >
+            {poseDetectionEnabled ? "Desactivar" : "Activar"} detección de pose
+          </Button>
+        </div>
+
+        {/* Gestor del historial de feedback */}
+        <FeedbackHistoryManager
+          videoRef={videoRef}
+          feedback={feedback}
+          poseDetectionEnabled={poseDetectionEnabled}
+          isLoading={isLoading}
+          exerciseType={exerciseType}
+        />
+      </div>
+    </div>
+  );
+}
+
+interface VideoPlayerProps {
+  videoRef: React.RefObject<HTMLVideoElement>;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  videoSrc: string;
+  isInitialized: boolean;
+  isLoading: boolean;
+  poseDetectionEnabled: boolean;
+}
+
+/**
+ * Componente que renderiza el reproductor de video con el canvas para detección de pose
+ */
+function VideoPlayer({
+  videoRef,
+  canvasRef,
+  videoSrc,
+  isInitialized,
+  isLoading,
+  poseDetectionEnabled,
+}: VideoPlayerProps) {
+  return (
+    <div
+      className="relative w-full max-w-2xl mx-auto"
+      style={{ maxHeight: "60vh" }}
+    >
+      {/* Overlay de carga */}
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+          <div className="text-white text-center">
+            <LoaderCircle className="animate-spin h-10 w-10 mx-auto mb-2" />
+            <p>Inicializando detección de pose...</p>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Video element for playback - with controls enabled once initialized */}
-        <video
-          ref={videoRef}
-          className="w-full rounded-md object-contain"
-          style={{ maxHeight: "60vh" }}
-          controls={isInitialized}
-          crossOrigin="anonymous"
-          src={videoSrc}
-        />
+      {/* Elemento de video */}
+      <video
+        ref={videoRef}
+        className="w-full rounded-md object-contain"
+        style={{ maxHeight: "60vh" }}
+        controls={isInitialized}
+        crossOrigin="anonymous"
+        src={videoSrc}
+      />
 
-        {/* Canvas overlay for pose landmarks */}
-        <canvas
-          ref={canvasRef}
-          className="absolute top-0 left-0 w-full h-full pointer-events-none z-10 rounded-md"
-          style={{
-            backgroundColor: poseDetectionEnabled
-              ? "rgba(0, 0, 0, 0.1)"
-              : "transparent",
-          }}
-        />
-      </div>
-
-      {/* Controls and status */}
-      <div className="mt-2 flex flex-col items-center gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          disabled={isLoading}
-          onClick={() => setPoseDetectionEnabled((prev) => !prev)}
-        >
-          {poseDetectionEnabled ? "Desactivar" : "Activar"} detección de pose
-        </Button>
-      </div>
+      {/* Canvas overlay para landmarks de pose */}
+      <canvas
+        ref={canvasRef}
+        className="absolute top-0 left-0 w-full h-full pointer-events-none z-10 rounded-md"
+        style={{
+          backgroundColor: poseDetectionEnabled
+            ? "rgba(0, 0, 0, 0.1)"
+            : "transparent",
+        }}
+      />
     </div>
   );
 }

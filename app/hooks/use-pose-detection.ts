@@ -1,9 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import { PoseDetectionUtil } from "~/lib/mediapipe";
+import { NormalizedLandmark } from "@mediapipe/tasks-vision";
+import { isBrowser, PoseDetectionUtil } from "~/lib/mediapipe";
 
 interface UsePoseDetectionOptions {
   enabled?: boolean;
   autoStart?: boolean;
+  onLandmarksDetected?: (landmarks: NormalizedLandmark[]) => void;
 }
 
 interface UsePoseDetectionReturn {
@@ -21,6 +23,7 @@ interface UsePoseDetectionReturn {
 export function usePoseDetection({
   enabled = true,
   autoStart = true,
+  onLandmarksDetected,
 }: UsePoseDetectionOptions = {}): UsePoseDetectionReturn {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -32,6 +35,9 @@ export function usePoseDetection({
 
   // Initialize pose detection
   useEffect(() => {
+    // Skip initialization if already initialized
+    if (!isBrowser || isInitialized) return;
+
     let poseDetection: PoseDetectionUtil | null = null;
 
     const initializePoseDetection = async () => {
@@ -43,9 +49,9 @@ export function usePoseDetection({
       try {
         const initialized = await poseDetection.initialize(
           videoRef.current,
-          canvasRef.current
+          canvasRef.current,
+          onLandmarksDetected
         );
-
         if (initialized) {
           poseDetectionRef.current = poseDetection;
           setIsInitialized(true);
@@ -69,7 +75,7 @@ export function usePoseDetection({
         poseDetection.cleanup();
       }
     };
-  }, []);
+  }, [onLandmarksDetected, isInitialized]);
 
   // Process video when pose detection is toggled
   useEffect(() => {
