@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Role } from "~/types/user/user.type";
 
 export const registerFormSchema = z.object({
   nombre: z.string({ required_error: "El nombre es requerido" }),
@@ -22,7 +23,7 @@ export const registerFormSchema = z.object({
     .min(6, {
       message: "La contraseña debe tener al menos 6 caracteres",
     }),
-  role: z.enum(["patient", "physiotherapist"], {
+  role: z.nativeEnum(Role, {
     required_error: "Debes seleccionar un rol antes de continuar",
   }),
   fotoUrl: z.string().base64().optional(),

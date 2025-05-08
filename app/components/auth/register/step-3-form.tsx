@@ -17,6 +17,7 @@ import {
   clientLoader,
 } from "~/routes/auth.register_.additional-info";
 import { useAvatarPreview } from "~/hooks/use-avatar-preview";
+import { Role } from "~/types/user/user.type";
 
 export function Step3Form() {
   const loaderData = useLoaderData<typeof clientLoader>();
@@ -67,7 +68,7 @@ export function Step3Form() {
         )}
       </div>
 
-      {loaderData.role === "physiotherapist" && (
+      {loaderData.role === Role.PHYSIOTHERAPIST && (
         <div className="grid gap-2">
           <Label htmlFor="cedula">Cédula profesional</Label>
           <Input id="cedula" name="cedula" required type="text" />

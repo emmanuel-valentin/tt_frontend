@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { UserData } from "~/types/user/user.type";
+import { Role, UserData } from "~/types/user/user.type";
 
 interface Props {
   userData: UserData;
@@ -56,7 +56,7 @@ export function UserDetails({ userData }: Props) {
           </p>
         </div>
 
-        {userData.rol === "physiotherapist" && (
+        {userData.rol === Role.PHYSIOTHERAPIST && (
           <div className="grid gap-2">
             <p>
               <span className="font-semibold">Cédula profesional:</span>{" "}

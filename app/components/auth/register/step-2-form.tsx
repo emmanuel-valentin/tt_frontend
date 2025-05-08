@@ -11,6 +11,7 @@ import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 
 import { Stethoscope, User2 } from "lucide-react";
+import { Role } from "~/types/user/user.type";
 
 export function Step2Form() {
   const actionData = useActionData<typeof clientAction>();
@@ -29,7 +30,7 @@ export function Step2Form() {
       >
         <div>
           <RadioGroupItem
-            value="patient"
+            value={Role.PATIENT}
             id="patient"
             className="peer sr-only"
             aria-label="Paciente"
@@ -51,7 +52,7 @@ export function Step2Form() {
         </div>
         <div>
           <RadioGroupItem
-            value="physiotherapist"
+            value={Role.PHYSIOTHERAPIST}
             id="physiotherapist"
             className="peer sr-only"
             aria-label="Fisioterapeuta"

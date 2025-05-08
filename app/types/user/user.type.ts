@@ -1,5 +1,10 @@
 import { ApiResponse } from "../shared/api-response.type";
 
+export enum Role {
+  PATIENT = "patient",
+  PHYSIOTHERAPIST = "physiotherapist",
+}
+
 export interface UserData {
   id: string;
   cedula?: string;
@@ -31,8 +36,6 @@ export interface UpdateUserPayload {
   persona: Omit<Persona, "id">;
   usuario: Omit<Usuario, "id">;
 }
-
-export type Role = "patient" | "physiotherapist";
 
 export type UserResponse = ApiResponse<UserData>;
 

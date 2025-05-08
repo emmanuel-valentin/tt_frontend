@@ -2,6 +2,7 @@ import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { formatDateForInput } from "~/lib/utils";
 import { clientAction, clientLoader } from "~/routes/auth.register";
 
 export function Step1Form() {
@@ -65,7 +66,7 @@ export function Step1Form() {
           placeholder="Selecciona una fecha"
           required
           type="date"
-          defaultValue={loaderData?.fechaNacimiento}
+          defaultValue={formatDateForInput(loaderData?.fechaNacimiento)}
         />
         {errors?.fechaNacimiento && (
           <p className="text-red-500 text-sm">{errors.fechaNacimiento[0]}</p>
