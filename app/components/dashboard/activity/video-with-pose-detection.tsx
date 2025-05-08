@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 
 import { LoaderCircle } from "lucide-react";
-import { Button } from "~/components/ui/button";
+import { useEffect } from "react";
 import { usePoseDetection } from "~/hooks/use-pose-detection";
 import { getVideoAPI } from "~/lib/utils";
 
@@ -32,7 +32,6 @@ export function VideoWithPoseDetection({
     isInitialized,
     isLoading,
     poseDetectionEnabled,
-    setPoseDetectionEnabled,
   } = usePoseDetection({
     onLandmarksDetected: processLandmarks,
   });
@@ -58,18 +57,6 @@ export function VideoWithPoseDetection({
 
       {/* Controles y visualización del historial */}
       <div className="w-full mt-2 flex flex-col items-center gap-2">
-        <div className="flex flex-row gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            disabled={isLoading}
-            onClick={() => setPoseDetectionEnabled((prev) => !prev)}
-          >
-            {poseDetectionEnabled ? "Desactivar" : "Activar"} detección de pose
-          </Button>
-        </div>
-
-        {/* Gestor del historial de feedback */}
         <FeedbackHistoryManager
           videoRef={videoRef}
           feedback={feedback}
@@ -102,6 +89,14 @@ function VideoPlayer({
   isLoading,
   poseDetectionEnabled,
 }: VideoPlayerProps) {
+  useEffect(() => {
+    if (isInitialized && videoRef.current) {
+      videoRef.current.play().catch((error) => {
+        console.error("Error al reproducir el video automáticamente:", error);
+      });
+    }
+  }, [isInitialized, videoRef]);
+
   return (
     <div
       className="relative w-full max-w-2xl mx-auto"
@@ -122,7 +117,7 @@ function VideoPlayer({
         ref={videoRef}
         className="w-full rounded-md object-contain"
         style={{ maxHeight: "60vh" }}
-        controls={isInitialized}
+        controls={false}
         crossOrigin="anonymous"
         src={videoSrc}
       />
