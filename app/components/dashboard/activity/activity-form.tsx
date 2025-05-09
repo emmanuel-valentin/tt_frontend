@@ -64,11 +64,17 @@ export function ActivityForm({
                 <SelectValue placeholder="Selecciona un paciente" />
               </SelectTrigger>
               <SelectContent>
-                {patients?.map((patient: Patient) => (
-                  <SelectItem key={patient.id} value={patient.id.toString()}>
-                    {patient.usuario.first_name} {patient.usuario.last_name}
+                {patients?.length > 0 ? (
+                  patients.map((patient: Patient) => (
+                    <SelectItem key={patient.id} value={patient.id.toString()}>
+                      {patient.usuario.first_name} {patient.usuario.last_name}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="no-patients" disabled>
+                    No hay pacientes disponibles
                   </SelectItem>
-                ))}
+                )}
               </SelectContent>
             </Select>
           </div>
@@ -79,7 +85,7 @@ export function ActivityForm({
               name="ejercicioID"
               required
               onValueChange={onSelectExercise}
-              defaultValue={currentActivity?.id.toString()}
+              defaultValue={currentActivity?.ejercicioId.toString()}
             >
               <SelectTrigger id="ejercicioID">
                 <SelectValue placeholder="Selecciona un ejercicio" />

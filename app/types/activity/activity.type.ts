@@ -1,3 +1,4 @@
+import { ExerciseType } from "~/lib/exercise-analyzer";
 import { ApiResponse } from "../shared/api-response.type";
 
 export type Exercise = {
@@ -26,6 +27,8 @@ export interface Activity {
   paciente: Paciente;
   feedback: HumanFeedback[];
   fisioterapeuta: Fisioterapeuta;
+  ejercicioId: string;
+  tipo: ExerciseType;
 }
 
 export interface Fisioterapeuta {

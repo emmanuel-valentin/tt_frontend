@@ -3,7 +3,6 @@ import {
   redirect,
   useLoaderData,
 } from "@remix-run/react";
-import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -18,7 +17,6 @@ import {
 import { getAcceptedPatients } from "~/services/user/physiotherapist/physiotherapist.service";
 import { newActivitySchema } from "~/schemas/activity/activity.schema";
 import { ActivityForm } from "~/components/dashboard/activity/activity-form";
-import type { Exercise } from "~/types/activity/activity.type";
 
 export async function clientLoader() {
   const responses = await Promise.all([getExercises(), getAcceptedPatients()]);
@@ -62,14 +60,6 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 
 export default function NewActivityPage() {
   const { exercises, patients } = useLoaderData<typeof clientLoader>();
-  const [selectedExercise, setSelectedExercise] = useState<Exercise>();
-
-  const handleExerciseSelect = (exerciseId: string) => {
-    const exercise = exercises?.find(
-      (ex: Exercise) => ex.id.toString() === exerciseId
-    );
-    setSelectedExercise(exercise);
-  };
 
   return (
     <Card>
@@ -83,10 +73,8 @@ export default function NewActivityPage() {
 
       <CardContent>
         <ActivityForm
-          exercises={exercises}
-          patients={patients}
-          selectedExercise={selectedExercise}
-          onExerciseSelect={handleExerciseSelect}
+          exercises={exercises!}
+          patients={patients!}
           mode="create"
         />
       </CardContent>
