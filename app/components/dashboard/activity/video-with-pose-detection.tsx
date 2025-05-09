@@ -140,19 +140,31 @@ interface SubmissionVideoContentProps {
   activityFinished: boolean;
   submittedVideo: { url: string | null; file: File | null };
   patientVideoUrl?: string;
+  exerciseType?: ExerciseType;
 }
 
 export function SubmissionVideoContent({
   activityFinished,
   submittedVideo,
   patientVideoUrl,
+  exerciseType = "bicep-curl",
 }: SubmissionVideoContentProps) {
   if (activityFinished && patientVideoUrl) {
-    return <VideoWithPoseDetection videoSrc={getVideoAPI(patientVideoUrl)} />;
+    return (
+      <VideoWithPoseDetection
+        videoSrc={getVideoAPI(patientVideoUrl)}
+        exerciseType={exerciseType}
+      />
+    );
   }
 
   if (submittedVideo.url) {
-    return <VideoWithPoseDetection videoSrc={submittedVideo.url} />;
+    return (
+      <VideoWithPoseDetection
+        videoSrc={submittedVideo.url}
+        exerciseType={exerciseType}
+      />
+    );
   }
 
   return (
