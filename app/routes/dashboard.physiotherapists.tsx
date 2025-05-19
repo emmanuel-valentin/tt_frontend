@@ -7,6 +7,7 @@ import { AddPhysiotherapistDialog } from "~/components/dashboard/physiotherapist
 import { columns } from "~/components/dashboard/physiotherapists/columns";
 import { DataTable } from "~/components/data-table/data-table";
 import { ErrorAlert } from "~/components/shared/alert/error-alert";
+import { BreadcrumbLink } from "~/components/shared/breadcrumbs/breadcrumb-link";
 import {
   Card,
   CardContent,
@@ -20,6 +21,16 @@ import {
   getPhysiotherapists,
   sendLinkToPhysiotherapist,
 } from "~/services/user/patient/patient.service";
+import { Handle } from "~/types/remix/route-handle.type";
+
+export const handle: Handle = {
+  breadcrumb: () => (
+    <BreadcrumbLink
+      to="/dashboard/physiotherapists"
+      label="Mis fisioterapeutas"
+    />
+  ),
+};
 
 export async function clientLoader() {
   const { serviceData, serviceError } = await getPhysiotherapists();

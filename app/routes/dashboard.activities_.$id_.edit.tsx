@@ -21,6 +21,17 @@ import {
 import { getAcceptedPatients } from "~/services/user/physiotherapist/physiotherapist.service";
 import { editActivitySchema } from "~/schemas/activity/activity.schema";
 import { ActivityForm } from "~/components/dashboard/activity/activity-form";
+import { Handle } from "~/types/remix/route-handle.type";
+import { BreadcrumbLink } from "~/components/shared/breadcrumbs/breadcrumb-link";
+
+export const handle: Handle = {
+  breadcrumb: (matches) => (
+    <BreadcrumbLink
+      to={`/dashboard/activities/${matches.params.id}`}
+      label="Editar actividad"
+    />
+  ),
+};
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   const id = params.id;

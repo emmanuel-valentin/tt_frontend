@@ -10,7 +10,21 @@ import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
 import { getUserProfileById } from "~/services/user/user.service";
-import { Role } from "~/types/user/user.type";
+import { Role, UserData } from "~/types/user/user.type";
+import { Handle } from "~/types/remix/route-handle.type";
+import { BreadcrumbLink } from "~/components/shared/breadcrumbs/breadcrumb-link";
+
+export const handle: Handle = {
+  breadcrumb: (match) => {
+    const user = (match.data as { data: UserData })?.data;
+    return (
+      <BreadcrumbLink
+        to={`/dashboard/profile/${user?.id}`}
+        label={`Perfil de ${user?.usuario.first_name} ${user?.usuario.last_name}`}
+      />
+    );
+  },
+};
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   const id = params.id as string;

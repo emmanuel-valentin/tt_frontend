@@ -23,7 +23,7 @@ export function Step1Form() {
           defaultValue={loaderData?.nombre}
         />
         {errors?.nombre && (
-          <p className="text-red-500 text-sm">{errors.nombre[0]}</p>
+          <p className="text-destructive text-sm">{errors.nombre[0]}</p>
         )}
       </div>
 
@@ -39,7 +39,9 @@ export function Step1Form() {
             defaultValue={loaderData?.apellidoPaterno}
           />
           {errors?.apellidoPaterno && (
-            <p className="text-red-500 text-sm">{errors.apellidoPaterno[0]}</p>
+            <p className="text-destructive text-sm">
+              {errors.apellidoPaterno[0]}
+            </p>
           )}
         </div>
         <div>
@@ -53,7 +55,9 @@ export function Step1Form() {
             defaultValue={loaderData?.apellidoMaterno}
           />
           {errors?.apellidoMaterno && (
-            <p className="text-red-500 text-sm">{errors.apellidoMaterno[0]}</p>
+            <p className="text-destructive text-sm">
+              {errors.apellidoMaterno[0]}
+            </p>
           )}
         </div>
       </div>
@@ -69,7 +73,9 @@ export function Step1Form() {
           defaultValue={formatDateForInput(loaderData?.fechaNacimiento)}
         />
         {errors?.fechaNacimiento && (
-          <p className="text-red-500 text-sm">{errors.fechaNacimiento[0]}</p>
+          <p className="text-destructive text-sm">
+            {errors.fechaNacimiento[0]}
+          </p>
         )}
       </div>
 
@@ -84,7 +90,7 @@ export function Step1Form() {
           defaultValue={loaderData?.email}
         />
         {errors?.email && (
-          <p className="text-red-500 text-sm">{errors.email[0]}</p>
+          <p className="text-destructive text-sm">{errors.email[0]}</p>
         )}
       </div>
 
@@ -99,7 +105,9 @@ export function Step1Form() {
             defaultValue={loaderData?.password}
           />
           {errors?.passwordConfirm && (
-            <p className="text-red-500 text-sm">{errors.passwordConfirm[0]}</p>
+            <p className="text-destructive text-sm">
+              {errors.passwordConfirm[0]}
+            </p>
           )}
         </div>
 
@@ -113,7 +121,9 @@ export function Step1Form() {
             defaultValue={loaderData?.passwordConfirm}
           />
           {errors?.passwordConfirm && (
-            <p className="text-red-500 text-sm">{errors.passwordConfirm[0]}</p>
+            <p className="text-destructive text-sm">
+              {errors.passwordConfirm[0]}
+            </p>
           )}
         </div>
       </div>

@@ -2,7 +2,7 @@ import { Card } from "~/components/ui/card";
 
 export function Footer() {
   return (
-    <Card className="bg-background border-t py-3 px-4 mt-auto mx-4 mb-4">
+    <Card className="bg-background border-t py-3 px-4 mt-auto mb-4">
       <footer className="container mx-auto flex items-center justify-between text-sm text-muted-foreground">
         <div>
           <p>© {new Date().getFullYear()} Fisiogo.</p>

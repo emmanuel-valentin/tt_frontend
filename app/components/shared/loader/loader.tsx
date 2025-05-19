@@ -31,7 +31,9 @@ export function Loader({
       <LoaderCircle
         className={cn("animate-spin text-primary", sizeClasses[size])}
       />
-      {text && <p className="text-center font-medium text-gray-700">{text}</p>}
+      {text && (
+        <p className="text-center font-medium text-foreground/80">{text}</p>
+      )}
     </div>
   );
 }

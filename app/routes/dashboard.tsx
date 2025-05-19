@@ -1,49 +1,65 @@
-import { Outlet, redirect } from "@remix-run/react";
+import { Outlet, redirect, useMatches } from "@remix-run/react";
+import { AppSidebar } from "~/components/dashboard/sidebar/app-sidebar";
+import { Handle, HandleMatch } from "~/types/remix/route-handle.type";
 
-import { Sidebar } from "~/components/dashboard/sidebar/sidebar";
-import { Topbar } from "~/components/dashboard/topbar/topbar";
-import { Footer } from "~/components/shared/footer/footer";
 import { Loader } from "~/components/shared/loader/loader";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "~/components/ui/breadcrumb";
 import { ScrollArea } from "~/components/ui/scroll-area";
+import { Separator } from "~/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "~/components/ui/sidebar";
 
-import { getAuthTokens } from "~/lib/utils";
+import { getAuthTokens, removeAuthTokens } from "~/lib/utils";
 import { refreshAccessToken } from "~/services/auth/auth.service";
 import { getUserData } from "~/services/user/user.service";
 import { setUserData } from "~/store/auth.store";
+import { BreadcrumbLink as CustomBreadcrumbLink } from "~/components/shared/breadcrumbs/breadcrumb-link";
+
+export const handle: Handle = {
+  breadcrumb: () => <CustomBreadcrumbLink to="/dashboard" label="Fisiogo" />,
+};
 
 export async function clientLoader() {
-  const { refreshToken } = getAuthTokens(); // Only need refresh token initially
+  const { refreshToken } = getAuthTokens();
 
   if (!refreshToken) {
     return redirect("/auth/login");
   }
 
-  const refreshResponse = await refreshAccessToken(refreshToken);
+  try {
+    const refreshResponse = await refreshAccessToken(refreshToken);
+    if (
+      refreshResponse.serviceError ||
+      !refreshResponse.serviceData?.access_token
+    ) {
+      throw new Error("Failed to refresh token");
+    }
 
-  if (
-    refreshResponse.serviceError ||
-    !refreshResponse.serviceData?.access_token
-  ) {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    localStorage.setItem(
+      "access_token",
+      refreshResponse.serviceData.access_token
+    );
+
+    const userResponse = await getUserData();
+    if (userResponse.serviceError || !userResponse.serviceData) {
+      throw new Error("Failed to fetch user data");
+    }
+
+    setUserData(userResponse.serviceData);
+    return null;
+  } catch (error) {
+    removeAuthTokens();
     return redirect("/auth/login");
   }
-
-  const newAccessToken = refreshResponse.serviceData.access_token;
-  localStorage.setItem("access_token", newAccessToken);
-
-  const userResponse = await getUserData();
-
-  if (userResponse.serviceError || !userResponse.serviceData) {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    return redirect("/auth/login");
-  }
-
-  const userData = userResponse.serviceData;
-  setUserData(userData);
-
-  return null;
 }
 
 export function HydrateFallback() {
@@ -55,20 +71,38 @@ export function HydrateFallback() {
 }
 
 export default function DashboardLayout() {
+  const matches = useMatches() as HandleMatch[];
+
   return (
-    <div className="flex flex-col h-screen">
-      <Topbar />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <ScrollArea className="w-full h-full">
-          <main className="flex flex-col w-full min-h-[calc(100vh-64px)] bg-muted/60">
-            <div className="flex-grow p-4">
-              <Outlet />
+    <ScrollArea className="h-dvh">
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b">
+            <div className="flex items-center gap-2 px-4">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 h-4" />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  {matches
+                    .filter((match) => match.handle && match.handle.breadcrumb)
+                    .map((match, index, array) => (
+                      <BreadcrumbItem key={match.id}>
+                        <BreadcrumbLink asChild>
+                          {match.handle.breadcrumb(match)}
+                        </BreadcrumbLink>
+                        {index < array.length - 1 && <BreadcrumbSeparator />}
+                      </BreadcrumbItem>
+                    ))}
+                </BreadcrumbList>
+              </Breadcrumb>
             </div>
-            <Footer />
-          </main>
-        </ScrollArea>
-      </div>
-    </div>
+          </header>
+          <div className="flex flex-col p-2 md:p-6">
+            <Outlet />
+          </div>
+        </SidebarInset>
+      </SidebarProvider>
+    </ScrollArea>
   );
 }

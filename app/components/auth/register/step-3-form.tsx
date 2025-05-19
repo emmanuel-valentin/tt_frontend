@@ -64,7 +64,7 @@ export function Step3Form() {
           defaultValue={loaderData.telefono}
         />
         {errors?.telefono && (
-          <p className="text-red-500 text-sm">{errors.telefono[0]}</p>
+          <p className="text-destructive text-sm">{errors.telefono[0]}</p>
         )}
       </div>
 
@@ -73,7 +73,7 @@ export function Step3Form() {
           <Label htmlFor="cedula">Cédula profesional</Label>
           <Input id="cedula" name="cedula" required type="text" />
           {errors?.cedula && (
-            <p className="text-red-500 text-sm">{errors.cedula[0]}</p>
+            <p className="text-destructive text-sm">{errors.cedula[0]}</p>
           )}
         </div>
       )}

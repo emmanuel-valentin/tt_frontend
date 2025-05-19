@@ -41,7 +41,7 @@ export function UpdateProfileForm({ userData }: Props) {
             defaultValue={firstName}
           />
           {errors?.nombre && (
-            <p className="text-red-500 text-sm">{errors.nombre[0]}</p>
+            <p className="text-destructive text-sm">{errors.nombre[0]}</p>
           )}
         </div>
 
@@ -56,7 +56,7 @@ export function UpdateProfileForm({ userData }: Props) {
             defaultValue={apellidoPat}
           />
           {errors?.apellido_pat && (
-            <p className="text-red-500 text-sm">{errors.apellido_pat[0]}</p>
+            <p className="text-destructive text-sm">{errors.apellido_pat[0]}</p>
           )}
         </div>
 
@@ -71,7 +71,7 @@ export function UpdateProfileForm({ userData }: Props) {
             defaultValue={apellidoMat}
           />
           {errors?.apellido_mat && (
-            <p className="text-red-500 text-sm">{errors.apellido_mat[0]}</p>
+            <p className="text-destructive text-sm">{errors.apellido_mat[0]}</p>
           )}
         </div>
 
@@ -99,7 +99,9 @@ export function UpdateProfileForm({ userData }: Props) {
             )}
           />
           {errors?.fecha_nacimiento && (
-            <p className="text-red-500 text-sm">{errors.fecha_nacimiento[0]}</p>
+            <p className="text-destructive text-sm">
+              {errors.fecha_nacimiento[0]}
+            </p>
           )}
         </div>
 
@@ -114,7 +116,7 @@ export function UpdateProfileForm({ userData }: Props) {
             defaultValue={userData?.usuario.email}
           />
           {errors?.email && (
-            <p className="text-red-500 text-sm">{errors.email[0]}</p>
+            <p className="text-destructive text-sm">{errors.email[0]}</p>
           )}
         </div>
 
@@ -129,7 +131,7 @@ export function UpdateProfileForm({ userData }: Props) {
             defaultValue={userData?.persona.telefono}
           />
           {errors?.telefono && (
-            <p className="text-red-500 text-sm">{errors.telefono[0]}</p>
+            <p className="text-destructive text-sm">{errors.telefono[0]}</p>
           )}
         </div>
 
@@ -144,7 +146,7 @@ export function UpdateProfileForm({ userData }: Props) {
               defaultValue={userData.cedula}
             />
             {errors?.cedula && (
-              <p className="text-red-500 text-sm">{errors.cedula[0]}</p>
+              <p className="text-destructive text-sm">{errors.cedula[0]}</p>
             )}
           </div>
         )}

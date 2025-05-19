@@ -14,10 +14,10 @@ export function DataTableToolbar<TData>({
   setGlobalFilter,
 }: DataTableToolbarProps<TData>) {
   return (
-    <div className="flex items-center justify-between gap-2">
-      <div className="flex flex-1 items-center gap-2">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+      <div className="flex w-full sm:w-auto flex-1 items-center gap-2">
         <Input
-          className="max-w-[80ch]"
+          className="w-full"
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
           placeholder="Buscar..."

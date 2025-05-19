@@ -37,13 +37,13 @@ export function Step2Form() {
           />
           <Label
             htmlFor="patient"
-            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent text-gray-700 p-4 hover:bg-accent peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary peer-data-[state=checked]:text-primary"
+            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent text-foreground/80 p-4 hover:bg-accent peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary peer-data-[state=checked]:text-primary"
           >
             <User2 className="w-20 h-20" />
             <p className="text-xl peer-data-[state=checked]:text-primary mb-6">
               Soy un paciente
             </p>
-            <p className="text-sm max-w-prose text-gray-700">
+            <p className="text-sm max-w-prose text-foreground/80">
               Como fisioterapeuta podrás vincularte con pacientes, asignar,
               revisar y proporcionar retroalimentación a los ejercicios
               realizados con tu pacientes.
@@ -59,13 +59,13 @@ export function Step2Form() {
           />
           <Label
             htmlFor="physiotherapist"
-            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent text-gray-700 p-4 hover:bg-accent peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary peer-data-[state=checked]:text-primary"
+            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent text-foreground/80 p-4 hover:bg-accent peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary peer-data-[state=checked]:text-primary"
           >
             <Stethoscope className="w-20 h-20" />
             <p className="text-xl peer-data-[state=checked]:text-primary mb-6">
               Soy un fisioterapeuta
             </p>
-            <p className="text-sm max-w-prose text-gray-700">
+            <p className="text-sm max-w-prose text-foreground/80">
               Como paciente, tendrás que vincularte a un fisioterapeuta para que
               sea posible asignarte y realizar ejercicios.
             </p>

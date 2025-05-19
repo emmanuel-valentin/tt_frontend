@@ -31,7 +31,7 @@ export function ActivityCard({ activity }: Props) {
             to={`/dashboard/profile/${activity.paciente.persona_id}`}
           >
             <UserAvatar className="w-6 h-6" src={activity.paciente.fotoUrl} />
-            <span className="text-gray-500">
+            <span className="text-foreground">
               {activity.paciente.nombre} {activity.paciente.apellidoPat}{" "}
               {activity.paciente.apellidoMat}
             </span>
@@ -47,7 +47,7 @@ export function ActivityCard({ activity }: Props) {
       <CardContent>
         <div className="flex flex-col max-w-prose">
           <h3 className="font-medium">{activity.nombre}</h3>
-          <p className="text-sm text-balance line-clamp-1 text-gray-600">
+          <p className="text-sm text-balance line-clamp-1 text-foreground/80">
             {activity.descripcion}
           </p>
         </div>

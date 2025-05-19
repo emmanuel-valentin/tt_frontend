@@ -50,7 +50,7 @@ export function PatientRequestCard({ link }: Props) {
         <Button asChild className="justify-start p-0" variant="link">
           <Link to={`/dashboard/profile/${link.persona.id}`}>
             <UserAvatar src={link.persona.foto_url} className="w-12 h-12" />
-            <p className="text-gray-700 text-base line-clamp-1">
+            <p className="text-foreground/80 text-base line-clamp-1">
               {link.usuario.first_name} {link.usuario.last_name}
             </p>
           </Link>

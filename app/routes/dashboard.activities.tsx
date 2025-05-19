@@ -7,6 +7,14 @@ import { EmptyState } from "~/components/shared/views/empty-state";
 import { Activity, Plus } from "lucide-react";
 import { useAuthStore } from "~/store/auth.store";
 import { Role } from "~/types/user/user.type";
+import { Handle } from "~/types/remix/route-handle.type";
+import { BreadcrumbLink } from "~/components/shared/breadcrumbs/breadcrumb-link";
+
+export const handle: Handle = {
+  breadcrumb: () => (
+    <BreadcrumbLink to="/dashboard/activities" label="Mis actividades" />
+  ),
+};
 
 export async function clientLoader() {
   const { serviceData, serviceError } = await getActivities();
