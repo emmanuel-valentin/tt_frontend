@@ -17,6 +17,8 @@ import {
 import { getAcceptedPatients } from "~/services/user/physiotherapist/physiotherapist.service";
 import { newActivitySchema } from "~/schemas/activity/activity.schema";
 import { ActivityForm } from "~/components/dashboard/activity/activity-form";
+import { Handle } from "~/types/remix/route-handle.type";
+import { BreadcrumbLink } from "~/components/shared/breadcrumbs/breadcrumb-link";
 
 export async function clientLoader() {
   const responses = await Promise.all([getExercises(), getAcceptedPatients()]);
@@ -81,3 +83,9 @@ export default function NewActivityPage() {
     </Card>
   );
 }
+
+export const handle: Handle = {
+  breadcrumb: () => (
+    <BreadcrumbLink to="/dashboard/activities/new" label="Nueva actividad" />
+  ),
+};

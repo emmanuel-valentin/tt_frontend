@@ -1,13 +1,16 @@
-import { Toaster as Sonner } from "sonner"
+import { Toaster as Sonner } from "sonner";
 
-import "node_modules/sonner/dist/styles.css"
+import "node_modules/sonner/dist/styles.css";
+import { Theme, useTheme } from "remix-themes";
 
-type ToasterProps = React.ComponentProps<typeof Sonner>
+type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
+  const [theme] = useTheme();
+
   return (
     <Sonner
-      theme="light"
+      theme={(theme as Theme) ?? "system"}
       className="toaster group"
       toastOptions={{
         classNames: {
@@ -22,7 +25,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       {...props}
     />
-  )
-}
+  );
+};
 
-export { Toaster }
+export { Toaster };

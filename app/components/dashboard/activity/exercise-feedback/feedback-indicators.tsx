@@ -51,7 +51,7 @@ interface FeedbackIndicatorProps {
  */
 function FeedbackIndicator({ label, value, bgColor }: FeedbackIndicatorProps) {
   return (
-    <div className={`p-2 ${bgColor} rounded text-center`}>
+    <div className={`p-2 ${bgColor} rounded text-center text-black`}>
       <div className="text-xs">{label}</div>
       <div className="text-xl font-bold">{value}</div>
     </div>

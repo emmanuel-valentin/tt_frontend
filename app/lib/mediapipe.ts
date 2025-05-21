@@ -19,6 +19,9 @@ import {
 // This is a client-side only file
 export const isBrowser = typeof window !== "undefined";
 
+const internalWasmUrl =
+  "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm";
+
 /**
  * Create a pose landmarker instance
  * @returns PoseLandmarker instance
@@ -26,9 +29,7 @@ export const isBrowser = typeof window !== "undefined";
 export const createPoseLandmarker = async () => {
   if (!isBrowser) return null;
 
-  const vision = await FilesetResolver.forVisionTasks(
-    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
-  );
+  const vision = await FilesetResolver.forVisionTasks(internalWasmUrl);
 
   return await PoseLandmarker.createFromOptions(vision, {
     baseOptions: {

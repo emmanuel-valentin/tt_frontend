@@ -81,7 +81,7 @@ export function PatientsDataTableActions({
         )}
 
         {estatus === "VINCULADO" && (
-          <DropdownMenuItem className="text-red-500" onClick={handleDelete}>
+          <DropdownMenuItem className="text-destructive" onClick={handleDelete}>
             <Trash className="h-4 w-4" />
             Desvincular paciente
           </DropdownMenuItem>

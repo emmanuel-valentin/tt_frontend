@@ -1,4 +1,5 @@
 import { ClientActionFunctionArgs } from "@remix-run/react";
+import { Handle } from "~/types/remix/route-handle.type";
 
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -11,6 +12,13 @@ import { updateUserProfile } from "~/services/user/user.service";
 import { updateProfileSchema } from "~/schemas/user/update-profile.schema";
 import { mapProfileFormToUpdatePayload } from "~/mappers/profile-update.mapper";
 import { Role } from "~/types/user/user.type";
+import { BreadcrumbLink } from "~/components/shared/breadcrumbs/breadcrumb-link";
+
+export const handle: Handle = {
+  breadcrumb: () => (
+    <BreadcrumbLink to="/dashboard/profile" label="Mi perfil" />
+  ),
+};
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const formData = await request.formData();

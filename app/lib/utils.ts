@@ -1,6 +1,9 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { apiUrl } from "~/config/env.config";
+import { refreshAccessToken } from "~/services/auth/auth.service";
+import { getUserData } from "~/services/user/user.service";
+import { setUserData } from "~/store/auth.store";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -54,4 +57,36 @@ export function formatDateForInput(
 
 export function getVideoAPI(path: string) {
   return `${apiUrl}/${path}`;
+}
+
+export async function refreshAuthSession() {
+  const { refreshToken } = getAuthTokens();
+
+  if (!refreshToken) {
+    removeAuthTokens();
+    return { error: "No refresh token found" };
+  }
+
+  const refreshResponse = await refreshAccessToken(refreshToken);
+
+  if (
+    refreshResponse.serviceError ||
+    !refreshResponse.serviceData?.access_token
+  ) {
+    removeAuthTokens();
+    return { error: "Failed to refresh token" };
+  }
+
+  const newAccessToken = refreshResponse.serviceData.access_token;
+  localStorage.setItem("access_token", newAccessToken);
+
+  const userResponse = await getUserData();
+
+  if (userResponse.serviceError || !userResponse.serviceData) {
+    removeAuthTokens();
+    return { error: "Failed to fetch user data" };
+  }
+
+  setUserData(userResponse.serviceData);
+  return { success: true };
 }

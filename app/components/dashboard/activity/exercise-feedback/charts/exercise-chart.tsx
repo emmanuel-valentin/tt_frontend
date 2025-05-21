@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useMemo } from "react";
 import { Line, LineChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
@@ -49,7 +49,7 @@ const chartConfig = {
  */
 export function ExerciseChart({ data, exerciseType }: ExerciseChartProps) {
   // Preparar los datos para la visualización
-  const chartData = React.useMemo(() => {
+  const chartData = useMemo(() => {
     return data.map((entry) => ({
       timestamp: (entry.timestamp / 1000).toFixed(1), // Convertir a segundos
       angle: entry.angle,
@@ -59,7 +59,7 @@ export function ExerciseChart({ data, exerciseType }: ExerciseChartProps) {
   }, [data]);
 
   // Calcular valores máximos para mostrar en el encabezado
-  const maxValues = React.useMemo(() => {
+  const maxValues = useMemo(() => {
     if (data.length === 0) return { angle: 0, reps: 0, correctReps: 0 };
 
     return {
@@ -70,7 +70,7 @@ export function ExerciseChart({ data, exerciseType }: ExerciseChartProps) {
   }, [data]);
 
   // Título personalizado según el tipo de ejercicio
-  const exerciseTitle = React.useMemo(() => {
+  const exerciseTitle = useMemo(() => {
     switch (exerciseType) {
       case "bicep-curl":
         return "Curl de Bíceps";
@@ -82,7 +82,7 @@ export function ExerciseChart({ data, exerciseType }: ExerciseChartProps) {
   }, [exerciseType]);
 
   // Filtrar solo las métricas de repeticiones para mostrar en el encabezado
-  const headerMetrics = React.useMemo(() => {
+  const headerMetrics = useMemo(() => {
     return (Object.keys(chartConfig) as Array<keyof typeof chartConfig>).filter(
       (key) => key !== "angle"
     );
@@ -175,6 +175,15 @@ export function ExerciseChart({ data, exerciseType }: ExerciseChartProps) {
               stroke={`var(--color-angle)`}
               activeDot={{ r: 8 }}
               name="Ángulo"
+              dot={false}
+            />
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="correctReps"
+              stroke={`var(--color-correctReps)`}
+              activeDot={{ r: 8 }}
+              name="Rep. Correctas"
               dot={false}
             />
           </LineChart>

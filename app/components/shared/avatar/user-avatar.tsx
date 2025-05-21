@@ -8,9 +8,9 @@ interface Props {
 
 export function UserAvatar({ className, src }: Props) {
   return (
-    <Avatar className={cn("w-10 h-10", className)}>
+    <Avatar className={cn("size-8 rounded-full", className)}>
       <AvatarImage src={src ?? undefined} />
-      <AvatarFallback>
+      <AvatarFallback className="rounded-lg">
         <img src="/user-avatar.svg" alt="Foto de perfil por defecto" />
       </AvatarFallback>
     </Avatar>

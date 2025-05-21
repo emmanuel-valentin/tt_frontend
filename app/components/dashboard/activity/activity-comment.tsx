@@ -25,7 +25,7 @@ export function ActivityComment({ feedback, fisioterapeuta }: Props) {
   return (
     <div className="flex items-start gap-2 max-w-screen-sm">
       <UserAvatar className="size-8" />
-      <div className="px-4 rounded-xl bg-blue-50">
+      <div className="px-4 rounded-xl bg-primary/10">
         <div>
           <Button className="p-0 m-0" variant="link">
             <Link to={`/dashboard/profile/${fisioterapeuta.persona_id}`}>
@@ -35,7 +35,9 @@ export function ActivityComment({ feedback, fisioterapeuta }: Props) {
           </Button>
         </div>
         <div className="pb-2">
-          <p className={`text-gray-700 ${!expanded ? "line-clamp-3" : ""}`}>
+          <p
+            className={`text-foreground/80 ${!expanded ? "line-clamp-3" : ""}`}
+          >
             {feedback.feedback}
           </p>
           {mightBeTruncated && (

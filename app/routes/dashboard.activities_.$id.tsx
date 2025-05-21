@@ -10,12 +10,15 @@ import { sendFeednackSchema } from "~/schemas/user/seed-feedback.schema";
 import { sendActivityFeedback } from "~/services/user/physiotherapist/physiotherapist.service";
 import { submitActivity } from "~/services/user/patient/patient.service";
 import { submitActivitySchema } from "~/schemas/activity/activity.schema";
+import { Handle } from "~/types/remix/route-handle.type";
+import { Activity } from "~/types/activity/activity.type";
 
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
 import { ActivityDetailHeader } from "~/components/dashboard/activity/activity-detail-header";
 import { ActivityDetailContent } from "~/components/dashboard/activity/activity-detail-content";
 import { useActivityVideo } from "~/hooks/use-activity-video";
+import { BreadcrumbLink } from "~/components/shared/breadcrumbs/breadcrumb-link";
 
 export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
   const activityId = params.id as string;
@@ -133,3 +136,15 @@ export default function DashboardActivityDetailPage() {
     </Card>
   );
 }
+
+export const handle: Handle = {
+  breadcrumb: (match) => {
+    const activity = (match.data as { data: Activity })?.data;
+    return (
+      <BreadcrumbLink
+        to={`/dashboard/activities/${activity?.id}`}
+        label={`Actividad ${activity?.id}: ${activity?.nombre}`}
+      />
+    );
+  },
+};
