@@ -15,6 +15,18 @@ export interface ExerciseDetector {
 
 export type ExerciseType = "bicep-curl" | "squat";
 
+// Centralized angle thresholds for exercises
+export const EXERCISE_ANGLE_THRESHOLDS = {
+  "bicep-curl": {
+    downThreshold: 160, // Angle to consider arm extended (stage "down")
+    upThreshold: 30, // Angle to consider arm curled (stage "up")
+  },
+  squat: {
+    upThreshold: 160, // Angle to consider standing straight (stage "up")
+    downThreshold: 90, // Angle to consider squat position (stage "down")
+  },
+} as const;
+
 function calculateAngle(
   a: [number, number],
   b: [number, number],
@@ -49,10 +61,13 @@ export class BicepCurlDetector implements ExerciseDetector {
     }
     const angle = calculateAngle(shoulder, elbow, wrist);
     this.angle = Math.round(angle * 100) / 100;
-    if (angle > 160) {
+
+    const thresholds = EXERCISE_ANGLE_THRESHOLDS["bicep-curl"];
+
+    if (angle > thresholds.downThreshold) {
       this.stage = "down";
     }
-    if (angle < 30 && this.stage === "down") {
+    if (angle < thresholds.upThreshold && this.stage === "down") {
       this.stage = "up";
       this.reps += 1;
       this.correctReps += 1;
@@ -86,10 +101,13 @@ export class SquatDetector implements ExerciseDetector {
     const ankle = [landmarks[27].x, landmarks[27].y] as [number, number];
     const angle = calculateAngle(hip, knee, ankle);
     this.angle = Math.round(angle * 100) / 100;
-    if (angle > 160) {
+
+    const thresholds = EXERCISE_ANGLE_THRESHOLDS.squat;
+
+    if (angle > thresholds.upThreshold) {
       this.stage = "up";
     }
-    if (angle < 90 && this.stage === "up") {
+    if (angle < thresholds.downThreshold && this.stage === "up") {
       this.stage = "down";
       this.reps += 1;
       this.correctReps += 1;
