@@ -15,7 +15,6 @@ interface UsePoseDetectionReturn {
   isInitialized: boolean;
   isLoading: boolean;
   poseDetectionEnabled: boolean;
-  poseDetectionRef: React.RefObject<PoseDetectionUtil>;
   setPoseDetectionEnabled: (
     enabled: boolean | ((prev: boolean) => boolean)
   ) => void;
@@ -34,10 +33,6 @@ export function usePoseDetection({
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Track if onLandmarksDetected callback is being throttled
-  const lastCallbackTimeRef = useRef<number>(0);
-  const MIN_CALLBACK_INTERVAL = 50; // ms (20 FPS max for processing)
-
   // Initialize pose detection
   useEffect(() => {
     // Skip initialization if already initialized
@@ -52,21 +47,10 @@ export function usePoseDetection({
       poseDetection = new PoseDetectionUtil();
 
       try {
-        // Wrap the onLandmarksDetected callback to prevent excessive calls
-        const throttledCallback = onLandmarksDetected
-          ? (landmarks: NormalizedLandmark[]) => {
-              const now = performance.now();
-              if (now - lastCallbackTimeRef.current > MIN_CALLBACK_INTERVAL) {
-                lastCallbackTimeRef.current = now;
-                onLandmarksDetected(landmarks);
-              }
-            }
-          : undefined;
-
         const initialized = await poseDetection.initialize(
           videoRef.current,
           canvasRef.current,
-          throttledCallback
+          onLandmarksDetected
         );
         if (initialized) {
           poseDetectionRef.current = poseDetection;
@@ -149,7 +133,6 @@ export function usePoseDetection({
     isInitialized,
     isLoading,
     poseDetectionEnabled,
-    poseDetectionRef,
     setPoseDetectionEnabled,
   };
 }
