@@ -8,7 +8,7 @@ import {
 
 type State = {
   registerForm: Partial<{
-    step1: RegisterFormStep1;
+    step1: RegisterFormStep1 & { acceptTerms?: string };
     step2: RegisterFormStep2;
     step3: RegisterFormStep3;
   }>;

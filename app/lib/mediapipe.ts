@@ -63,7 +63,6 @@ export class PoseDetectionUtil {
   lastVideoTime: number = -1;
   animationFrameId: number | null = null;
   onLandmarks: ((landmarks: NormalizedLandmark[]) => void) | null = null;
-  exerciseConnectors: { pairs: number[][]; color: string }[] = [];
 
   /**
    * Initialize the pose detection utility
@@ -228,73 +227,6 @@ export class PoseDetectionUtil {
   }
 
   /**
-   * Set custom exercise connectors to highlight
-   * @param exerciseConnectors Array of connector configurations with joint pairs and colors
-   */
-  setExerciseConnectors(
-    exerciseConnectors: { pairs: number[][]; color: string }[]
-  ) {
-    this.exerciseConnectors = exerciseConnectors;
-  }
-
-  /**
-   * Draw pose landmarks with custom exercise highlighting
-   */
-  drawPoseLandmarks(landmarks: NormalizedLandmark[]) {
-    if (!this.drawingUtils || !this.canvasCtx) return;
-
-    // Draw all landmarks with default styling
-    this.drawingUtils.drawLandmarks(landmarks, {
-      radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
-    });
-
-    // Draw standard connections
-    this.drawingUtils.drawConnectors(
-      landmarks,
-      PoseLandmarker.POSE_CONNECTIONS
-    );
-
-    // Draw exercise-specific colored connections
-    if (this.exerciseConnectors.length > 0) {
-      for (const connector of this.exerciseConnectors) {
-        // Save current context state
-        this.canvasCtx.save();
-
-        // Set custom color and line width for exercise connectors
-        this.canvasCtx.strokeStyle = connector.color;
-        this.canvasCtx.lineWidth = 4; // Make exercise connectors thicker
-
-        // Draw each pair as a line
-        for (const pair of connector.pairs) {
-          if (pair.length === 2) {
-            const startIndex = pair[0];
-            const endIndex = pair[1];
-
-            if (landmarks[startIndex] && landmarks[endIndex]) {
-              const startLandmark = landmarks[startIndex];
-              const endLandmark = landmarks[endIndex];
-
-              this.canvasCtx.beginPath();
-              this.canvasCtx.moveTo(
-                startLandmark.x * this.canvasElement!.width,
-                startLandmark.y * this.canvasElement!.height
-              );
-              this.canvasCtx.lineTo(
-                endLandmark.x * this.canvasElement!.width,
-                endLandmark.y * this.canvasElement!.height
-              );
-              this.canvasCtx.stroke();
-            }
-          }
-        }
-
-        // Restore context state
-        this.canvasCtx.restore();
-      }
-    }
-  }
-
-  /**
    * Predict poses from uploaded video
    */
   async predictVideo() {
@@ -350,8 +282,14 @@ export class PoseDetectionUtil {
               results.landmarks[i]
             );
 
-            // Use the custom drawing method instead of individual calls
-            this.drawPoseLandmarks(adjustedLandmarks);
+            this.drawingUtils.drawLandmarks(adjustedLandmarks, {
+              radius: (data) =>
+                DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
+            });
+            this.drawingUtils.drawConnectors(
+              adjustedLandmarks,
+              PoseLandmarker.POSE_CONNECTIONS
+            );
           }
         }
       } catch (error) {
@@ -413,8 +351,14 @@ export class PoseDetectionUtil {
               results.landmarks[i]
             );
 
-            // Use the custom drawing method
-            this.drawPoseLandmarks(adjustedLandmarks);
+            this.drawingUtils.drawLandmarks(adjustedLandmarks, {
+              radius: (data) =>
+                DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
+            });
+            this.drawingUtils.drawConnectors(
+              adjustedLandmarks,
+              PoseLandmarker.POSE_CONNECTIONS
+            );
           }
         }
       } catch (error) {
@@ -474,8 +418,13 @@ export class PoseDetectionUtil {
             results.landmarks[i]
           );
 
-          // Use the custom drawing method
-          this.drawPoseLandmarks(adjustedLandmarks);
+          this.drawingUtils.drawLandmarks(adjustedLandmarks, {
+            radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
+          });
+          this.drawingUtils.drawConnectors(
+            adjustedLandmarks,
+            PoseLandmarker.POSE_CONNECTIONS
+          );
         }
       }
 

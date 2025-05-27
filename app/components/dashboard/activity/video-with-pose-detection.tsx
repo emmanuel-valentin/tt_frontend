@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 
 import { LoaderCircle } from "lucide-react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect } from "react";
 import { usePoseDetection } from "~/hooks/use-pose-detection";
 import { getVideoAPI } from "~/lib/utils";
-import { NormalizedLandmark } from "@mediapipe/tasks-vision";
 
 import type { ExerciseType } from "~/lib/exercise-analyzer";
 import { useExerciseAnalysis } from "~/hooks/use-exercise-analyzer";
@@ -23,51 +22,19 @@ export function VideoWithPoseDetection({
   className,
   exerciseType = "bicep-curl",
 }: VideoWithPoseDetectionProps) {
-  const [updateCount, setUpdateCount] = useState(0); // Para forzar actualizaciones
+  const { feedback, processLandmarks, getAngleLabel } = useExerciseAnalysis({
+    exerciseType,
+  });
 
-  // Obtener funcionalidad de análisis de ejercicios
-  const { feedback, processLandmarks, getAngleLabel, exerciseConnectors } =
-    useExerciseAnalysis({
-      exerciseType,
-    });
-
-  // Callback memorizado para procesar landmarks
-  const handleLandmarksDetected = useCallback(
-    (landmarks: NormalizedLandmark[]) => {
-      processLandmarks(landmarks);
-      // Incrementar contador cada 5 detecciones para forzar re-renderizados periódicos
-      setUpdateCount((prev) => ((prev + 1) % 5 === 0 ? prev + 1 : prev));
-    },
-    [processLandmarks]
-  );
-
-  // Obtener funcionalidad de detección de pose
   const {
     videoRef,
     canvasRef,
     isInitialized,
     isLoading,
     poseDetectionEnabled,
-    poseDetectionRef,
   } = usePoseDetection({
-    onLandmarksDetected: handleLandmarksDetected,
+    onLandmarksDetected: processLandmarks,
   });
-
-  // Actualizar los conectores de ejercicio cuando cambien
-  useEffect(() => {
-    if (isInitialized && poseDetectionRef.current && exerciseConnectors) {
-      poseDetectionRef.current.setExerciseConnectors(exerciseConnectors);
-    }
-  }, [isInitialized, exerciseConnectors, poseDetectionRef, updateCount]);
-
-  // Forzar actualizaciones periódicas para mejorar la sincronización
-  useEffect(() => {
-    const forceUpdateInterval = setInterval(() => {
-      setUpdateCount((prev) => prev + 1);
-    }, 500); // Cada 500ms
-
-    return () => clearInterval(forceUpdateInterval);
-  }, []);
 
   return (
     <div className={`relative w-full flex flex-col items-center ${className}`}>

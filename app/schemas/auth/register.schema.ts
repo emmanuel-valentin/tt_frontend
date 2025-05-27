@@ -61,6 +61,11 @@ export const step1FormSchema = registerFormSchema
     password: true,
     passwordConfirm: true,
   })
+  .extend({
+    acceptTerms: z.literal("on", {
+      errorMap: () => ({ message: "Debes aceptar los términos y condiciones" }),
+    }),
+  })
   .refine((data) => data.password === data.passwordConfirm, {
     message: "Las contraseñas no coinciden",
     path: ["passwordConfirm"],
