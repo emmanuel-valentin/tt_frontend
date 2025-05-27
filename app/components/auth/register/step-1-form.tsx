@@ -95,7 +95,7 @@ export function Step1Form() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-6 md:gap-1">
-        <div className="grid gap-2">
+        <div className="grid gap-2 w-full">
           <Label htmlFor="password">Contraseña</Label>
           <Input
             id="password"
@@ -111,7 +111,7 @@ export function Step1Form() {
           )}
         </div>
 
-        <div className="grid gap-2">
+        <div className="grid gap-2 w-full">
           <Label htmlFor="passwordConfirm">Confirma tu contraseña</Label>
           <Input
             id="passwordConfirm"
@@ -127,6 +127,32 @@ export function Step1Form() {
           )}
         </div>
       </div>
+
+      <div className="flex items-center gap-2">
+        <input
+          id="acceptTerms"
+          name="acceptTerms"
+          type="checkbox"
+          required
+          className="accent-primary h-4 w-4 rounded border border-input focus:ring-2 focus:ring-primary"
+          value="on"
+          defaultChecked={loaderData?.acceptTerms === "on"}
+        />
+        <Label htmlFor="acceptTerms" className="text-sm">
+          Acepto los{" "}
+          <Link
+            to="/terms"
+            className="text-primary underline hover:text-primary/80"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Términos y Condiciones
+          </Link>
+        </Label>
+      </div>
+      {errors?.acceptTerms && (
+        <p className="text-destructive text-sm">{errors.acceptTerms[0]}</p>
+      )}
 
       <Button type="submit">Registrarse</Button>
 

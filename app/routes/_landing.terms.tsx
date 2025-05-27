@@ -1,187 +1,488 @@
 import { Link } from "@remix-run/react";
+import {
+  FileText,
+  Users,
+  UserPlus,
+  Shield,
+  Copyright,
+  Lock,
+  AlertTriangle,
+  Edit,
+  Ban,
+  Scale,
+  Mail,
+  ExternalLink,
+} from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "~/components/ui/accordion";
 
 export default function TermsPage() {
   return (
-    <div className="py-6">
-      <h1 className="text-2xl tracking-tight leading-none my-4">
-        Términos y condiciones
-      </h1>
+    <div className="py-12">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6">
+            <FileText className="w-8 h-8 text-primary" />
+          </div>
+          <h1 className="text-4xl font-bold text-foreground mb-4 tracking-tight">
+            Términos y Condiciones de Uso
+          </h1>
+          <div className="w-24 h-1 bg-primary mx-auto mb-6 rounded-full"></div>
+        </div>
 
-      <div className="space-y-8 text-balance">
-        <div className="bg-card">
-          <p className="leading-relaxed">
-            Los siguientes Términos y Condiciones (en adelante,
-            &quot;Términos&quot;) rigen el uso de la plataforma{" "}
-            <strong className="text-primary">
+        {/* Introduction */}
+        <div className="bg-card rounded-xl shadow-sm border p-8 mb-8">
+          <p className="text-foreground leading-relaxed text-lg">
+            Los presentes Términos y Condiciones de Uso (en adelante,
+            &ldquo;Términos&rdquo;) regulan el acceso y utilización de la
+            plataforma digital{" "}
+            <span className="font-semibold">
               PROTOTIPO DE SOFTWARE COMO HERRAMIENTA PARA DAR SEGUIMIENTO A
               PACIENTES DE FISIOTERAPIA ENFOCADO A LAS EXTREMIDADES MEDIANTE
               RECONOCIMIENTO DE IMÁGENES
-            </strong>{" "}
-            (en adelante, &quot;la Plataforma&quot;) y todos los servicios
-            proporcionados a través de la misma. Al acceder, registrarte o usar
-            la Plataforma, aceptas estar sujeto a estos Términos, así como a
-            nuestra Política de Privacidad, que forma parte integral de este
-            acuerdo. Si no estás de acuerdo con estos Términos, no uses la
-            Plataforma.
+            </span>{" "}
+            (en adelante, &ldquo;la Plataforma&rdquo;) y los servicios asociados
+            a la misma. El acceso, registro o uso de la Plataforma implica la
+            aceptación plena e incondicional de estos Términos, así como de
+            nuestra Política de Privacidad, que constituyen un acuerdo
+            jurídicamente vinculante. En caso de no estar conforme con estos
+            Términos, se recomienda abstenerse del uso de la Plataforma.
           </p>
         </div>
 
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            1. Aceptación de los Términos
-          </h2>
-          <p className="leading-relaxed">
-            Al acceder a la Plataforma y usar nuestros servicios, aceptas estar
-            legalmente obligado por estos Términos. Si no estás de acuerdo con
-            cualquiera de los términos, no accedas a la Plataforma ni utilices
-            los servicios.
-          </p>
-        </section>
-
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            2. Uso de la Plataforma
-          </h2>
-          <p className="leading-relaxed">
-            Esta Plataforma está dirigida exclusivamente a pacientes con
-            lesiones en brazos o piernas, en un rango de edad de 18 a 30 años.
-            Además, está destinada a fisioterapeutas con cédula profesional
-            registrada.
-          </p>
-        </section>
-
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            3. Registro de Usuario
-          </h2>
-          <p className="leading-relaxed">
-            Para acceder a ciertos servicios de la Plataforma, se te pedirá que
-            crees una cuenta. Durante el proceso de registro, deberás
-            proporcionar información veraz y completa, y actualizarla cuando sea
-            necesario. Eres responsable de mantener la confidencialidad de tu
-            cuenta y contraseña.
-          </p>
-        </section>
-
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            4. Obligaciones de los Usuarios
-          </h2>
-          <p className="leading-relaxed mb-3">
-            Como usuario de la Plataforma, te comprometes a:
-          </p>
-          <ul className="list-disc pl-6 space-y-2">
-            <li className="leading-relaxed">
-              No hacer uso indebido de la Plataforma, incluyendo actividades que
-              puedan dañar la seguridad o privacidad de otros usuarios.
-            </li>
-            <li className="leading-relaxed">
-              No transmitir virus, malware u otros códigos que puedan dañar o
-              interferir con el funcionamiento de la Plataforma.
-            </li>
-            <li className="leading-relaxed">
-              No compartir, distribuir ni reproducir contenido de la Plataforma
-              sin la debida autorización.
-            </li>
-          </ul>
-        </section>
-
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            5. Propiedad Intelectual
-          </h2>
-          <p className="leading-relaxed">
-            Todos los contenidos, materiales, marcas registradas, logos y demás
-            elementos de la Plataforma son propiedad de{" "}
-            <strong className="text-primary">IPN ESCOM</strong> o sus
-            licenciantes. Queda estrictamente prohibido el uso no autorizado de
-            cualquier contenido sin el permiso expreso de los propietarios de
-            los derechos de autor.
-          </p>
-        </section>
-
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            6. Política de Privacidad
-          </h2>
-          <p className="leading-relaxed">
-            Tu privacidad es muy importante para nosotros. Consulta nuestra{" "}
-            <Link
-              to="/privacy"
-              className="text-primary hover:underline font-medium"
+        {/* Terms Sections */}
+        <div className="space-y-4">
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="1"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
             >
-              Política de Privacidad
-            </Link>{" "}
-            para conocer cómo recopilamos, usamos y protegemos tu información
-            personal.
-          </p>
-        </section>
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                1. Aceptación y Vigencia de los Términos
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-primary/10 rounded-lg border">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center">
+                      <FileText className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-foreground leading-relaxed">
+                        El acceso y uso de la Plataforma constituye la
+                        aceptación expresa e incondicional de estos Términos por
+                        parte del usuario. La utilización continuada de los
+                        servicios implica el conocimiento y conformidad con las
+                        disposiciones aquí establecidas. En caso de desacuerdo
+                        con cualquier disposición, el usuario deberá cesar
+                        inmediatamente el uso de la Plataforma.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
 
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            7. Responsabilidad
-          </h2>
-          <p className="leading-relaxed">
-            La Plataforma se proporciona &quot;tal cual&quot; y no garantizamos
-            su disponibilidad, accesibilidad o funcionalidad en todo momento. No
-            nos hacemos responsables de los daños o perjuicios derivados del uso
-            o la imposibilidad de uso de la Plataforma, incluidos los errores,
-            fallos técnicos o interrupciones.
-          </p>
-        </section>
-
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            8. Modificaciones a los Términos
-          </h2>
-          <p className="leading-relaxed">
-            Nos reservamos el derecho de modificar estos Términos en cualquier
-            momento. Te notificaremos sobre cualquier cambio sustancial mediante
-            una actualización en esta página. Es tu responsabilidad revisar
-            periódicamente estos Términos. El uso continuado de la Plataforma
-            después de dichos cambios constituye tu aceptación de los Términos
-            modificados.
-          </p>
-        </section>
-
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            9. Terminación
-          </h2>
-          <p className="leading-relaxed">
-            Podemos suspender o terminar tu acceso a la Plataforma en cualquier
-            momento, sin previo aviso, si violas estos Términos o por cualquier
-            otra razón que consideremos necesaria.
-          </p>
-        </section>
-
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            10. Ley Aplicable y Jurisdicción
-          </h2>
-          <p className="leading-relaxed">
-            Estos Términos se regirán por las leyes del México, y cualquier
-            disputa que surja en relación con los mismos será resuelta en los
-            tribunales de la Ciudad de México, México.
-          </p>
-        </section>
-
-        <section className="bg-card">
-          <h2 className="text-xl font-semibold mb-3 text-primary">
-            11. Contacto
-          </h2>
-          <p className="leading-relaxed">
-            Si tienes preguntas sobre estos Términos, puedes ponerte en contacto
-            con nosotros a través de{" "}
-            <a
-              href="mailto:soporte@fisioayuda.com"
-              className="text-primary hover:underline font-medium"
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="2"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
             >
-              soporte@fisioayuda.com
-            </a>
-            .
-          </p>
-        </section>
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                2. Ámbito de Aplicación y Usuarios Elegibles
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-primary/10 rounded-lg border">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center">
+                      <Users className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-foreground leading-relaxed mb-4">
+                        La Plataforma está diseñada exclusivamente para brindar
+                        servicios a:
+                      </p>
+                      <div className="space-y-3">
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-2"></div>
+                          <p className="text-foreground">
+                            <span className="font-medium">Pacientes</span> con
+                            lesiones en extremidades superiores o inferiores, en
+                            el rango etario de 18 a 30 años de edad.
+                          </p>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-2"></div>
+                          <p className="text-foreground">
+                            <span className="font-medium">
+                              Profesionales de fisioterapia
+                            </span>{" "}
+                            debidamente acreditados con cédula profesional
+                            vigente y registrada ante las autoridades
+                            competentes.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4 p-4 bg-destructive/10 rounded-lg border border-destructive/20">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center">
+                      <AlertTriangle className="w-4 h-4" />
+                    </div>
+                    <p className="text-foreground font-medium">
+                      El uso por parte de personas que no cumplan con estos
+                      criterios queda expresamente prohibido.
+                    </p>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="3"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                3. Registro y Gestión de Cuentas de Usuario
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-primary/10 rounded-lg border">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center">
+                      <UserPlus className="w-4 h-4" />
+                    </div>
+                    <div className="w-full">
+                      <p className="text-foreground leading-relaxed mb-4">
+                        Para acceder a los servicios de la Plataforma, es
+                        necesario completar el proceso de registro
+                        proporcionando información veraz, exacta, actualizada y
+                        completa. El usuario se compromete a:
+                      </p>
+                      <div className="space-y-2">
+                        {[
+                          "Mantener actualizada la información de su perfil",
+                          "Preservar la confidencialidad de sus credenciales de acceso",
+                          "Notificar inmediatamente cualquier uso no autorizado de su cuenta",
+                          "Asumir la responsabilidad por todas las actividades realizadas bajo su cuenta",
+                        ].map((item, index) => (
+                          <div key={index} className="flex items-start gap-3">
+                            <div className="flex-shrink-0 w-1.5 h-1.5 bg-primary rounded-full mt-2"></div>
+                            <p className="text-foreground text-sm">{item}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="4"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                4. Obligaciones y Responsabilidades del Usuario
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/20">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center">
+                      <Shield className="w-4 h-4" />
+                    </div>
+                    <div className="w-full">
+                      <p className="text-foreground leading-relaxed mb-4">
+                        El usuario se compromete expresamente a hacer un uso
+                        apropiado de la Plataforma, absteniéndose de realizar
+                        las siguientes conductas:
+                      </p>
+                      <div className="space-y-3">
+                        {[
+                          "Utilizar la Plataforma de manera que pueda comprometer la seguridad, privacidad o integridad de otros usuarios o del sistema.",
+                          "Introducir, transmitir o distribuir virus informáticos, malware o cualquier código malicioso que pueda dañar o interferir con el funcionamiento de la Plataforma.",
+                          "Reproducir, distribuir, modificar o comercializar contenidos de la Plataforma sin la previa autorización expresa y por escrito de los titulares de los derechos correspondientes.",
+                        ].map((item, index) => (
+                          <div key={index} className="flex items-start gap-3">
+                            <div className="flex-shrink-0 w-1.5 h-1.5 bg-destructive rounded-full mt-2"></div>
+                            <p className="text-foreground text-sm leading-relaxed">
+                              {item}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="5"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                5. Derechos de Propiedad Intelectual
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-primary/10 rounded-lg border">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center">
+                      <Copyright className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-foreground leading-relaxed">
+                        Todos los elementos que integran la Plataforma,
+                        incluyendo pero no limitándose a contenidos, diseños,
+                        textos, gráficos, imágenes, código fuente, marcas
+                        registradas, logotipos y demás elementos distintivos,
+                        son propiedad exclusiva del{" "}
+                        <span className="font-semibold">
+                          Instituto Politécnico Nacional - Escuela Superior de
+                          Cómputo (IPN ESCOM)
+                        </span>{" "}
+                        o de sus respectivos licenciantes. Queda terminantemente
+                        prohibida cualquier forma de uso, reproducción,
+                        distribución, transformación o comercialización sin la
+                        autorización previa, expresa y por escrito de los
+                        titulares de los derechos de propiedad intelectual.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="6"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                6. Tratamiento de Datos Personales
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-primary/10 rounded-lg border">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center">
+                      <Lock className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-foreground leading-relaxed">
+                        La protección de su privacidad constituye una prioridad
+                        fundamental para nosotros. Le invitamos a consultar
+                        nuestra{" "}
+                        <Link
+                          to="/privacy"
+                          className="inline-flex items-center gap-1 text-primary hover:text-primary/80 font-medium underline decoration-2 underline-offset-2 transition-colors"
+                        >
+                          Política de Privacidad
+                          <ExternalLink className="w-4 h-4" />
+                        </Link>{" "}
+                        para obtener información detallada sobre los
+                        procedimientos de recopilación, tratamiento,
+                        almacenamiento y protección de su información personal,
+                        así como sobre el ejercicio de sus derechos como titular
+                        de datos personales.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="7"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                7. Limitación de Responsabilidad
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/20">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center">
+                      <AlertTriangle className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-foreground leading-relaxed">
+                        La Plataforma se proporciona &ldquo;tal como está&rdquo;
+                        y &ldquo;según disponibilidad&rdquo;. No garantizamos la
+                        disponibilidad ininterrumpida, accesibilidad o
+                        funcionalidad óptima del servicio en todo momento. En
+                        consecuencia, no asumimos responsabilidad alguna por
+                        daños directos, indirectos, incidentales, especiales o
+                        consecuenciales que puedan derivarse del uso o la
+                        imposibilidad de uso de la Plataforma, incluyendo
+                        errores, fallas técnicas, interrupciones del servicio o
+                        pérdida de datos.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="8"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                8. Modificaciones de los Términos y Condiciones
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-primary/10 rounded-lg border">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center">
+                      <Edit className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-foreground leading-relaxed">
+                        Nos reservamos el derecho de modificar, actualizar o
+                        revisar estos Términos en cualquier momento y sin previo
+                        aviso. Las modificaciones sustanciales serán comunicadas
+                        a los usuarios mediante notificación en la Plataforma o
+                        por otros medios apropiados. Es responsabilidad del
+                        usuario revisar periódicamente estos Términos para
+                        mantenerse informado sobre cualquier cambio. La
+                        continuación en el uso de la Plataforma posterior a la
+                        publicación de modificaciones constituye la aceptación
+                        tácita de los Términos actualizados.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="9"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                9. Suspensión y Terminación del Servicio
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/20">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center">
+                      <Ban className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-foreground leading-relaxed">
+                        Nos reservamos el derecho de suspender, restringir o
+                        terminar definitivamente el acceso de cualquier usuario
+                        a la Plataforma, de forma temporal o permanente, con o
+                        sin previo aviso, en los siguientes casos:
+                        incumplimiento de estos Términos, uso indebido de los
+                        servicios, actividades que comprometan la seguridad del
+                        sistema, o cuando sea necesario para salvaguardar la
+                        integridad de la Plataforma y la seguridad de nuestra
+                        comunidad de usuarios.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="10"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                10. Legislación Aplicable y Resolución de Controversias
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-primary/10 rounded-lg border">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center">
+                      <Scale className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-foreground leading-relaxed">
+                        Estos Términos se regirán e interpretarán de conformidad
+                        con las leyes de los{" "}
+                        <span className="font-semibold">
+                          Estados Unidos Mexicanos
+                        </span>
+                        . Para la resolución de cualquier controversia,
+                        conflicto o reclamación que surja de la interpretación,
+                        cumplimiento o incumplimiento de estos Términos, las
+                        partes se someten expresamente a la jurisdicción y
+                        competencia de los tribunales competentes de la{" "}
+                        <span className="font-semibold">
+                          Ciudad de México, México
+                        </span>
+                        , renunciando a cualquier otro fuero que pudiera
+                        corresponderles.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Accordion type="multiple" className="space-y-4">
+            <AccordionItem
+              value="11"
+              className="bg-card rounded-xl shadow-sm border overflow-hidden"
+            >
+              <AccordionTrigger className="px-6 py-5 hover:bg-muted/50 transition-colors text-left font-semibold text-foreground text-lg">
+                11. Contacto y Comunicaciones
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                <div className="p-4 bg-primary/10 rounded-lg border">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-foreground leading-relaxed">
+                        Para consultas, comentarios o solicitudes relacionadas
+                        con estos Términos y Condiciones, así como para el
+                        ejercicio de derechos o la resolución de dudas sobre el
+                        uso de la Plataforma, puede comunicarse con nuestro
+                        equipo de atención al usuario a través de{" "}
+                        <a
+                          href="mailto:soporte@fisioayuda.com"
+                          className="inline-flex items-center gap-1 text-primary hover:text-primary/80 font-medium underline decoration-2 underline-offset-2 transition-colors"
+                        >
+                          soporte@fisioayuda.com
+                          <Mail className="w-4 h-4" />
+                        </a>
+                        . Nos comprometemos a brindar respuesta oportuna a sus
+                        consultas.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
       </div>
     </div>
   );
