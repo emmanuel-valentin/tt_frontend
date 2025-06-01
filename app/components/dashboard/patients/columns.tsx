@@ -14,7 +14,7 @@ export const columns: ColumnDef<PatientColumns>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Id" />
     ),
-    cell: ({ row }) => <div className="max-w-[80px]">{row.original.id}</div>,
+    cell: ({ row }) => <div>{row.original.id}</div>,
   },
   {
     id: "fotoUrl",
