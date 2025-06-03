@@ -55,7 +55,11 @@ export function formatDateForInput(
   }
 }
 
-export function getVideoAPI(path: string) {
+export function getAPIResource(path: string) {
+  if (!path.includes("/media")) {
+    return `${apiUrl}/media/${path}`;
+  }
+
   return `${apiUrl}/${path}`;
 }
 

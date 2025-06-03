@@ -130,7 +130,12 @@ export async function sendActivityFeedback(
   try {
     const { data, status } = await fisiogoApi.post<EmptyResponse>(
       "/users/physiotherapist/feedback",
-      feedbackPayload
+      feedbackPayload,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
 
     if (status !== 200) {

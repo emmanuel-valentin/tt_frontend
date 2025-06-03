@@ -14,7 +14,7 @@ export function mapProfileFormToUpdatePayload(
     id: formData.id,
     cedula: formData.cedula,
     persona: {
-      fecha_nacimiento: formData.fecha_nacimiento,
+      fecha: formData.fecha,
       telefono: formData.telefono,
       foto_url: null,
     },

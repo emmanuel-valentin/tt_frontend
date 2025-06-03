@@ -1,4 +1,4 @@
-import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { Form, useActionData } from "@remix-run/react";
 
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -8,6 +8,7 @@ import { Loader2, Save } from "lucide-react";
 import { Role, UserData } from "~/types/user/user.type";
 import { clientAction } from "~/routes/dashboard.profile";
 import { formatDateForInput } from "~/lib/utils";
+import { useIntentSubmission } from "~/hooks/use-intent-submission";
 
 interface Props {
   userData?: UserData;
@@ -15,8 +16,7 @@ interface Props {
 
 export function UpdateProfileForm({ userData }: Props) {
   const actionData = useActionData<typeof clientAction>();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+  const isUpdatingProfile = useIntentSubmission("update-profile");
 
   const firstName = userData?.usuario.first_name || "";
   const lastName = userData?.usuario.last_name || "";
@@ -26,7 +26,7 @@ export function UpdateProfileForm({ userData }: Props) {
 
   return (
     <Form className="space-y-6 max-w-screen-md" method="POST">
-      {/* Campos ocultos necesarios para la actualización */}
+      <Input type="hidden" name="intent" value="update-profile" />
       <Input type="hidden" name="id" defaultValue={userData?.id} />
 
       <div className="grid grid-cols-none md:grid-cols-2 gap-6">
@@ -75,33 +75,18 @@ export function UpdateProfileForm({ userData }: Props) {
           )}
         </div>
 
-        {/* <div className="grid gap-2">
-          <Label htmlFor="foto_url">Foto de perfil</Label>
-          <Input
-            accept="image/**"
-            id="foto_url"
-            name="foto_url"
-            required
-            type="file"
-          />
-        </div> */}
-
         <div className="grid gap-2">
           <Label htmlFor="fecha_nacimiento">Fecha de nacimiento</Label>
           <Input
-            id="fecha_nacimiento"
-            name="fecha_nacimiento"
+            id="fecha"
+            name="fecha"
             placeholder="Selecciona una fecha"
             required
             type="date"
-            defaultValue={formatDateForInput(
-              userData?.persona.fecha_nacimiento
-            )}
+            defaultValue={formatDateForInput(userData?.persona.fecha)}
           />
-          {errors?.fecha_nacimiento && (
-            <p className="text-destructive text-sm">
-              {errors.fecha_nacimiento[0]}
-            </p>
+          {errors?.fecha && (
+            <p className="text-destructive text-sm">{errors.fecha[0]}</p>
           )}
         </div>
 
@@ -155,9 +140,9 @@ export function UpdateProfileForm({ userData }: Props) {
       <Button
         className="w-full md:w-auto"
         type="submit"
-        disabled={isSubmitting}
+        disabled={isUpdatingProfile}
       >
-        {isSubmitting ? (
+        {isUpdatingProfile ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Actualizando...

@@ -16,7 +16,7 @@ export interface UserData {
 
 export interface Persona {
   id: string;
-  fecha_nacimiento: string;
+  fecha: string;
   telefono: string;
   foto_url: string | null;
 }
@@ -37,6 +37,10 @@ export interface UpdateUserPayload {
   usuario: Omit<Usuario, "id">;
 }
 
+export type UserPicture = {
+  foto_url: string;
+};
+
 export type UserResponse = ApiResponse<UserData>;
 
 export type Link = {
@@ -48,3 +52,5 @@ export type Link = {
 export type EnrollmentStatus = "PENDIENTE" | "VINCULADO";
 
 export type LinkResponse = ApiResponse<Link[]>;
+
+export type UserPictureResponse = ApiResponse<UserPicture>;

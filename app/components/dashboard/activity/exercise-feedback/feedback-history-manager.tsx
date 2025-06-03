@@ -1,83 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, memo } from "react";
 import { LineChart as LineChartIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import type { ExerciseType, ExerciseFeedback } from "~/lib/exercise-analyzer";
-import {
-  ExerciseChart,
-  type FeedbackHistoryEntry,
-} from "./charts/exercise-chart";
+import type { ExerciseType } from "~/lib/exercise-analyzer";
+import { ExerciseChart } from "./charts/exercise-chart";
+import type { FeedbackHistoryEntry } from "~/hooks/use-feedback-history";
 
 interface FeedbackHistoryManagerProps {
-  videoRef: React.RefObject<HTMLVideoElement>;
-  feedback: ExerciseFeedback;
-  poseDetectionEnabled: boolean;
+  feedbackHistory: FeedbackHistoryEntry[];
   isLoading: boolean;
   exerciseType: ExerciseType;
+  isRecordingHistory: boolean;
 }
 
 /**
- * Componente que gestiona la recopilación y visualización del historial de feedback durante un ejercicio
+ * Componente optimizado que solo se encarga de la visualización del historial de feedback
+ * Ya no gestiona la recopilación de datos, solo la presentación
  */
-export function FeedbackHistoryManager({
-  videoRef,
-  feedback,
-  poseDetectionEnabled,
+function FeedbackHistoryManagerComponent({
+  feedbackHistory,
   isLoading,
   exerciseType,
+  isRecordingHistory,
 }: FeedbackHistoryManagerProps) {
-  const [feedbackHistory, setFeedbackHistory] = useState<
-    FeedbackHistoryEntry[]
-  >([]);
-  const [isRecordingHistory, setIsRecordingHistory] = useState(false);
   const [showFeedbackChart, setShowFeedbackChart] = useState(false);
 
-  // Efecto para gestionar los eventos de reproducción del video
-  useEffect(() => {
-    if (!videoRef.current) return;
-
-    const handlePlay = () => {
-      // Limpiar historial al iniciar la reproducción
-      if (!isRecordingHistory) {
-        setFeedbackHistory([]);
-        setIsRecordingHistory(true);
-      }
-    };
-
-    const handlePause = () => {
-      setIsRecordingHistory(false);
-    };
-
-    const handleEnded = () => {
-      setIsRecordingHistory(false);
-    };
-
-    // Agregar eventos de reproducción
-    const videoElement = videoRef.current;
-    videoElement.addEventListener("play", handlePlay);
-    videoElement.addEventListener("pause", handlePause);
-    videoElement.addEventListener("ended", handleEnded);
-
-    return () => {
-      if (videoElement) {
-        videoElement.removeEventListener("play", handlePlay);
-        videoElement.removeEventListener("pause", handlePause);
-        videoElement.removeEventListener("ended", handleEnded);
-      }
-    };
-  }, [isRecordingHistory, videoRef]);
-
-  // Actualizar historial cuando hay nuevo feedback y estamos grabando
-  useEffect(() => {
-    if (isRecordingHistory && poseDetectionEnabled && videoRef.current) {
-      const newEntry: FeedbackHistoryEntry = {
-        ...feedback,
-        timestamp: videoRef.current.currentTime * 1000,
-      };
-      setFeedbackHistory((prev) => [...prev, newEntry]);
-    }
-  }, [feedback, isRecordingHistory, poseDetectionEnabled, videoRef]);
-
-  // No mostrar nada si no hay datos
+  // No mostrar nada si no hay datos y no estamos grabando
   if (feedbackHistory.length === 0 && !isRecordingHistory) {
     return null;
   }
@@ -105,3 +52,6 @@ export function FeedbackHistoryManager({
     </div>
   );
 }
+
+// Memoizar el componente para evitar re-renderizados innecesarios
+export const FeedbackHistoryManager = memo(FeedbackHistoryManagerComponent);
