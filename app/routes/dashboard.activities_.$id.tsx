@@ -42,6 +42,7 @@ export async function clientAction({ request }: ClientLoaderFunctionArgs) {
   if (intent === "comment") {
     const parsed = sendFeednackSchema.safeParse(Object.fromEntries(formData));
     if (!parsed.success) {
+      console.log(parsed.error.flatten());
       return {
         validationErrors: parsed.error.flatten(),
       };

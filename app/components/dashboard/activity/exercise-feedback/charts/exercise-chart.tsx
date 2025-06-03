@@ -15,12 +15,8 @@ import {
   ChartTooltipContent,
 } from "~/components/ui/chart";
 
-import type { ExerciseType, ExerciseFeedback } from "~/lib/exercise-analyzer";
-
-// Estructura para almacenar el historial de feedback con timestamp
-export interface FeedbackHistoryEntry extends ExerciseFeedback {
-  timestamp: number; // Tiempo en milisegundos desde el inicio del video
-}
+import type { ExerciseType } from "~/lib/exercise-analyzer";
+import type { FeedbackHistoryEntry } from "~/hooks/use-feedback-history";
 
 interface ExerciseChartProps {
   data: FeedbackHistoryEntry[];

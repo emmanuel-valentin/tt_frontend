@@ -1,14 +1,3 @@
-// Copyright 2023 The MediaPipe Authors.
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//      http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import {
   PoseLandmarker,
   FilesetResolver,
@@ -16,7 +5,6 @@ import {
   NormalizedLandmark,
 } from "@mediapipe/tasks-vision";
 
-// This is a client-side only file
 export const isBrowser = typeof window !== "undefined";
 
 const internalWasmUrl =
@@ -241,11 +229,8 @@ export class PoseDetectionUtil {
       return;
     }
 
-    // Update canvas dimensions to match displayed video size
     this.updateCanvasDimensions();
 
-    // Run detection regardless of video playing state
-    // Only check if the frame has changed when video is playing
     const shouldProcessFrame =
       this.video.paused ||
       this.video.ended ||
@@ -259,13 +244,11 @@ export class PoseDetectionUtil {
       const startTimeMs = performance.now();
 
       try {
-        // Run the detection
         const results = await this.poseLandmarker.detectForVideo(
           this.video,
           startTimeMs
         );
 
-        // Clear canvas and draw results
         this.canvasCtx.clearRect(
           0,
           0,
@@ -275,9 +258,8 @@ export class PoseDetectionUtil {
 
         if (results.landmarks && results.landmarks.length > 0) {
           if (this.onLandmarks) this.onLandmarks(results.landmarks[0]);
-          // Process each pose's landmarks
+
           for (let i = 0; i < results.landmarks.length; i++) {
-            // Create adjusted landmarks for display
             const adjustedLandmarks = this.adjustLandmarksToDisplaySize(
               results.landmarks[i]
             );
@@ -297,7 +279,6 @@ export class PoseDetectionUtil {
       }
     }
 
-    // Continue prediction loop if video is still running
     if (this.videoRunning) {
       this.animationFrameId = window.requestAnimationFrame(() =>
         this.predictVideo()
@@ -320,22 +301,18 @@ export class PoseDetectionUtil {
       return;
     }
 
-    // Update canvas dimensions to match displayed video size
     this.updateCanvasDimensions();
 
-    // Only run detection when video frame changes
     if (this.lastVideoTime !== this.video.currentTime) {
       this.lastVideoTime = this.video.currentTime;
       const startTimeMs = performance.now();
 
       try {
-        // Run the detection
         const results = await this.poseLandmarker.detectForVideo(
           this.video,
           startTimeMs
         );
 
-        // Clear canvas and draw results
         this.canvasCtx.clearRect(
           0,
           0,
@@ -344,9 +321,7 @@ export class PoseDetectionUtil {
         );
 
         if (results.landmarks) {
-          // Process each pose's landmarks
           for (let i = 0; i < results.landmarks.length; i++) {
-            // Create adjusted landmarks for display
             const adjustedLandmarks = this.adjustLandmarksToDisplaySize(
               results.landmarks[i]
             );
@@ -366,7 +341,6 @@ export class PoseDetectionUtil {
       }
     }
 
-    // Continue prediction loop if webcam is still running
     if (this.webcamRunning) {
       this.animationFrameId = window.requestAnimationFrame(() =>
         this.predictWebcam()
@@ -402,7 +376,6 @@ export class PoseDetectionUtil {
         startTimeMs
       );
 
-      // Clear canvas and draw results
       this.canvasCtx.clearRect(
         0,
         0,
@@ -411,9 +384,7 @@ export class PoseDetectionUtil {
       );
 
       if (results.landmarks && results.landmarks.length > 0) {
-        // Process each pose's landmarks
         for (let i = 0; i < results.landmarks.length; i++) {
-          // Create adjusted landmarks for display
           const adjustedLandmarks = this.adjustLandmarksToDisplaySize(
             results.landmarks[i]
           );

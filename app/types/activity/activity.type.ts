@@ -12,6 +12,8 @@ export type Exercise = {
 export type HumanFeedback = {
   id: string;
   feedback: string;
+  feedback_audio?: string;
+  feedback_imagen?: string;
 };
 
 export type ExercisesResponse = ApiResponse<Exercise[]>;

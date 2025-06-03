@@ -80,7 +80,7 @@ export function Step1Form() {
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="email">email electrónico</Label>
+        <Label htmlFor="email">Correo electrónico</Label>
         <Input
           id="email"
           name="email"

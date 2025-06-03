@@ -21,12 +21,12 @@ export function DataTableViewOptions<TData>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="ml-auto hidden lg:flex">
+        <Button variant="outline" className="hidden lg:flex">
           <Settings2 />
           Ver
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[200px]">
+      <DropdownMenuContent align="end">
         <DropdownMenuLabel>Seleccionar Campos</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table

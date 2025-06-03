@@ -1,7 +1,7 @@
 import { Play } from "lucide-react";
 import { VideoPlayer } from "~/components/shared/video/video-player";
 import { EmptyState } from "~/components/shared/views/empty-state";
-import { getVideoAPI } from "~/lib/utils";
+import { getAPIResource } from "~/lib/utils";
 import { Exercise } from "~/types/activity/activity.type";
 
 interface Props {
@@ -16,7 +16,7 @@ export function ExercisePreview({ exercise }: Props) {
       </div>
       <div className="p-4 flex-1 flex flex-col justify-center">
         {exercise ? (
-          <VideoPlayer src={getVideoAPI(exercise.url_video)} />
+          <VideoPlayer src={getAPIResource(exercise.url_video)} />
         ) : (
           <EmptyState
             icon={Play}

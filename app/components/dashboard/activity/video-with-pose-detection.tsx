@@ -1,15 +1,17 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, VideoOff } from "lucide-react";
 import { useEffect } from "react";
 import { usePoseDetection } from "~/hooks/use-pose-detection";
-import { getVideoAPI } from "~/lib/utils";
+import { useFeedbackHistory } from "~/hooks/use-feedback-history";
+import { getAPIResource } from "~/lib/utils";
 
 import type { ExerciseType } from "~/lib/exercise-analyzer";
 import { useExerciseAnalysis } from "~/hooks/use-exercise-analyzer";
 
 import { FeedbackIndicators } from "./exercise-feedback/feedback-indicators";
 import { FeedbackHistoryManager } from "./exercise-feedback/feedback-history-manager";
+import { EmptyState } from "~/components/shared/views/empty-state";
 
 interface VideoWithPoseDetectionProps {
   videoSrc: string;
@@ -36,6 +38,12 @@ export function VideoWithPoseDetection({
     onLandmarksDetected: processLandmarks,
   });
 
+  const { feedbackHistory, isRecordingHistory } = useFeedbackHistory({
+    videoRef,
+    feedback,
+    poseDetectionEnabled,
+  });
+
   return (
     <div className={`relative w-full flex flex-col items-center ${className}`}>
       {/* Indicadores de feedback en tiempo real */}
@@ -58,11 +66,10 @@ export function VideoWithPoseDetection({
       {/* Controles y visualización del historial */}
       <div className="w-full mt-2 flex flex-col items-center gap-2">
         <FeedbackHistoryManager
-          videoRef={videoRef}
-          feedback={feedback}
-          poseDetectionEnabled={poseDetectionEnabled}
+          feedbackHistory={feedbackHistory}
           isLoading={isLoading}
           exerciseType={exerciseType}
+          isRecordingHistory={isRecordingHistory}
         />
       </div>
     </div>
@@ -120,6 +127,7 @@ function VideoPlayer({
         controls={false}
         crossOrigin="anonymous"
         src={videoSrc}
+        muted
       />
 
       {/* Canvas overlay para landmarks de pose */}
@@ -149,29 +157,22 @@ export function SubmissionVideoContent({
   patientVideoUrl,
   exerciseType = "bicep-curl",
 }: SubmissionVideoContentProps) {
-  if (activityFinished && patientVideoUrl) {
-    return (
-      <VideoWithPoseDetection
-        videoSrc={getVideoAPI(patientVideoUrl)}
-        exerciseType={exerciseType}
-      />
-    );
-  }
+  const videoSrc =
+    activityFinished && patientVideoUrl
+      ? getAPIResource(patientVideoUrl)
+      : submittedVideo.url;
 
-  if (submittedVideo.url) {
+  if (videoSrc) {
     return (
-      <VideoWithPoseDetection
-        videoSrc={submittedVideo.url}
-        exerciseType={exerciseType}
-      />
+      <VideoWithPoseDetection videoSrc={videoSrc} exerciseType={exerciseType} />
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed border-muted rounded-lg text-center p-4">
-      <p className="text-muted-foreground mb-4">
-        No se ha subido ningún video.
-      </p>
-    </div>
+    <EmptyState
+      icon={VideoOff}
+      title="Sin video"
+      description="El paciente aún no ha entregado su video para esta actividad."
+    />
   );
 }

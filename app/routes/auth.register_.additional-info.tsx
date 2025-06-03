@@ -19,12 +19,14 @@ import {
   loadFormData,
   setFormData,
   clearFormData,
+  getSelectedImage,
 } from "~/store/register-form.store";
 import {
   registerSchema,
   step3FormSchema,
 } from "~/schemas/auth/register.schema";
 import { register } from "~/services/auth/auth.service";
+import { updateUserPicture } from "~/services/user/user.service";
 
 export async function clientLoader() {
   const { step1, step2, step3 } = loadFormData();
@@ -74,6 +76,21 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const { access_token, refresh_token } = serviceData!;
   localStorage.setItem("access_token", access_token);
   localStorage.setItem("refresh_token", refresh_token);
+
+  const selectedImage = getSelectedImage();
+  if (selectedImage) {
+    try {
+      const { serviceError: pictureError } = await updateUserPicture({
+        foto: selectedImage,
+      });
+
+      if (pictureError) {
+        console.warn("Failed to upload profile picture:", pictureError);
+      }
+    } catch (error) {
+      console.warn("Error uploading profile picture:", error);
+    }
+  }
 
   clearFormData();
   return redirect("/dashboard"); // Redirect to a success page or dashboard

@@ -14,7 +14,7 @@ export function DataTableToolbar<TData>({
   setGlobalFilter,
 }: DataTableToolbarProps<TData>) {
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+    <div className="flex justify-between gap-2">
       <div className="flex w-full sm:w-auto flex-1 items-center gap-2">
         <Input
           className="w-full"

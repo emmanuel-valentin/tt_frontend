@@ -80,10 +80,21 @@ export class SquatDetector implements ExerciseDetector {
   private angle = 0;
 
   process(landmarks: NormalizedLandmark[]): ExerciseFeedback {
-    // Usamos pierna izquierda para ejemplo
-    const hip = [landmarks[23].x, landmarks[23].y] as [number, number];
-    const knee = [landmarks[25].x, landmarks[25].y] as [number, number];
-    const ankle = [landmarks[27].x, landmarks[27].y] as [number, number];
+    const leftKnee = landmarks[25];
+    const rightKnee = landmarks[26];
+    const useLeft = leftKnee.visibility > rightKnee.visibility;
+
+    let hip, knee, ankle;
+    if (useLeft) {
+      hip = [landmarks[23].x, landmarks[23].y] as [number, number];
+      knee = [landmarks[25].x, landmarks[25].y] as [number, number];
+      ankle = [landmarks[27].x, landmarks[27].y] as [number, number];
+    } else {
+      hip = [landmarks[24].x, landmarks[24].y] as [number, number];
+      knee = [landmarks[26].x, landmarks[26].y] as [number, number];
+      ankle = [landmarks[28].x, landmarks[28].y] as [number, number];
+    }
+
     const angle = calculateAngle(hip, knee, ankle);
     this.angle = Math.round(angle * 100) / 100;
     if (angle > 160) {

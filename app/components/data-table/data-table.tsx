@@ -48,7 +48,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-6">
       <DataTableToolbar
         table={table}
         globalFilter={globalFilter}

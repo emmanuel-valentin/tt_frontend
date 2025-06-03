@@ -12,14 +12,20 @@ type State = {
     step2: RegisterFormStep2;
     step3: RegisterFormStep3;
   }>;
+  // Store image in memory (not persisted)
+  selectedImage: File | null;
 };
 
 type Actions = {
-  setFormData: (data: State["registerForm"]) => void;
+  setFormData: (data: Partial<State["registerForm"]>) => void;
+  setSelectedImage: (image: File | null) => void;
   clear: VoidFunction;
 };
 
-const initialState: State["registerForm"] = {};
+const initialState: Pick<State, "registerForm" | "selectedImage"> = {
+  registerForm: {},
+  selectedImage: null,
+};
 
 type RegisterFormStore = State & Actions;
 
@@ -27,7 +33,8 @@ export const useRegisterFormStore = create<RegisterFormStore>()(
   devtools(
     persist(
       (set) => ({
-        registerForm: initialState,
+        registerForm: initialState.registerForm,
+        selectedImage: initialState.selectedImage,
         setFormData: (data) => {
           set(
             (state) => ({ registerForm: { ...state.registerForm, ...data } }),
@@ -35,9 +42,19 @@ export const useRegisterFormStore = create<RegisterFormStore>()(
             "register-form-store/setFormData"
           );
         },
+        setSelectedImage: (image) => {
+          set(
+            () => ({ selectedImage: image }),
+            undefined,
+            "register-form-store/setSelectedImage"
+          );
+        },
         clear: () => {
           set(
-            () => ({ registerForm: initialState }),
+            () => ({
+              registerForm: initialState.registerForm,
+              selectedImage: initialState.selectedImage,
+            }),
             undefined,
             "register-form-store/clear"
           );
@@ -46,6 +63,7 @@ export const useRegisterFormStore = create<RegisterFormStore>()(
       {
         name: "register-form-storage",
         storage: createJSONStorage(() => sessionStorage),
+        partialize: (state) => ({ registerForm: state.registerForm }), // Only persist form data, not the image
       }
     )
   )
@@ -53,6 +71,12 @@ export const useRegisterFormStore = create<RegisterFormStore>()(
 
 export const setFormData = (data: Partial<State["registerForm"]>) =>
   useRegisterFormStore.getState().setFormData(data);
+
+export const setSelectedImage = (image: File | null) =>
+  useRegisterFormStore.getState().setSelectedImage(image);
+
+export const getSelectedImage = () =>
+  useRegisterFormStore.getState().selectedImage;
 
 export const loadFormData = () => useRegisterFormStore.getState().registerForm;
 

@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { SubmissionVideoContent } from "./video-with-pose-detection";
 import { Activity } from "~/types/activity/activity.type";
 import { Role } from "~/types/user/user.type";
-import { getVideoAPI } from "~/lib/utils";
+import { getAPIResource } from "~/lib/utils";
 
 interface VideoSectionProps {
   activity: Activity;
@@ -45,7 +45,7 @@ export function VideoSection({
         <div className="w-full flex flex-col items-center">
           <VideoPlayer
             className="md:w-[80%] mt-4"
-            src={getVideoAPI(activity.urlVideo)}
+            src={getAPIResource(activity.urlVideo)}
           />
         </div>
       </TabsContent>
