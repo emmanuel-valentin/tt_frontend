@@ -139,7 +139,7 @@ export function Step1Form() {
           defaultChecked={loaderData?.acceptTerms === "on"}
         />
         <Label htmlFor="acceptTerms" className="text-sm">
-          Acepto los{" "}
+          Al registrarte en Fisiogo, acepto los{" "}
           <Link
             to="/terms"
             className="text-primary underline hover:text-primary/80"
@@ -148,6 +148,7 @@ export function Step1Form() {
           >
             Términos y Condiciones
           </Link>
+          .
         </Label>
       </div>
       {errors?.acceptTerms && (

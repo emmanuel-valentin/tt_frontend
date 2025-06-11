@@ -6,6 +6,7 @@ interface UsePoseDetectionOptions {
   enabled?: boolean;
   autoStart?: boolean;
   onLandmarksDetected?: (landmarks: NormalizedLandmark[]) => void;
+  onNoPoseDetected?: () => void;
 }
 
 interface UsePoseDetectionReturn {
@@ -15,8 +16,13 @@ interface UsePoseDetectionReturn {
   isInitialized: boolean;
   isLoading: boolean;
   poseDetectionEnabled: boolean;
+  noPoseDetected: boolean;
   setPoseDetectionEnabled: (
     enabled: boolean | ((prev: boolean) => boolean)
+  ) => void;
+  resetNoPoseDetected: () => void;
+  updateLandmarksCallback: (
+    callback: (landmarks: NormalizedLandmark[]) => void
   ) => void;
 }
 
@@ -24,6 +30,7 @@ export function usePoseDetection({
   enabled = true,
   autoStart = true,
   onLandmarksDetected,
+  onNoPoseDetected,
 }: UsePoseDetectionOptions = {}): UsePoseDetectionReturn {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -32,6 +39,41 @@ export function usePoseDetection({
   const [isDetecting, setIsDetecting] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [noPoseDetected, setNoPoseDetected] = useState(false);
+
+  // Reset no pose detected state
+  const resetNoPoseDetected = () => {
+    setNoPoseDetected(false);
+  };
+
+  // Handle when no pose is detected
+  const handleNoPoseDetected = () => {
+    setNoPoseDetected(true);
+    if (onNoPoseDetected) {
+      onNoPoseDetected();
+    }
+  };
+
+  // Reset no pose detected when landmarks are detected
+  const handleLandmarksDetected = (landmarks: NormalizedLandmark[]) => {
+    setNoPoseDetected(false);
+    if (onLandmarksDetected) {
+      onLandmarksDetected(landmarks);
+    }
+  };
+
+  // Update landmarks callback dynamically
+  const updateLandmarksCallback = (
+    callback: (landmarks: NormalizedLandmark[]) => void
+  ) => {
+    const poseDetection = poseDetectionRef.current;
+    if (poseDetection) {
+      poseDetection.onLandmarks = (landmarks: NormalizedLandmark[]) => {
+        setNoPoseDetected(false);
+        callback(landmarks);
+      };
+    }
+  };
 
   // Initialize pose detection
   useEffect(() => {
@@ -50,7 +92,8 @@ export function usePoseDetection({
         const initialized = await poseDetection.initialize(
           videoRef.current,
           canvasRef.current,
-          onLandmarksDetected
+          handleLandmarksDetected,
+          handleNoPoseDetected
         );
         if (initialized) {
           poseDetectionRef.current = poseDetection;
@@ -75,7 +118,7 @@ export function usePoseDetection({
         poseDetection.cleanup();
       }
     };
-  }, [onLandmarksDetected, isInitialized]);
+  }, [isInitialized]);
 
   // Process video when pose detection is toggled
   useEffect(() => {
@@ -133,6 +176,9 @@ export function usePoseDetection({
     isInitialized,
     isLoading,
     poseDetectionEnabled,
+    noPoseDetected,
     setPoseDetectionEnabled,
+    resetNoPoseDetected,
+    updateLandmarksCallback,
   };
 }

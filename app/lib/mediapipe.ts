@@ -51,6 +51,12 @@ export class PoseDetectionUtil {
   lastVideoTime: number = -1;
   animationFrameId: number | null = null;
   onLandmarks: ((landmarks: NormalizedLandmark[]) => void) | null = null;
+  onNoPoseDetected: (() => void) | null = null;
+
+  // Tracking for pose detection status
+  private lastPoseDetectedTime: number = Date.now();
+  private noPoseDetectionThreshold: number = 3000; // 3 seconds
+  private hasNotifiedNoPose: boolean = false;
 
   /**
    * Initialize the pose detection utility
@@ -58,7 +64,8 @@ export class PoseDetectionUtil {
   async initialize(
     video: HTMLVideoElement,
     canvasElement: HTMLCanvasElement,
-    onLandmarks?: (landmarks: NormalizedLandmark[]) => void
+    onLandmarks?: (landmarks: NormalizedLandmark[]) => void,
+    onNoPoseDetected?: () => void
   ) {
     this.video = video;
     this.canvasElement = canvasElement;
@@ -70,6 +77,7 @@ export class PoseDetectionUtil {
 
     this.poseLandmarker = await createPoseLandmarker();
     this.onLandmarks = onLandmarks ?? null;
+    this.onNoPoseDetected = onNoPoseDetected ?? null;
     return !!this.poseLandmarker;
   }
 
@@ -143,9 +151,10 @@ export class PoseDetectionUtil {
       this.stopWebcam();
     }
 
-    // Reset video time tracking
+    // Reset video time tracking and pose tracking
     this.lastVideoTime = -1;
     this.videoRunning = true;
+    this.resetPoseTracking();
 
     // Start detection loop for the video
     this.predictVideo();
@@ -215,6 +224,40 @@ export class PoseDetectionUtil {
   }
 
   /**
+   * Check if poses haven't been detected for a while and notify if needed
+   */
+  private checkNoPoseDetection() {
+    const currentTime = Date.now();
+    const timeSinceLastPose = currentTime - this.lastPoseDetectedTime;
+
+    if (
+      timeSinceLastPose > this.noPoseDetectionThreshold &&
+      !this.hasNotifiedNoPose
+    ) {
+      this.hasNotifiedNoPose = true;
+      if (this.onNoPoseDetected) {
+        this.onNoPoseDetected();
+      }
+    }
+  }
+
+  /**
+   * Reset pose detection tracking
+   */
+  private resetPoseTracking() {
+    this.lastPoseDetectedTime = Date.now();
+    this.hasNotifiedNoPose = false;
+  }
+
+  /**
+   * Mark that a pose was detected
+   */
+  private markPoseDetected() {
+    this.lastPoseDetectedTime = Date.now();
+    this.hasNotifiedNoPose = false;
+  }
+
+  /**
    * Predict poses from uploaded video
    */
   async predictVideo() {
@@ -257,6 +300,7 @@ export class PoseDetectionUtil {
         );
 
         if (results.landmarks && results.landmarks.length > 0) {
+          this.markPoseDetected();
           if (this.onLandmarks) this.onLandmarks(results.landmarks[0]);
 
           for (let i = 0; i < results.landmarks.length; i++) {
@@ -273,6 +317,9 @@ export class PoseDetectionUtil {
               PoseLandmarker.POSE_CONNECTIONS
             );
           }
+        } else {
+          // No pose detected in this frame
+          this.checkNoPoseDetection();
         }
       } catch (error) {
         console.error("Error during video pose detection:", error);
@@ -320,7 +367,9 @@ export class PoseDetectionUtil {
           this.canvasElement.height
         );
 
-        if (results.landmarks) {
+        if (results.landmarks && results.landmarks.length > 0) {
+          this.markPoseDetected();
+
           for (let i = 0; i < results.landmarks.length; i++) {
             const adjustedLandmarks = this.adjustLandmarksToDisplaySize(
               results.landmarks[i]
@@ -335,6 +384,9 @@ export class PoseDetectionUtil {
               PoseLandmarker.POSE_CONNECTIONS
             );
           }
+        } else {
+          // No pose detected in this frame
+          this.checkNoPoseDetection();
         }
       } catch (error) {
         console.error("Error during webcam pose detection:", error);
@@ -424,5 +476,8 @@ export class PoseDetectionUtil {
       cancelAnimationFrame(this.animationFrameId);
       this.animationFrameId = null;
     }
+
+    // Reset pose tracking
+    this.resetPoseTracking();
   }
 }

@@ -50,10 +50,10 @@ export class BicepCurlDetector implements ExerciseDetector {
     const angle = calculateAngle(shoulder, elbow, wrist);
     this.angle = Math.round(angle * 100) / 100;
     if (angle > 160) {
-      this.stage = "down";
+      this.stage = "abajo";
     }
-    if (angle < 30 && this.stage === "down") {
-      this.stage = "up";
+    if (angle < 30 && this.stage === "abajo") {
+      this.stage = "arriba";
       this.reps += 1;
       this.correctReps += 1;
     }
@@ -101,7 +101,7 @@ export class SquatDetector implements ExerciseDetector {
       this.stage = "up";
     }
     if (angle < 90 && this.stage === "up") {
-      this.stage = "down";
+      this.stage = "abajo";
       this.reps += 1;
       this.correctReps += 1;
     }

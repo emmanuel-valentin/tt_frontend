@@ -9,10 +9,12 @@ import { NormalizedLandmark } from "@mediapipe/tasks-vision";
 
 interface UseExerciseAnalysisOptions {
   exerciseType: ExerciseType;
+  analysisEnabled?: boolean;
 }
 
 export function useExerciseAnalysis({
   exerciseType,
+  analysisEnabled = true,
 }: UseExerciseAnalysisOptions) {
   const [feedback, setFeedback] = useState<ExerciseFeedback>({
     reps: 0,
@@ -33,7 +35,7 @@ export function useExerciseAnalysis({
 
   // Process landmarks and update feedback
   const processLandmarks = (landmarks: NormalizedLandmark[]) => {
-    if (!landmarks || !detectorRef.current) return;
+    if (!landmarks || !detectorRef.current || !analysisEnabled) return;
 
     const newFeedback = detectorRef.current.process(landmarks);
     setFeedback(newFeedback);
@@ -47,11 +49,10 @@ export function useExerciseAnalysis({
     }
   };
 
-  // Get angle label based on exercise type
   const getAngleLabel = (type: ExerciseType): string => {
     const angleLabelMap: Record<ExerciseType, string> = {
-      "bicep-curl": "ELBOW ANGLE",
-      squat: "KNEE ANGLE",
+      "bicep-curl": "Angulo de extensión",
+      squat: "Angulo de flexión",
     };
     return angleLabelMap[type];
   };
@@ -61,5 +62,6 @@ export function useExerciseAnalysis({
     processLandmarks,
     resetExercise,
     getAngleLabel,
+    analysisEnabled,
   };
 }

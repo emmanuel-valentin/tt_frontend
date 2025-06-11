@@ -6,9 +6,6 @@ interface FeedbackIndicatorsProps {
   getAngleLabel: (exerciseType: ExerciseType) => string;
 }
 
-/**
- * Componente que muestra indicadores de feedback en tiempo real durante un ejercicio
- */
 export function FeedbackIndicators({
   feedback,
   exerciseType,
@@ -17,22 +14,22 @@ export function FeedbackIndicators({
   return (
     <div className="flex flex-row gap-4 mb-4 w-full justify-center">
       <FeedbackIndicator
-        label="REPS"
+        label="Repeticiones"
         value={feedback.reps}
         bgColor="bg-blue-100"
       />
       <FeedbackIndicator
-        label="CORRECT REPS"
+        label="Repeticiones correctas"
         value={feedback.correctReps}
         bgColor="bg-green-100"
       />
       <FeedbackIndicator
-        label="STAGE"
+        label="Etapa"
         value={feedback.stage}
         bgColor="bg-yellow-100"
       />
       <FeedbackIndicator
-        label={getAngleLabel(exerciseType)}
+        label={getAngleLabel(exerciseType) || "Ángulo"}
         value={`${feedback.angle}°`}
         bgColor="bg-purple-100"
       />
